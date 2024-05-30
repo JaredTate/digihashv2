@@ -1,0 +1,16 @@
+{
+    "name": "DigiByte-Qubit",
+    "symbol": "DGB",
+    "algorithm": "qubit",
+    "coinbase": "DigiHash",
+    "getInfo": false,
+    "noNetworkInfo": false,
+    "noGetnetworkhashps": true,
+    "txfee": 0.1,
+    "blockTime": 75,
+    "explorer": {
+        "txURL": "https://digiexplorer.info/tx/",
+        "blockURL": "https://digiexplorer.info/block/"
+    }
+}
+

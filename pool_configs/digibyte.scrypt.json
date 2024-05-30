@@ -1,0 +1,98 @@
+{
+    "enabled": true,
+    "coin": "digibyte.scrypt.json",
+    "blockIdentifier": "DigiHashv2",
+
+    "address": "DSKS9xBjLtmpC7ZUn4r9y1KGmVYX9vQQ4s",
+
+    "rewardRecipients": {
+        "DT425KXiPXEQs7NdKpKhWetwboQ9g7JjAk": 10.0
+    },
+
+    "paymentProcessing": {
+        "minConf": 10,
+        "enabled": true,
+        "paymentMode": "prop",
+        "_comment_paymentMode": "prop, pplnt",
+        "paymentInterval": 120,
+        "minimumPayment": 25,
+        "maxBlocksPerPayment": 3,
+        "daemon": {
+            "host": "127.0.0.1",
+            "port": 14022,
+            "user": "user",
+            "password": "password"
+        }
+    },
+
+    "tlsOptions": {
+        "enabled": false,
+        "serverKey": "",
+        "serverCert": "",
+        "ca": ""
+    },
+
+    "ports": {
+        "3009": {
+            "diff": 8192,
+            "varDiff": {
+                "minDiff": 0.000000000001,
+                "maxDiff": 1000000,
+                "targetTime": 15,
+                "retargetTime": 75,
+                "variancePercent": 30
+            }
+        },
+        "3033": {
+            "diff": 32768,
+            "varDiff": {
+                "minDiff": 0.000000000001,
+                "maxDiff": 1000000,
+                "targetTime": 15,
+                "retargetTime": 75,
+                "variancePercent": 30
+            }
+        },
+        "3257": {
+            "diff": 131072,
+            "varDiff": {
+                "minDiff": 0.000000000001,
+                "maxDiff": 1000000,
+                "targetTime": 15,
+                "retargetTime": 75,
+                "variancePercent": 30
+            }
+        }
+    },
+
+    "poolId": "DigiHashv2",
+    "_comment_poolId": "use it for region identification: eu, us, asia or keep default if you have one stratum instance for one coin",
+
+    "daemons": [
+        {
+            "host": "127.0.0.1",
+            "port": 14022,
+            "user": "user",
+            "password": "password"
+        }
+    ],
+
+    "p2p": {
+        "enabled": false,
+        "host": "127.0.0.1",
+        "port": 12024,
+        "disableTransactions": true
+    },
+
+    "mposMode": {
+        "enabled": false,
+        "host": "127.0.0.1",
+        "port": 3306,
+        "user": "me",
+        "password": "mypass",
+        "database": "ltc",
+        "checkPassword": true,
+        "autoCreateWorker": false
+    }
+
+}
