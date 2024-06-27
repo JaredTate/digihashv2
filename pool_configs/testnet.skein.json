@@ -33,7 +33,7 @@
     },
 
     "ports": {
-        "3011": {
+        "4011": {
             "diff": 0.1,
             "varDiff": {
                 "minDiff": 0.001,
@@ -43,7 +43,7 @@
                 "variancePercent": 30
             }
         },
-        "3035": {
+        "4035": {
             "diff": 5,
             "varDiff": {
                 "minDiff": 0.1,
@@ -53,7 +53,7 @@
                 "variancePercent": 30
             }
         },
-        "3259": {
+        "4259": {
             "diff": 10,
             "varDiff": {
                 "minDiff": 11,
