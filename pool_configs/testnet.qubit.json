@@ -2,6 +2,7 @@
     "enabled": true,
     "coin": "testnet.qubit.json",
     "blockIdentifier": "DigiHashv2",
+    "BTCover17": true,
 
     "address": "DP1vhm74LJ9cR7tTw7F7yAKryn5zn8y5ZP",
 

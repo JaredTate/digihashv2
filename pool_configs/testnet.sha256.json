@@ -2,6 +2,7 @@
     "enabled": true,
     "coin": "testnet.sha256.json",
     "blockIdentifier": "DigiHashv2",
+    "BTCover17": true,
 
     "address": "suCURAiNhe2CPMppMYf4BpDYW5gLghrjVM",
 

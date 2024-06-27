@@ -2,6 +2,7 @@
     "enabled": true,
     "coin": "testnet.odo.json",
     "blockIdentifier": "DigiHashv2",
+    "BTCover17": true,
 
     "address": "t2wTsSBzhmqsJucQQPr61t5GmVayWSCqnu",
 

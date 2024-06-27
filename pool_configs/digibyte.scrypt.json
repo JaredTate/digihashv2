@@ -2,6 +2,7 @@
     "enabled": true,
     "coin": "digibyte.scrypt.json",
     "blockIdentifier": "DigiHashv2",
+    "BTCover17": true,
 
     "address": "DSKS9xBjLtmpC7ZUn4r9y1KGmVYX9vQQ4s",
 

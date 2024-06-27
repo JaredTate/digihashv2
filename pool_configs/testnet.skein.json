@@ -2,6 +2,7 @@
     "enabled": true,
     "coin": "testnet.skein.json",
     "blockIdentifier": "DigiHashv2",
+    "BTCover17": true,
 
     "address": "dgbt1qdk46y2xl3kcjlapqgdch2dzhvx3c0ue7dphfht",
 

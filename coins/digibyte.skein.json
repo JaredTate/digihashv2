@@ -5,6 +5,7 @@
     "coinbase": "DigiHash",
     "getInfo": false,
     "noNetworkInfo": false,
+    "useAddressInfo": true,
     "noGetnetworkhashps": true,
     "txfee": 0.1,
     "blockTime": 75,
