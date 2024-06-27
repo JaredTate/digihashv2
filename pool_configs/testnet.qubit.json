@@ -1,12 +1,12 @@
 {
     "enabled": true,
-    "coin": "digibyte.sha256.json",
+    "coin": "testnet.qubit.json",
     "blockIdentifier": "DigiHashv2",
 
-    "address": "D6WCmoiBoEe6BdyjbCqK3XGkFJNdVfnvAt",
+    "address": "DP1vhm74LJ9cR7tTw7F7yAKryn5zn8y5ZP",
 
     "rewardRecipients": {
-        "DKTdPy21bQJXCE7BB8VijsDwdnvgEG8KqH": 10.0
+        "DMneHYLRVi5CZGgSmgSv4aSqkjehUi339b": 10.0
     },
 
     "paymentProcessing": {
@@ -19,7 +19,7 @@
         "maxBlocksPerPayment": 3,
         "daemon": {
             "host": "127.0.0.1",
-            "port": 14011,
+            "port": 14044,
             "user": "user",
             "password": "password"
         }
@@ -33,50 +33,35 @@
     },
 
     "ports": {
-        "3008": {
-            "diff": 8192,
-            "tls": false,
+        "4012": {
+            "diff": 0.01,
             "varDiff": {
-                "minDiff": 100,
-                "maxDiff": 10000,
+                "minDiff": 0.01,
+                "maxDiff": 10.0,
                 "targetTime": 15,
                 "retargetTime": 75,
                 "variancePercent": 30
             }
         },
-        "3032": {
-            "diff": 16384,
-            "tls": false,
+        "4036": {
+            "diff": 1,
             "varDiff": {
-                "minDiff": 1000,
-                "maxDiff": 1000000,
+                "minDiff": 0.1,
+                "maxDiff": 10.0,
                 "targetTime": 15,
                 "retargetTime": 75,
                 "variancePercent": 30
             }
         },
-        "3256": {
-            "diff": 250000,
-            "tls": false,
+        "4260": {
+            "diff": 5,
             "varDiff": {
-                "minDiff": 10000,
-                "maxDiff": 10000000,
+                "minDiff": 1,
+                "maxDiff": 100.0,
                 "targetTime": 15,
                 "retargetTime": 75,
                 "variancePercent": 30
             }
-        }
-    },
-
-    "3013": {
-        "diff": 0.01,
-        "tls": false,
-        "varDiff": {
-            "minDiff": 0.00,
-            "maxDiff": 1000,
-            "targetTime": 15,
-            "retargetTime": 90,
-            "variancePercent": 30
         }
     },
 
@@ -86,7 +71,7 @@
     "daemons": [
         {
             "host": "127.0.0.1",
-            "port": 14011,
+            "port": 14044,
             "user": "user",
             "password": "password"
         }

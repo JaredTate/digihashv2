@@ -1,12 +1,12 @@
 {
     "enabled": true,
-    "coin": "digibyte.sha256.json",
+    "coin": "testnet.sha256.json",
     "blockIdentifier": "DigiHashv2",
 
-    "address": "D6WCmoiBoEe6BdyjbCqK3XGkFJNdVfnvAt",
+    "address": "suCURAiNhe2CPMppMYf4BpDYW5gLghrjVM",
 
     "rewardRecipients": {
-        "DKTdPy21bQJXCE7BB8VijsDwdnvgEG8KqH": 10.0
+        "t4rVjSRRoCvAwYR9Z7r2HmBSjyo1QSy86c": 10.0
     },
 
     "paymentProcessing": {
@@ -33,33 +33,33 @@
     },
 
     "ports": {
-        "3008": {
-            "diff": 8192,
+        "4008": {
+            "diff": 0.01,
             "tls": false,
             "varDiff": {
-                "minDiff": 100,
-                "maxDiff": 10000,
+                "minDiff": 0.001,
+                "maxDiff": 10000000,
                 "targetTime": 15,
                 "retargetTime": 75,
                 "variancePercent": 30
             }
         },
-        "3032": {
+        "4032": {
+            "diff": 1,
+            "tls": false,
+            "varDiff": {
+                "minDiff": 0.01,
+                "maxDiff": 10000000,
+                "targetTime": 15,
+                "retargetTime": 75,
+                "variancePercent": 30
+            }
+        },
+        "4256": {
             "diff": 16384,
             "tls": false,
             "varDiff": {
-                "minDiff": 1000,
-                "maxDiff": 1000000,
-                "targetTime": 15,
-                "retargetTime": 75,
-                "variancePercent": 30
-            }
-        },
-        "3256": {
-            "diff": 250000,
-            "tls": false,
-            "varDiff": {
-                "minDiff": 10000,
+                "minDiff": 1,
                 "maxDiff": 10000000,
                 "targetTime": 15,
                 "retargetTime": 75,

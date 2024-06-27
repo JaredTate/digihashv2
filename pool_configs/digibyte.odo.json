@@ -6,7 +6,7 @@
     "address": "DD2nTMSNizVp9EGoJ76GynAJqbtAva7hJM",
 
     "rewardRecipients": {
-        "SMov95sey81erde4ezrTvhMht7r4sXv86i": 10.0
+        "DF8k9vibZhHDCCQZkXcyK56yx2e7rajeaE": 10.0
     },
 
     "paymentProcessing": {
@@ -37,8 +37,8 @@
             "diff": 0.01,
             "tls": false,
             "varDiff": {
-                "minDiff": 0.00000000000000001,
-                "maxDiff": 1000,
+                "minDiff": 0.01,
+                "maxDiff": 100,
                 "targetTime": 15,
                 "retargetTime": 75,
                 "variancePercent": 30
@@ -48,8 +48,8 @@
             "diff": 1,
             "tls": false,
             "varDiff": {
-                "minDiff": 0.00000000000000001,
-                "maxDiff": 1000,
+                "minDiff": 1,
+                "maxDiff": 100,
                 "targetTime": 15,
                 "retargetTime": 75,
                 "variancePercent": 30
@@ -59,7 +59,7 @@
             "diff": 16,
             "tls": false,
             "varDiff": {
-                "minDiff": 0.00000000000000001,
+                "minDiff": 1,
                 "maxDiff": 1000,
                 "targetTime": 15,
                 "retargetTime": 75,

@@ -1,12 +1,12 @@
 {
     "enabled": true,
-    "coin": "digibyte.sha256.json",
+    "coin": "testnet.odo.json",
     "blockIdentifier": "DigiHashv2",
 
-    "address": "D6WCmoiBoEe6BdyjbCqK3XGkFJNdVfnvAt",
+    "address": "t2wTsSBzhmqsJucQQPr61t5GmVayWSCqnu",
 
     "rewardRecipients": {
-        "DKTdPy21bQJXCE7BB8VijsDwdnvgEG8KqH": 10.0
+        "t23pZhWt5zk1FYNykMBnWUWT12GHbGaYcr": 10.0
     },
 
     "paymentProcessing": {
@@ -19,7 +19,7 @@
         "maxBlocksPerPayment": 3,
         "daemon": {
             "host": "127.0.0.1",
-            "port": 14011,
+            "port": 14055,
             "user": "user",
             "password": "password"
         }
@@ -33,60 +33,49 @@
     },
 
     "ports": {
-        "3008": {
-            "diff": 8192,
+        "4013": {
+            "diff": 0.01,
             "tls": false,
             "varDiff": {
-                "minDiff": 100,
-                "maxDiff": 10000,
+                "minDiff": 0.00000000000000001,
+                "maxDiff": 1000,
                 "targetTime": 15,
                 "retargetTime": 75,
                 "variancePercent": 30
             }
         },
-        "3032": {
-            "diff": 16384,
+        "4037": {
+            "diff": 1,
             "tls": false,
             "varDiff": {
-                "minDiff": 1000,
-                "maxDiff": 1000000,
+                "minDiff": 0.01,
+                "maxDiff": 100,
                 "targetTime": 15,
-                "retargetTime": 75,
+                "retargetTime": 90,
                 "variancePercent": 30
             }
         },
-        "3256": {
-            "diff": 250000,
+        "4261": {
+            "diff": 16,
             "tls": false,
             "varDiff": {
-                "minDiff": 10000,
-                "maxDiff": 10000000,
+                "minDiff": 0.01,
+                "maxDiff": 1000,
                 "targetTime": 15,
                 "retargetTime": 75,
                 "variancePercent": 30
             }
         }
     },
-
-    "3013": {
-        "diff": 0.01,
-        "tls": false,
-        "varDiff": {
-            "minDiff": 0.00,
-            "maxDiff": 1000,
-            "targetTime": 15,
-            "retargetTime": 90,
-            "variancePercent": 30
-        }
-    },
-
+    
     "poolId": "DigiHashv2",
     "_comment_poolId": "use it for region identification: eu, us, asia or keep default if you have one stratum instance for one coin",
+
 
     "daemons": [
         {
             "host": "127.0.0.1",
-            "port": 14011,
+            "port": 14055,
             "user": "user",
             "password": "password"
         }
