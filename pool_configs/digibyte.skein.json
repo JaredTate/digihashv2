@@ -3,6 +3,7 @@
     "coin": "digibyte.skein.json",
     "blockIdentifier": "DigiHashv2",
     "BTCover17": true,
+    "wallet": "Skein",
 
     "address": "D8cLcRbYtxP2aAhbVwQ4bRc4G2CaB3Dnw3",
 
