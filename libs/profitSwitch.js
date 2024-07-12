@@ -1,6 +1,5 @@
 var async  = require('async');
 var net    = require('net');
-var bignum = require('bignum');
 var algos  = require('stratum-pool/lib/algoProperties.js');
 var util   = require('stratum-pool/lib/util.js');
 
@@ -536,13 +535,13 @@ module.exports = function(logger){
              callback(null);
         });
     };
-    this.getDaemonInfoForCoin = function(symbol, cfg, callback){
-        var daemon = new Stratum.daemon.interface([cfg], function(severity, message){
+    this.getDaemonInfoForCoin = function(symbol, cfg, callback) {
+        var daemon = new Stratum.daemon.interface([cfg], function(severity, message) {
             logger[severity](logSystem, symbol, message);
             callback(null); // fail gracefully for each coin
         });
-
-        daemon.cmd('getblocktemplate', [{"capabilities": [ "coinbasetxn", "workid", "coinbase/append" ]}], function(result) {
+    
+        daemon.cmd('getblocktemplate', [{"capabilities": ["coinbasetxn", "workid", "coinbase/append"]}], function(result) {
             if (result[0].error != null) {
                 logger.error(logSystem, symbol, 'Error while reading daemon info: ' + JSON.stringify(result[0]));
                 callback(null); // fail gracefully for each coin
@@ -550,17 +549,29 @@ module.exports = function(logger){
             }
             var coinStatus = profitStatus[symbolToAlgorithmMap[symbol]][symbol];
             var response = result[0].response;
-
-            // some shitcoins dont provide target, only bits, so we need to deal with both
-            var target = response.target ? bignum(response.target, 16) : util.bignumFromBitsHex(response.bits);
-            coinStatus.difficulty = parseFloat((diff1 / target.toNumber()).toFixed(9));
+    
+            // some coins don't provide target, only bits, so we need to deal with both
+            var target = response.target ? BigInt('0x' + response.target) : util.bignumFromBitsHex(response.bits);
+            coinStatus.difficulty = parseFloat((diff1 / Number(target)).toFixed(9));
             logger.debug(logSystem, symbol, 'difficulty is ' + coinStatus.difficulty);
-
+    
             coinStatus.reward = response.coinbasevalue / 100000000;
             callback(null);
         });
     };
-
+    
+    // Utility function to convert bits to BigInt
+    exports.bignumFromBitsHex = function(bitsString) {
+        var bitsBuff = Buffer.from(bitsString, 'hex');
+        return exports.bignumFromBitsBuffer(bitsBuff);
+    };
+    
+    exports.bignumFromBitsBuffer = function(bitsBuff) {
+        var numBytes = bitsBuff.readUInt8(0);
+        var bigBits = BigInt('0x' + bitsBuff.slice(1).toString('hex'));
+        var target = bigBits * (BigInt(2) ** (BigInt(8) * BigInt(numBytes - 3)));
+        return target;
+    };
 
     this.getMiningRate = function(callback){
         var daemonTasks = [];
