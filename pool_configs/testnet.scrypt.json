@@ -57,7 +57,7 @@
             }
         },
         "4262": {
-            "diff": 8192,
+            "diff": 10,
             "tls": false,
             "varDiff": {
                 "minDiff": 1,
