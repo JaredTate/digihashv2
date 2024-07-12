@@ -2,6 +2,7 @@
     "name": "Testnet-Scrypt",
     "symbol": "DGB",
     "algorithm": "scrypt",
+    "peerMagic": "fsc8bddd",
     "coinbase": "DigiHash",
     "getInfo": false,
     "noNetworkInfo": false,

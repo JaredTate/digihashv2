@@ -2,6 +2,7 @@
     "name": "DigiByte-Qubit",
     "symbol": "DGB",
     "algorithm": "qubit",
+    "peerMagic": "fac3b6da",
     "coinbase": "DigiHash",
     "getInfo": false,
     "noNetworkInfo": false,

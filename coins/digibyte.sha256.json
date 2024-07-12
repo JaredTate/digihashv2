@@ -2,6 +2,7 @@
     "name": "DigiByte-Sha256",
     "symbol": "DGB",
     "algorithm": "sha256d",
+    "peerMagic": "fac3b6da",
     "coinbase": "DigiHash",
     "getInfo": false,
     "noNetworkInfo": false,

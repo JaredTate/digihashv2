@@ -2,6 +2,7 @@
     "name": "Testnet-Odo",
     "symbol": "DGB",
     "algorithm": "odo",
+    "peerMagic": "fsc8bddd",
     "coinbase": "DigiHash",
     "getInfo": false,
     "noNetworkInfo": false,

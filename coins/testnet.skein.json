@@ -2,6 +2,7 @@
     "name": "Testnet-Skein",
     "symbol": "DGB",
     "algorithm": "skein",
+    "peerMagic": "fsc8bddd",
     "coinbase": "DigiHash",
     "getInfo": false,
     "noNetworkInfo": false,

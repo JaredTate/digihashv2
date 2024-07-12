@@ -2,6 +2,7 @@
     "name": "DigiByte-Scrypt",
     "symbol": "DGB",
     "algorithm": "scrypt",
+    "peerMagic": "fac3b6da",
     "coinbase": "DigiHash",
     "getInfo": false,
     "noNetworkInfo": false,
