@@ -4,10 +4,10 @@
     "blockIdentifier": "DigiHashv2",
     "BTCover17": true,
 
-    "address": "sp1haRKk2DzsZDKgBBpDG4pmRcsaKX3faB",
+    "address": "t4ona59fxswkvcnmdjZGSuDKxradXwm9Bm",
 
     "rewardRecipients": {
-        "t4zoFiRPHsWXNt7k9dAT8g8UDzZfJpLBEg": 10.0
+        "sqyyt1tvmHpLaV3a5GKouBxYy7J3rgt8rC": 10.0
     },
 
     "paymentProcessing": {
@@ -20,7 +20,7 @@
         "maxBlocksPerPayment": 3,
         "daemon": {
             "host": "127.0.0.1",
-            "port": 14022,
+            "port": 14093,
             "user": "user",
             "password": "password"
         }
@@ -35,10 +35,10 @@
 
     "ports": {
         "4014": {
-            "diff": 0.01,
+            "diff": 0.001,
             "tls": false,
             "varDiff": {
-                "minDiff": 0.001,
+                "minDiff": 0.0001,
                 "maxDiff": 100,
                 "targetTime": 15,
                 "retargetTime": 75,
@@ -46,7 +46,7 @@
             }
         },
         "4038": {
-            "diff": 1,
+            "diff": 0.1,
             "tls": false,
             "varDiff": {
                 "minDiff": 0.01,
@@ -75,7 +75,7 @@
     "daemons": [
         {
             "host": "127.0.0.1",
-            "port": 14022,
+            "port": 14093,
             "user": "user",
             "password": "password"
         }
