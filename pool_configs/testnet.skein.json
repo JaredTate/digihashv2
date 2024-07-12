@@ -4,7 +4,7 @@
     "blockIdentifier": "DigiHashv2",
     "BTCover17": true,
 
-    "address": "dgbt1qdk46y2xl3kcjlapqgdch2dzhvx3c0ue7dphfht",
+    "address": "t6RzRyP99W5a5U7zaqjCC1CSGDaFa4or6M",
 
     "rewardRecipients": {
         "svSVZxWnjrMmH1kcGU3Q5wdsaqDbeqAP3U": 10.0
@@ -20,7 +20,7 @@
         "maxBlocksPerPayment": 3,
         "daemon": {
             "host": "127.0.0.1",
-            "port": 14033,
+            "port": 14023,
             "user": "user",
             "password": "password"
         }
@@ -72,7 +72,7 @@
     "daemons": [
         {
             "host": "127.0.0.1",
-            "port": 14033,
+            "port": 14023,
             "user": "user",
             "password": "password"
         }

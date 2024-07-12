@@ -20,7 +20,7 @@
         "maxBlocksPerPayment": 3,
         "daemon": {
             "host": "127.0.0.1",
-            "port": 14055,
+            "port": 14090,
             "user": "user",
             "password": "password"
         }
@@ -35,10 +35,10 @@
 
     "ports": {
         "4013": {
-            "diff": 0.01,
+            "diff": 0.00000000001,
             "tls": false,
             "varDiff": {
-                "minDiff": 0.00000000000000001,
+                "minDiff": 0.000000000001,
                 "maxDiff": 1000,
                 "targetTime": 15,
                 "retargetTime": 75,
@@ -76,7 +76,7 @@
     "daemons": [
         {
             "host": "127.0.0.1",
-            "port": 14055,
+            "port": 14090,
             "user": "user",
             "password": "password"
         }
