@@ -22,7 +22,6 @@ module.exports = function(logger){
     if (portalConfig.redis.password) {
         redisClient.auth(portalConfig.redis.password);
     }
-
     //Handle messages from master process sent via IPC
     process.on('message', function(message) {
         switch(message.type){
@@ -35,6 +34,7 @@ module.exports = function(logger){
                 break;
 
             case 'blocknotify':
+
                 var messageCoin = message.coin.toLowerCase();
                 var poolTarget = Object.keys(pools).filter(function(p){
                     return p.toLowerCase() === messageCoin;
@@ -52,7 +52,9 @@ module.exports = function(logger){
                 var logSubCat = 'Thread ' + (parseInt(forkId) + 1);
 
                 var switchName = message.switchName;
+
                 var newCoin = message.coin;
+
                 var algo = poolConfigs[newCoin].coin.algorithm;
 
                 var newPool = pools[newCoin];
@@ -70,6 +72,7 @@ module.exports = function(logger){
                 if (newPool) {
                     oldPool.relinquishMiners(
                         function (miner, cback) {
+                            // relinquish miners that are attached to one of the "Auto-switch" ports and leave the others there.
                             cback(proxyPorts.indexOf(miner.client.socket.localPort.toString()) !== -1)
                         },
                         function (clients) {
@@ -80,12 +83,13 @@ module.exports = function(logger){
 
                     redisClient.hset('proxyState', algo, newCoin, function(error, obj) {
                         if (error) {
-                            logger.error(logSystem, logComponent, logSubCat, 'Redis error writing proxy config: ' + JSON.stringify(error))
+                            logger.error(logSystem, logComponent, logSubCat, 'Redis error writing proxy config: ' + JSON.stringify(err))
                         }
                         else {
                             logger.debug(logSystem, logComponent, logSubCat, 'Last proxy state saved to redis for ' + algo);
                         }
                     });
+
                 }
                 break;
         }
@@ -125,19 +129,22 @@ module.exports = function(logger){
 
         //Functions required for internal payment processing
         else{
+
             var shareProcessor = new ShareProcessor(logger, poolOptions);
 
             handlers.auth = function(port, workerName, password, authCallback){
                 if (poolOptions.validateWorkerUsername !== true)
                     authCallback(true);
                 else {
-                    pool.daemon.cmd('validateaddress', [String(workerName).split(".")[0]], function (results) {
-                        var isValid = results.filter(function (r) {
-                            return r.response && r.response.isvalid;
-                        }).length > 0;
-                        authCallback(isValid);
-                    });
-                }
+                        pool.daemon.cmd('validateaddress', [String(workerName).split(".")[0]], function (results) {
+                            var isValid = results.filter(function (r) {
+                                if (r.response)
+                                    return r.response.isvalid;
+                                return false;
+                            }).length > 0;
+                            authCallback(isValid);
+                        });
+                    }
             };
 
             handlers.share = function(isValidShare, isValidBlock, data){
@@ -147,7 +154,9 @@ module.exports = function(logger){
 
         var authorizeFN = function (ip, port, workerName, password, callback) {
             handlers.auth(port, workerName, password, function(authorized){
+
                 var authString = authorized ? 'Authorized' : 'Unauthorized ';
+
                 logger.debug(logSystem, logComponent, logSubCat, authString + ' ' + workerName + ':' + password + ' [' + ip + ']');
                 callback({
                     error: null,
@@ -160,49 +169,27 @@ module.exports = function(logger){
 
         var pool = Stratum.createPool(poolOptions, authorizeFN, logger);
         pool.on('share', function(isValidShare, isValidBlock, data){
-            
-            if(data.worker != undefined)
-                data.worker = data.worker.replace(/:/g,"-")           
+		
+			if(data.worker != undefined)
+				data.worker = data.worker.replace(/:/g,"-")           
             
             var shareData = JSON.stringify(data);
 
             if (data.blockHash && !isValidBlock)
-                logger.debug(logSystem, logComponent, logSubCat, 'Potentially valid block rejected: ' + JSON.stringify({
-                    share: shareData,
-                    block: data.blockHash,
-                    worker: data.worker
-                }));
+                logger.debug(logSystem, logComponent, logSubCat, 'We thought a block was found but it was rejected by the daemon, share data: ' + shareData);
+
             else if (isValidBlock)
-                logger.special(logSystem, logComponent, logSubCat, 'Block found: ' + JSON.stringify({
-                    block: data.blockHash,
-                    worker: data.worker,
-                    difficulty: data.difficulty,
-                    shareDiff: data.shareDiff,
-                    blockDiff: data.blockDiff,
-                    height: data.height
-                }));
+                logger.debug(logSystem, logComponent, logSubCat, 'Block found: ' + data.blockHash + ' by ' + data.worker);
 
             if (isValidShare) {
                 if(data.shareDiff > 1000000000) {
-                    logger.special(logSystem, logComponent, logSubCat, 'Share with very high difficulty: ' + JSON.stringify({
-                        share: shareData,
-                        worker: data.worker,
-                        difficulty: data.difficulty,
-                        shareDiff: data.shareDiff
-                    }));
+                    logger.debug(logSystem, logComponent, logSubCat, 'Share was found with diff higher than 1.000.000.000!');
+                //} else if(data.shareDiff > 1000000) {
+                //    logger.debug(logSystem, logComponent, logSubCat, 'Share was found with diff higher than 1.000.000!');
                 }
-                logger.debug(logSystem, logComponent, logSubCat, 'Valid share: ' + JSON.stringify({
-                    share: shareData,
-                    worker: data.worker,
-                    difficulty: data.difficulty,
-                    shareDiff: data.shareDiff,
-                    blockDiff: data.blockDiff
-                }));
+                logger.debug(logSystem, logComponent, logSubCat, 'Share accepted at diff ' + data.difficulty + '/' + data.shareDiff + ' by ' + data.worker + ' [' + data.ip + ']' );
             } else if (!isValidShare) {
-                logger.debug(logSystem, logComponent, logSubCat, 'Invalid share: ' + JSON.stringify({
-                    share: shareData,
-                    worker: data.worker
-                }));
+                logger.debug(logSystem, logComponent, logSubCat, 'Share rejected: ' + shareData);
             }
 
             // handle the share
@@ -212,10 +199,7 @@ module.exports = function(logger){
             process.send({type: 'shareTrack', thread:(parseInt(forkId)+1), coin:poolOptions.coin.name, isValidShare:isValidShare, isValidBlock:isValidBlock, data:data});
 
         }).on('difficultyUpdate', function(workerName, diff){
-            logger.debug(logSystem, logComponent, logSubCat, 'Difficulty update: ' + JSON.stringify({
-                worker: workerName,
-                diff: diff
-            }));
+            logger.debug(logSystem, logComponent, logSubCat, 'Difficulty update to diff ' + diff + ' workerName=' + JSON.stringify(workerName));
             handlers.diff(workerName, diff);
         }).on('log', function(severity, text) {
             logger[severity](logSystem, logComponent, logSubCat, text);
