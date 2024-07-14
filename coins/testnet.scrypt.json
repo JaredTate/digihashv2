@@ -8,7 +8,7 @@
     "noNetworkInfo": false,
     "useAddressInfo": true,
     "noGetnetworkhashps": true,
-    "mainnet": {
+    "testnet": {
         "bech32": "dgbt",
         "bip32": {
             "public": "043587CF"
