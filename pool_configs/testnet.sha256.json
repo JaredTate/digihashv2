@@ -81,7 +81,7 @@
         }
     },
 
-    "poolId": "DigiHashv2",
+    "poolId": "",
     "_comment_poolId": "use it for region identification: eu, us, asia or keep default if you have one stratum instance for one coin",
 
     "daemons": [
