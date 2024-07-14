@@ -1,5 +1,5 @@
 {
-    "enabled": false,
+    "enabled": true,
     "coin": "testnet.skein.json",
     "blockIdentifier": "DigiHashv2",
     "BTCover17": true,
@@ -7,7 +7,7 @@
     "address": "dgbt1q9w9nxfahqd5gf5lha858kmcnk8xzmcg7vfk4rl",
 
     "rewardRecipients": {
-        "svSVZxWnjrMmH1kcGU3Q5wdsaqDbeqAP3U": 10.0
+        "dgbt1qp92l7cm5u9tu2gz7ql9p02nv095jyad2c34p6n": 10.0
     },
 
     "paymentProcessing": {
