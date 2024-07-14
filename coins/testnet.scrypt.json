@@ -7,6 +7,14 @@
     "getInfo": false,
     "noNetworkInfo": false,
     "noGetnetworkhashps": true,
+    "mainnet": {
+        "bech32": "dgbt",
+        "bip32": {
+            "public": "043587CF"
+        },
+        "pubKeyHash": "126",
+        "scriptHash": "140"
+    },
     "txfee": 0.1,
     "blockTime": 75,
     "explorer": {

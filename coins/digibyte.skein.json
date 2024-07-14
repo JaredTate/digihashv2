@@ -8,6 +8,14 @@
     "noNetworkInfo": false,
     "useAddressInfo": true,
     "noGetnetworkhashps": true,
+    "mainnet": {
+        "bech32": "dgb",
+        "bip32": {
+            "public": "0488b21e"
+        },
+        "pubKeyHash": "30",
+        "scriptHash": "63"
+    },
     "txfee": 0.1,
     "blockTime": 75,
     "explorer": {
