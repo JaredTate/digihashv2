@@ -10,7 +10,7 @@
     "mainnet": {
         "bech32": "dgb",
         "bip32": {
-            "public": "0488b21e"
+            "public": "0488B21E"
         },
         "pubKeyHash": "30",
         "scriptHash": "63"
