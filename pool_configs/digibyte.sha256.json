@@ -1,13 +1,13 @@
 {
-    "enabled": false,
+    "enabled": true,
     "coin": "digibyte.sha256.json",
-    "blockIdentifier": "DigiHashv2",
+    "blockIdentifier": "DigiHashV2",
     "BTCover17": true,
 
-    "address": "dgb1qp8y9l4l0uk9cazfdzs08nwcsf6sc2h4h8hfmsf",
+    "address": "dgb1q7sh8xsku6cd23ew6u349g8d5gmxvjymme482kt",
 
     "rewardRecipients": {
-        "dgb1qk5476ve7cwvgdcam65padagxnaamulgv0guvt6": 10.0
+        "dgb1qdqxlgxwc90xqzdz4vh760tvj3pjgn2y3rg0ar0": 1.0
     },
 
     "paymentProcessing": {
@@ -17,7 +17,7 @@
         "_comment_paymentMode": "prop, pplnt",
         "paymentInterval": 120,
         "minimumPayment": 25,
-        "maxBlocksPerPayment": 3,
+        "maxBlocksPerPayment": 10,
         "daemon": {
             "host": "127.0.0.1",
             "port": 14011,

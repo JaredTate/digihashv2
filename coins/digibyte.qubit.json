@@ -3,7 +3,7 @@
     "symbol": "DGB",
     "algorithm": "qubit",
     "peerMagic": "fac3b6da",
-    "coinbase": "DigiHash",
+    "coinbase": "DigiHashV2",
     "getInfo": false,
     "noNetworkInfo": false,
     "useAddressInfo": true,

@@ -1,13 +1,13 @@
 {
-    "enabled": false,
+    "enabled": true,
     "coin": "digibyte.scrypt.json",
-    "blockIdentifier": "DigiHashv2",
+    "blockIdentifier": "DigiHashV2",
     "BTCover17": true,
 
-    "address": "dgb1qsj8h7uye9ygdqkzjzelvlq5sflwc67scfkuy4m",
+    "address": "dgb1qfy3f5s60zq7rqedm63yex5exuctjhvfkz9dyp3",
 
     "rewardRecipients": {
-        "dgb1qeaqee0z9adj433gd53p2fr59ag4xwx26xk7g94": 10.0
+        "dgb1qqvg7d57ltwnrlv4sey79jr3skj7nsuzvj4cf87": 1.0
     },
 
     "paymentProcessing": {
@@ -17,7 +17,7 @@
         "_comment_paymentMode": "prop, pplnt",
         "paymentInterval": 120,
         "minimumPayment": 25,
-        "maxBlocksPerPayment": 3,
+        "maxBlocksPerPayment": 10,
         "daemon": {
             "host": "127.0.0.1",
             "port": 14022,
@@ -66,7 +66,7 @@
         }
     },
 
-    "poolId": "DigiHashv2",
+    "poolId": "DigiHashV2",
     "_comment_poolId": "use it for region identification: eu, us, asia or keep default if you have one stratum instance for one coin",
 
     "daemons": [

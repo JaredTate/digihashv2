@@ -1,14 +1,14 @@
 {
-    "enabled": false,
+    "enabled": true,
     "coin": "digibyte.skein.json",
-    "blockIdentifier": "DigiHashv2",
+    "blockIdentifier": "DigiHashV2",
     "BTCover17": true,
     "wallet": "Skein",
 
-    "address": "dgb1qzjh4c8rmd5e62gj6c8sfhpwhkngvjup4ppckm6",
+    "address": "dgb1qmqpsph9phppvn0zvgsqwazvzkm8us9u9sz4s9c",
 
     "rewardRecipients": {
-        "dgb1qrpja3p3a2w04ange72ujuskgfjks2mzsvw9j7x": 10.0
+        "dgb1q63wwrsxhhzr9aa9dlj84uusp3w6y8srt2jhatc": 1.0
     },
 
     "paymentProcessing": {
@@ -18,7 +18,7 @@
         "_comment_paymentMode": "prop, pplnt",
         "paymentInterval": 120,
         "minimumPayment": 25,
-        "maxBlocksPerPayment": 3,
+        "maxBlocksPerPayment": 10,
         "daemon": {
             "host": "127.0.0.1",
             "port": 14033,
@@ -67,7 +67,7 @@
         }
     },
 
-    "poolId": "DigiHashv2",
+    "poolId": "DigiHashV2",
     "_comment_poolId": "use it for region identification: eu, us, asia or keep default if you have one stratum instance for one coin",
 
     "daemons": [
