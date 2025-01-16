@@ -1,5 +1,5 @@
-# To Setup DigiHash & Mine 4 DGB Algos With DigiByte v8.22.0-RC4
-You need at least 32 GB RAM, and 8 cores on a Linux server to run this with 4 DGB algos.
+# To Setup DigiHash & Mine 4 DGB Algos With DigiByte v8.22.0
+You need at least 32 GB RAM, and 8 cores on a Linux server to run this with 5 DGB algos.
 
 #### Install Node, Redis Server & Clone DigiHash
 ```
@@ -137,11 +137,11 @@ You must use DGB addresses that starts with a "d" or the pool will throw lots of
 ./digibyte-cli -datadir=.digibyte-qubit -named createwallet wallet_name=Qubit descriptors=false load_on_startup=true
 ./digibyte-cli -datadir=.digibyte-odo -named createwallet wallet_name=Odo descriptors=false load_on_startup=true
 
-./digibyte-cli -datadir=.digibyte-scrypt getnewaddress "" "legacy"
-./digibyte-cli -datadir=.digibyte-sha256 getnewaddress "" "legacy"
-./digibyte-cli -datadir=.digibyte-skein getnewaddress "" "legacy"
-./digibyte-cli -datadir=.digibyte-qubit getnewaddress "" "legacy"
-./digibyte-cli -datadir=.digibyte-odo getnewaddress "" "legacy"
+./digibyte-cli -datadir=.digibyte-scrypt getnewaddress
+./digibyte-cli -datadir=.digibyte-sha256 getnewaddress
+./digibyte-cli -datadir=.digibyte-skein getnewaddress
+./digibyte-cli -datadir=.digibyte-qubit getnewaddress
+./digibyte-cli -datadir=.digibyte-odo getnewaddress
 ```
 Add these addresses in the pool_configs folder.
 
