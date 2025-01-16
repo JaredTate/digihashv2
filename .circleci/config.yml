@@ -12,9 +12,9 @@ jobs:
           command: npm install
       - run:
           name: Run test
-          command: npm start
+          command: npm run test
       - run:
-          name: Verify build
+          name: Verify build and test
           command: echo "Build and test completed successfully!"
   test-v10:
     docker:
@@ -28,9 +28,9 @@ jobs:
           command: npm install
       - run:
           name: Run test
-          command: npm start
+          command: npm run test
       - run:
-          name: Verify build
+          name: Verify build and test
           command: echo "Build and test completed successfully!"
   test-v12:
     docker:
@@ -44,9 +44,9 @@ jobs:
           command: npm install
       - run:
           name: Run test
-          command: npm start
+          command: npm run test
       - run:
-          name: Verify build
+          name: Verify build and test
           command: echo "Build and test completed successfully!"
   test-v14:
     docker:
@@ -60,9 +60,9 @@ jobs:
           command: npm install
       - run:
           name: Run test
-          command: npm start
+          command: npm run test
       - run:
-          name: Verify build
+          name: Verify build and test
           command: echo "Build and test completed successfully!"
   test-v16:
     docker:
@@ -76,9 +76,9 @@ jobs:
           command: npm install
       - run:
           name: Run test
-          command: npm start
+          command: npm run test
       - run:
-          name: Verify build
+          name: Verify build and test
           command: echo "Build and test completed successfully!"
   test-v18:
     docker:
@@ -88,16 +88,13 @@ jobs:
       - node/install:
           node-version: "18.20"
       - run:
-          name: update
-          command: sudo apt update && sudo apt install -y libssl-dev
-      - run:
           name: Run build
           command: npm install
       - run:
           name: Run test
-          command: npm start
+          command: npm run test
       - run:
-          name: Verify build
+          name: Verify build and test
           command: echo "Build and test completed successfully!"
   test-v20:
     docker:
@@ -105,15 +102,15 @@ jobs:
     steps:
       - checkout
       - node/install:
-          node-version: "20.12"
+          node-version: "20.18"
       - run:
           name: Run build
           command: npm install
       - run:
           name: Run test
-          command: npm start
+          command: npm run test
       - run:
-          name: Verify build
+          name: Verify build and test
           command: echo "Build and test completed successfully!"
   test-v22:
     docker:
@@ -121,15 +118,15 @@ jobs:
     steps:
       - checkout
       - node/install:
-          node-version: "22.0"
+          node-version: "22.12"
       - run:
           name: Run build
           command: npm install
       - run:
           name: Run test
-          command: npm start
+          command: npm run test
       - run:
-          name: Verify build
+          name: Verify build and test
           command: echo "Build and test completed successfully!"
 workflows:
   build_and_test:

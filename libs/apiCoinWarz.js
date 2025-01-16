@@ -1,5 +1,5 @@
 var request = require('axios');
-var nonce   = require('nonce');
+var crypto = require('crypto');
 
 module.exports = function() {
     'use strict';
@@ -9,10 +9,10 @@ module.exports = function() {
     // Constants
     var version         = '0.0.1',
         PUBLIC_API_URL  = 'http://www.coinwarz.com/v1/api/profitability/?apikey=YOUR_API_KEY&algo=all',
-        USER_AGENT      = 'nomp/node-open-mining-portal'
+        USER_AGENT      = 'nomp/node-open-mining-portal';
 
     // Constructor
-    function Cryptsy(key, secret){
+    function CoinWarz(key, secret){
         // Generate headers signed by this user's key and secret.
         // The secret is encapsulated and never exposed
         this._getPrivateHeaders = function(parameters){
@@ -37,7 +37,7 @@ module.exports = function() {
     }
 
     // If a site uses non-trusted SSL certificates, set this value to false
-    Cryptsy.STRICT_SSL = true;
+    CoinWarz.STRICT_SSL = true;
 
     // Helper methods
     function joinCurrencies(currencyA, currencyB){
@@ -107,9 +107,7 @@ module.exports = function() {
 
             return this._public(parameters, callback);
         },
+    };
 
-
-        ////
-        
     return CoinWarz;
-}();
+};

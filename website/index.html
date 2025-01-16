@@ -1,24 +1,24 @@
 <!doctype html>
-<html lang="en">
+<html lang="${language}">
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
     <meta name="keywords" content="DigiHash, DigiByte, mining, pool, cryptocurrenc, DGB">
     <meta name="description" content="DigiHash DigiByte node mining pool">
     <link rel="icon" type="image/png" href="/static/favicon.png"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/3.0.0/pure-min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/3.0.0/grids-responsive-min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.6/nv.d3.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.6/nv.d3.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.6/nv.d3.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
     <script src="/static/main.js"></script>
     <link rel="stylesheet" href="/static/style.css">
     <title>DigiHash V2 - DigiByte v8.22.0-RC4 Developer Pool</title>
@@ -146,7 +146,42 @@
 
             window.addEventListener(WINDOW_CHANGE_EVENT, closeMenu);
         })(this, this.document);
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            async function loadTranslations() {
+                try {
+                    const response = await fetch('/static/translations.json');
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    const translations = await response.json();
+                    return translations;
+                } catch (error) {
+                    console.error('Failed to load translations:', error);
+                    return {};
+                }
+            }
 
+            async function setLanguage(lang) {
+                const translations = await loadTranslations();
+                document.querySelectorAll('[data-lang-key]').forEach(element => {
+                    const key = element.getAttribute('data-lang-key');
+                    element.textContent = translations[lang][key] || translations['en'][key];
+                });
+                document.documentElement.lang = lang;
+                document.getElementById('language-select').value = lang;
+            }
+
+            function getServerLanguage() {
+                return document.documentElement.lang || 'en';
+            }
+
+            setLanguage(getServerLanguage());
+            document.getElementById('language-select').addEventListener('change', function () {
+                setLanguage(this.value);
+            });
+        });
     </script>
 </body>
 

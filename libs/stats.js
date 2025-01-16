@@ -1,9 +1,5 @@
-var zlib = require('zlib');
-
 var redis = require('redis');
 var async = require('async');
-
-var os = require('os');
 
 var algos = require('stratum-pool/lib/algoProperties.js');
 
@@ -421,9 +417,8 @@ module.exports = function(logger, portalConfig, poolConfigs){
                                 invalidShares: replies[i + 2] ? (replies[i + 2].invalidShares || 0) : 0,
                                 totalPaid: replies[i + 2] ? (replies[i + 2].totalPaid || 0) : 0,
 								networkBlocks: replies[i + 2] ? (replies[i + 2].networkBlocks || 0) : 0,
-                                networkSols: replies[i + 2] ? (replies[i + 2].networkSols || 0) : 0,
-                                //networkSols: replies[i + 2] ? (replies[i + 2].networkBlocks || 0) : 0, 
-								networkSolsString: getReadableNetworkHashRateString(replies[i + 2] ? (replies[i + 2].networkSols || 0) : 0),
+                                networkHash: replies[i + 2] ? (replies[i + 2].networkHash || 0) : 0,
+								networkHashString: getReadableNetworkHashRateString(replies[i + 2] ? (replies[i + 2].networkHash || 0) : 0),
 								networkDiff: replies[i + 2] ? (replies[i + 2].networkDiff || 0) : 0,
 								networkConnections: replies[i + 2] ? (replies[i + 2].networkConnections || 0) : 0,
                                 networkVersion: replies[i + 2] ? (replies[i + 2].networkSubVersion || replies[i + 2].networkVersion) : 0,
@@ -584,7 +579,7 @@ module.exports = function(logger, portalConfig, poolConfigs){
                 coinStats.hashrateString = _this.getReadableHashRateString(coinStats.hashrate);
 
                 var _blocktime = coinStats.blockTime || 90;
-				var _networkHashRate = parseFloat(coinStats.poolStats.networkSols);
+				var _networkHashRate = parseFloat(coinStats.poolStats.networkHash);
 				coinStats.luckDays =  ((_networkHashRate / coinStats.hashrate * _blocktime) / (24 * 60 * 60)).toFixed(3);
                 coinStats.luckHours = ((_networkHashRate / coinStats.hashrate * _blocktime) / (60 * 60)).toFixed(3);
                 coinStats.luckMinute = ((_networkHashRate / coinStats.hashrate * _blocktime) / (60)).toFixed(3);
@@ -754,10 +749,9 @@ module.exports = function(logger, portalConfig, poolConfigs){
     this.getReadableHashRateString = function(hashrate){
 		hashrate = (hashrate * 1000000);
 		if (hashrate < 1000000) {
-			return '0 Hash/s';
-			//return (Math.round(hashrate / 1000) / 1000 ).toFixed(2)+' Sol/s';
+			return '0 H/s';
 		}
-        var byteUnits = [' Hash/s', ' KHash/s', ' MHash/s', ' GHash/s', ' THash/s', ' PHash/s', ' EHash/s', ' ZHash/s', ' YHash/s' ];
+        var byteUnits = [' H/s', ' KH/s', ' MH/s', ' GH/s', ' TH/s', ' PH/s', ' EH/s', ' ZH/s', ' YH/s' ];
         var i = Math.floor((Math.log(hashrate/1000) / Math.log(1000)) - 1);
         hashrate = (hashrate/1000) / Math.pow(1000, i + 1);
         return hashrate.toFixed(2) + byteUnits[i];
@@ -766,8 +760,8 @@ module.exports = function(logger, portalConfig, poolConfigs){
 	function getReadableNetworkHashRateString(hashrate) {
 		hashrate = (hashrate * 1000000);
 		if (hashrate < 1000000)
-			return '0 Hash/s';
-        var byteUnits = [' Hash/s', ' KHash/s', ' MHash/s', ' GHash/s', ' THash/s', ' PHash/s', ' EHash/s', ' ZHash/s', ' YHash/s' ];
+			return '0 H/s';
+        var byteUnits = [' H/s', ' KH/s', ' MH/s', ' GH/s', ' TH/s', ' PH/s', ' EH/s', ' ZH/s', ' YH/s' ];
 		var i = Math.floor((Math.log(hashrate/1000) / Math.log(1000)) - 1);
 		hashrate = (hashrate/1000) / Math.pow(1000, i + 1);
 		return hashrate.toFixed(2) + byteUnits[i];

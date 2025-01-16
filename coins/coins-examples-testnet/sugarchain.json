@@ -4,6 +4,9 @@
     "algorithm": "yespowerSUGAR",
     "peerMagic": "9feb4b9d",
     "peerMagicTestnet": "b0119070",
+    "getInfo": false,
+    "noNetworkInfo": false,
+    "noGetnetworkhashps": true,
     "testnet": {
         "bech32": "tugar",
         "bip32": {
@@ -12,5 +15,9 @@
         "pubKeyHash": "42",
         "scriptHash": "80"
     },
-    "blockTime": 5
+    "blockTime": 5,
+    "explorer": {
+        "txURL": "https://sugarchain.org/esplora-testnet/tx/",
+        "blockURL": "https://sugarchain.org/esplora-testnet/block/"
+    }
 }

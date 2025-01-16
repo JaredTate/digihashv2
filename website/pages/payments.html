@@ -1,11 +1,10 @@
 <style>
     #topPool {
-        padding-top: 18px;
-        padding-left: 18px;
-        padding-right: 18px;
+        padding: 18px 18px 0px 18px;
     }
 
     .poolWrapper {
+        background: #ddd;
         border: solid 1px #c7c7c7;
         border-radius: 5px;
         padding: 5px;
@@ -19,19 +18,22 @@
     }
 
     table {
+        background: #ddd;
         width: 100%;
-
+    }
+    table th{
+        background: #c7c7c7;
+    }
+    .block-cell {
+        max-width: 400px;
+        word-break: break-all;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>
 {{ function capitalizeFirstLetter(t){return t.charAt(0).toUpperCase()+t.slice(1)} }}
 {{ function readableDate(a) {
-    var d = new Date(parseInt(a));
-    return d.getFullYear() + '/' +
-           (d.getMonth() + 1).toString().padStart(2, '0') + '/' +
-           d.getDate().toString().padStart(2, '0') + ' ' +
-           d.getHours().toString().padStart(2, '0') + ':' +
-           d.getMinutes().toString().padStart(2, '0') + ':' +
-           d.getSeconds().toString().padStart(2, '0');
+var d = new Date(parseInt(a));
 } }}
 {{ for(var pool in it.stats.pools) { }}
 <div id="topPool">
@@ -56,12 +58,13 @@
                         <th>Time</th>
                         <th>Miners</th>
                         <th>Shares</th>
-                        <th>Amount</th>
+                        <th>Payment Amount</th>
+                        <th>Total Payment Amount</th>
                     </tr>
                 </thead>
                 {{ for(var p in it.stats.pools[pool].payments) { }}
-                <tr>
-                    <td style="word-break: break-all">
+                <tr class="pure-table-odd">
+                    <td class="block-cell">
                         {{ if (it.poolsConfigs[pool].coin.explorer && it.poolsConfigs[pool].coin.explorer.txURL) { }}
                         <a href="{{=it.poolsConfigs[pool].coin.explorer.txURL + it.stats.pools[pool].payments[p].txid}}"
                             title="View transaction" target="_blank">{{=it.stats.pools[pool].payments[p].blocks}}</a>
@@ -72,6 +75,10 @@
                     <td>{{=readableDate(it.stats.pools[pool].payments[p].time)}}</td>
                     <td>{{=it.stats.pools[pool].payments[p].miners}}</td>
                     <td>{{=Math.round(it.stats.pools[pool].payments[p].shares)}}</td>
+                    <td>{{ for(var a in it.stats.pools[pool].payments[p].amounts){ }}
+                        {{=a.substr(0,4)+"****"+a.substr(30)}}：<a
+                            style='color:red;'>{{=it.stats.pools[pool].payments[p].amounts[a]}} </a>
+                        {{=it.stats.pools[pool].symbol}}<br>{{ } }}</td>
                     <td>{{=it.stats.pools[pool].payments[p].paid}} {{=it.stats.pools[pool].symbol}}</td>
                 </tr>
                 {{ } }}

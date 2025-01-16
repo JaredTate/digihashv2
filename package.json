@@ -1,6 +1,6 @@
 {
     "name": "zny-nomp",
-    "version": "1.2.3",
+    "version": "1.2.11",
     "description": "BitZeny (yescrypt) stratum mining pool based on NOMP",
     "keywords": [
         "stratum",
@@ -30,36 +30,34 @@
     ],
     "main": "init.js",
     "bin": {
-        "block-notify": "./scripts/blockNotify.js"
+        "block-notify": "./scripts/cli.js"
+    },
+    "scripts": {
+        "start": "node init.js",
+        "test": "npm start"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/JaredTate/digihashv2.git"
     },
     "dependencies": {
-        "async": "^3.2.5",
-        "axios": "^0.28.1",
-        "bignum": "^0.13.1",
-        "body-parser": "^1.20.2",
+        "async": "^3.2.6",
+        "axios": "^1.7.9",
         "colors": "^1.4.0",
-        "compression": "^1.7.4",
+        "compression": "^1.7.5",
         "dateformat": "^4.6.3",
         "dot": "^1.1.3",
-        "express": "^4.19.2",
+        "express": "^4.21.2",
         "extend": "^3.0.2",
         "mysql": "^2.18.1",
         "node-json-minify": "^3.0.0",
         "node-watch": "^0.7.4",
         "nonce": "^1.0.4",
         "redis": "^3.1.2",
-        "stratum-pool": "git+https://github.com/JaredTate/node-stratum-pool.git"
+        "stratum-pool": "https://github.com/JaredTate/node-stratum-pool.git"
     },
     "engines": {
-        "node": ">=16"
-    },
-    "scripts": {
-        "start": "node init.js",
-        "run": "npm start",
-        "test": "npm install"
+        "node": ">=16",
+        "npm": ">=7"
     }
 }

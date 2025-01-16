@@ -1,6 +1,3 @@
-var redis = require('redis');
-var async = require('async');
-
 var stats = require('./stats.js');
 
 module.exports = function(logger, portalConfig, poolConfigs){
@@ -55,7 +52,7 @@ module.exports = function(logger, portalConfig, poolConfigs){
 							portalStats.getTotalSharesByAddress(address, function(shares) {								
 								var totalHash = parseFloat(0.0);
 								var totalShares = shares;
-								var networkSols = 0;
+								var networkHash = 0;
 								for (var h in portalStats.statHistory) {
 									for(var pool in portalStats.statHistory[h].pools) {
 										for(var w in portalStats.statHistory[h].pools[pool].workers){
@@ -85,11 +82,11 @@ module.exports = function(logger, portalConfig, poolConfigs){
 										workers[w].balance = (workers[w].balance || 0);
 										workers[w].paid = (workers[w].paid || 0);
 										totalHash += portalStats.stats.pools[pool].workers[w].hashrate;
-										networkSols = portalStats.stats.pools[pool].poolStats.networkSols;
+										networkHash = portalStats.stats.pools[pool].poolStats.networkHash;
 									  }
 								  }
 								}
-								res.end(JSON.stringify({miner: address, totalHash: totalHash, totalShares: totalShares, networkSols: networkSols, immature: balances.totalImmature, balance: balances.totalHeld, paid: balances.totalPaid, workers: workers, history: history}));
+								res.end(JSON.stringify({miner: address, totalHash: totalHash, totalShares: totalShares, networkHash: networkHash, immature: balances.totalImmature, balance: balances.totalHeld, paid: balances.totalPaid, workers: workers, history: history}));
 							});
 						});
 					} else {

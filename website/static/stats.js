@@ -84,33 +84,27 @@ function calculateAverageHashrate(pool) {
 function getReadableHashRateString(hashrate){
         hashrate = (hashrate * 1000000);
         if (hashrate < 1000000) {
-                return '0 Hash/s';
-                //return (Math.round(hashrate / 1000) / 1000 ).toFixed(2)+' Sol/s';
+                return '0 H/s';
         }
-    var byteUnits = [' Hash/s', ' KHash/s', ' MHash/s', ' GHash/s', ' THash/s', ' PHash/s', ' EHash/s', ' ZHash/s', ' YHash/s'];
+    var byteUnits = [' H/s', ' KH/s', ' MH/s', ' GH/s', ' TH/s', ' PH/s', ' EH/s', ' ZH/s', ' YH/s'];
     var i = Math.floor((Math.log(hashrate/1000) / Math.log(1000)) - 1);
     hashrate = (hashrate/1000) / Math.pow(1000, i + 1);
     return hashrate.toFixed(2) + byteUnits[i];
  }
 
  function getReadableLuckTime(lucktime){
-     var luck = lucktime;
-     var timeUnits = [' Days', ' Hours', ' Minutes', ' Seconds' ];
-     if (luck < 1) {
-         luck = luck * 24;
-         if (luck < 1) {
-             luck = luck * 60;
-             if (luck < 1) {
-                 luck = luck * 60;
-                     return luck.toFixed(2) + timeUnits[3];
-             } else {
-                     return luck.toFixed(2) + timeUnits[2];
-             }
-         } else {
-             return luck.toFixed(2) + timeUnits[1];
-         }
-     }
-     return luck + timeUnits[0];
+    var luck = lucktime;
+    var timeUnits = [ ' Days', ' Hours', ' Minutes' ];
+    if (luck < 1) {
+            luck = luck * 24;
+            if (luck < 1) {
+                    luck = luck * 60;
+                    return luck.toFixed(2) + timeUnits[2];
+            } else {
+                    return luck.toFixed(2) + timeUnits[1];
+            }
+    }
+    return luck.toFixed(3) + timeUnits[0];
 }
 
 function timeOfDayFormat(timestamp){

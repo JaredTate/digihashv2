@@ -1,9 +1,6 @@
 <style>
     #topCharts {
-        padding-left: 18px;
-        padding-right: 18px;
-        padding-top: 18px;
-        padding-bottom: 0px;
+        padding: 18px 18px 0px 18px;
     }
 
     #topCharts>div>div>svg {
@@ -12,6 +9,7 @@
     }
 
     .chartWrapper {
+        background: #eee;
         border: solid 1px #c7c7c7;
         border-radius: 5px;
         padding: 5px;
@@ -23,8 +21,6 @@
         text-align: center;
         padding: 4px;
     }
-
-    .chartHolder {}
 
     #boxesWorkers {
         margin: 0 9px;
@@ -115,7 +111,7 @@
 <div id="boxesWorkers"> </div>
 
 <script>
-    var _miner = "{{=String(it.stats.address).split(".")[0]}}";
+    var _miner = "{{=String(it.stats.address).split('.')[0]}}";
     var _workerCount = 0;
     window.statsSource = new EventSource("/api/live_stats");
     document.querySelector('main').appendChild(document.createElement('script')).src = '/static/miner_stats.js';

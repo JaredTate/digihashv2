@@ -1,5 +1,4 @@
 var redis = require('redis');
-var Stratum = require('stratum-pool');
 
 
 

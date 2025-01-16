@@ -8,8 +8,7 @@ on:
 
 jobs:
   build:
-
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [16.x, 18.x, 20.x, 22.x]
@@ -20,9 +19,9 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-    - name: npm install
-      run:  npm test
-    - name: npm start
-      run:  npm start
-    - name: Verify build
+    - name: Run build
+      run:  npm isntall
+    - name: Run test
+      run:  npm run test
+    - name: Verify build and test
       run: echo "Build and test completed successfully!"

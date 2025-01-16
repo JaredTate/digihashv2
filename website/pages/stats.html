@@ -1,6 +1,6 @@
 <style>
     #topCharts {
-        padding: 18px;
+        padding: 18px 18px 0px 18px;
     }
 
     #topCharts>div>div>svg {
@@ -9,6 +9,7 @@
     }
 
     .chartWrapper {
+        background: #eee;
         border: solid 1px #c7c7c7;
         border-radius: 5px;
         padding: 5px;
@@ -96,6 +97,10 @@
     #tooltip.hidden {
         opacity: 0;
     }
+
+    #bottomCharts {
+        padding: 0px 18px 0px 18px;
+    }
 </style>
 
 <div id="topCharts">
@@ -103,8 +108,6 @@
         <div class="chartLabel">Pool Historical Hashrate</div>
         <div class="chartHolder"><svg id="poolHashrate"></svg></div>
     </div>
-</div>
-<div id="topCharts">
     <div class="chartWrapper">
         <div class="chartLabel">Pool Pending Blocks</div>
         <div class="chartHolder"><svg id="poolPending"></svg></div>
@@ -112,13 +115,15 @@
 </div>
 {{ function capitalizeFirstLetter(t){return t.charAt(0).toUpperCase()+t.slice(1)} }}
 {{ function readableDate(a) {
-    var d = new Date(parseInt(a));
-    return d.getFullYear() + '/' +
-           (d.getMonth() + 1).toString().padStart(2, '0') + '/' +
-           d.getDate().toString().padStart(2, '0') + ' ' +
-           d.getHours().toString().padStart(2, '0') + ':' +
-           d.getMinutes().toString().padStart(2, '0') + ':' +
-           d.getSeconds().toString().padStart(2, '0');
+var d = new Date(parseInt(a));
+return d.getFullYear() + '/' +
+(d.getMonth() + 1).toString().padStart(2, '0') + '/' +
+d.getDate().toString().padStart(2, '0') + ' ' +
+d.getHours().toString().padStart(2, '0') + ':' +
+d.getMinutes().toString().padStart(2, '0') + ':' +
+d.getSeconds().toString().padStart(2, '0') + ' ' +
+d.toString().match(/GMT([+-]\d{4})/)[0].replace('GMT', 'UTC') + ' ' +
+'(' + d.toString().match(/\(([^)]+)\)$/)[1] + ')';
 } }}
 <div class="pure-g" id="boxesLower">
     {{ for(var pool in it.stats.pools) { }}
@@ -135,13 +140,12 @@
                             id="statsHashrate{{=pool}}">{{=it.stats.pools[pool].hashrateString}}</span> (Now)</div>
                     <div><i class="fas fa-gauge-simple-high fa-fw"></i> <span id="statsHashrateAvg{{=pool}}">...</span>
                         (Avg)</div>
-                    <div>
-                        <i class="fas fa-gavel fa-fw"></i> Luck: <span id="statsLuckDays{{=pool}}">
+                    <div><i class="fas fa-clock fa-fw"></i>&nbsp;Luck: <span id="statsLuckDays{=pool}}">
                             {{
                             function getReadableLuckTime(lucktime){
                             var luck = lucktime;
                             var timeUnits = [ ' Days', ' Hours', ' Minutes' ];
-                            if (luck < 1) { luck=luck * 24; if (luck < 1) { luck=luck * 60; return luck.toFixed(0) +
+                            if (luck < 1) { luck=luck * 24; if (luck < 1) { luck=luck * 60; return luck.toFixed(2) +
                                 timeUnits[2]; } else { return luck.toFixed(2) + timeUnits[1]; } } return luck +
                                 timeUnits[0]; } _luckTime=getReadableLuckTime(it.stats.pools[pool].luckDays); }}
                                 {{=_luckTime}}</span>
@@ -153,7 +157,7 @@
                             if(it.stats.pools[pool].hashrate == 0 ) {
                             percent=0.0;
                             } else {
-                            percent=it.stats.pools[pool].hashrate / it.stats.pools[pool].poolStats.networkSols * 100;
+                            percent=it.stats.pools[pool].hashrate / it.stats.pools[pool].poolStats.networkHash * 100;
                             }
                             }}
                             {{=percent.toFixed(5)}}
@@ -171,8 +175,8 @@
                     <div><i class="fas fa-bars fa-fw"></i> <small>Block Height:</small> <span
                             id="statsNetworkBlocks{{=pool}}">{{=it.stats.pools[pool].poolStats.networkBlocks}}</span>
                     </div>
-                    <div><i class="fas fa-gauge-simple-high fa-fw"></i> <small>Network Hash/s:</small> <span
-                            id="statsNetworkSols{{=pool}}">{{=it.stats.pools[pool].poolStats.networkSolsString}}</span>
+                    <div><i class="fas fa-gauge-simple-high fa-fw"></i> <small>Network H/s:</small> <span
+                            id="statsnetworkHash{{=pool}}">{{=it.stats.pools[pool].poolStats.networkHashString}}</span>
                     </div>
                     <div><i class="fas fa-unlock fa-fw"></i> <small>Difficulty:</small> <span
                             id="statsNetworkDiff{{=pool}}">{{=(parseFloat(it.stats.pools[pool].poolStats.networkDiff)).toFixed(8)}}</span>
@@ -235,7 +239,7 @@
                 <!--<div id="{{=it.stats.pools[pool].name}}NewBlocks"></div>-->
                 {{ for(var b in it.stats.pools[pool].pending.blocks) { }}
                 {{ var block = it.stats.pools[pool].pending.blocks[b].split(":"); }}
-                <div style="margin-bottom: 9px; background-color: #eeeeee; min-width:600px;">
+                <div style="margin-bottom: 9px; background-color: #eee; min-width:600px;">
                     <i class="fas fa-bars fa-fw"></i>
                     <small>Block:</small>
                     {{ if (it.poolsConfigs[pool].coin.explorer && it.poolsConfigs[pool].coin.explorer.blockURL) { }}
@@ -292,8 +296,8 @@
 </div>
 </div>
 
-<center>
-    <div id="bottomCharts{{=pool}}" style="text-align:center;" align="center">
+<div id="bottomCharts">
+    <div class=" " chartWrapper" id="bottomCharts{{=pool}}" style="text-align:center;">
         <div class="chartWrapper" style="text-align:center;">
             <div class="chartLabel">Finders of the last {{=blockscomb.length}} blocks</div>
             <div class="hidden" id="tooltip{{=pool}}">
@@ -303,7 +307,7 @@
                     style="display: block; margin: auto; text-align:center;"></svg></div>
         </div>
     </div>
-</center>
+</div>
 
 <script>
 
@@ -386,10 +390,11 @@
         .enter()
         .append('g')
         .attr('class', 'legend')
-        .attr('id', function() { return JSON.stringify(pool); })
+        .attr('id', "{{=JSON.stringify(pool)}}")
         .attr('transform', function (d, i) {
             var height = legendRectSize + legendSpacing;
             var offset = height * color.domain().length / 2;
+            var horz = 12 * legendRectSize;
             var vert = i * height;
             return 'translate(' + horz + ',' + vert + ')';
         });
@@ -428,17 +433,17 @@
                 $('#statsTotalPaid' + pool).text((parseFloat(stats.pools[pool].poolStats.totalPaid)).toFixed(8));
                 $('#statsNetworkBlocks' + pool).text(stats.pools[pool].poolStats.networkBlocks);
                 $('#statsNetworkDiff' + pool).text(stats.pools[pool].poolStats.networkDiff);
-                $('#statsNetworkSols' + pool).text(getReadableHashRateString(stats.pools[pool].poolStats.networkSols));
+                $('#statsnetworkHash' + pool).text(getReadableHashRateString(stats.pools[pool].poolStats.networkHash));
                 $('#statsNetworkConnections' + pool).text(stats.pools[pool].poolStats.networkConnections);
-                $('#statsHashPercent' + pool).text((stats.pools[pool].hashrate / stats.pools[pool].poolStats.networkSols * 100).toFixed(5));
+                $('#statsHashPercent' + pool).text((stats.pools[pool].hashrate / stats.pools[pool].poolStats.networkHash * 100).toFixed(5));
             }
         });
     });
     function getReadableNetworkHashRateString(hashrate) {
         hashrate = (hashrate * 1000000);
         if (hashrate < 1000000)
-            return '0 Hash/s';
-        var byteUnits = [' Hash/s', ' KHash/s', ' MHash/s', ' GHash/s', ' THash/s', ' PHash/s', ' EHash/s', ' ZHash/s', ' YHash/s'];
+            return '0 H/s';
+        var byteUnits = [' H/s', ' KH/s', ' MH/s', ' GH/s', ' TH/s', ' PH/s', ' EH/s', ' ZH/s', ' YH/s'];
         var i = Math.floor((Math.log(hashrate / 1000) / Math.log(1000)) - 1);
         hashrate = (hashrate / 1000) / Math.pow(1000, i + 1);
         return hashrate.toFixed(2) + byteUnits[i];

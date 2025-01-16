@@ -1,14 +1,11 @@
 {
     "logLevel": "debug",
     "logColors": true,
-
     "cliPort": 17117,
-
     "clustering": {
         "enabled": true,
         "forks": "auto"
     },
-
     "defaultPoolConfigs": {
         "blockRefreshInterval": 500,
         "jobRebroadcastTimeout": 55,
@@ -29,33 +26,30 @@
             "password": ""
         }
     },
-
     "website": {
         "enabled": true,
         "host": "0.0.0.0",
         "port": 8080,
         "stratumHost": "cryppit.com",
         "stats": {
-            "updateInterval": 30,
-            "historicalRetention": 14400,
-            "hashrateWindow": 300
+            "updateInterval": 300,
+            "historicalRetention": 28800,
+            "hashrateWindow": 600
         },
         "adminCenter": {
             "enabled": false,
             "password": "password"
         },
-        "tlsOptions" : {
+        "tlsOptions": {
             "enabled": false,
             "cert": "",
             "key": ""
         }
     },
-
     "redis": {
         "host": "127.0.0.1",
         "port": 6379
     },
-
     "switching": {
         "switch1": {
             "enabled": false,
@@ -106,7 +100,6 @@
             }
         }
     },
-
     "profitSwitch": {
         "enabled": false,
         "updateInterval": 600,

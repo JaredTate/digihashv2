@@ -386,7 +386,7 @@ function SetupForPool(logger, poolOptions, setupFinished) {
                     finalRedisCommands.push(['hset', coin + ':stats', 'networkDiff', result[0].response.difficulty]);
                 }
                 if (result[0].response.networkhashps !== null) {
-                    finalRedisCommands.push(['hset', coin + ':stats', 'networkSols', result[0].response.networkhashps]);
+                    finalRedisCommands.push(['hset', coin + ':stats', 'networkHash', result[0].response.networkhashps]);
                 }
 
                 daemon.cmd(poolOptions.coin.getInfo ? 'getinfo' : 'getnetworkinfo', params,

@@ -1,5 +1,4 @@
 var express = require('express');
-var os = require('os');
 
 
 function workerapi(listen) {

@@ -1,15 +1,6 @@
 <style>
-    #bottomNotes {
-        display: block;
-        padding-left: 18px;
-        padding-right: 18px;
-        padding-bottom: 18px;
-    }
-
     #topPool {
-        padding-top: 18px;
-        padding-left: 18px;
-        padding-right: 18px;
+        padding: 18px 18px 0px 18px;
     }
 
     #topPool>div>div>svg {
@@ -18,6 +9,7 @@
     }
 
     .poolWrapper {
+        background: #ddd;
         border: solid 1px #c7c7c7;
         border-radius: 5px;
         padding: 5px;
@@ -30,10 +22,13 @@
         padding: 4px;
     }
 
-    .poolMinerTable {}
-
     table {
+        background: #ddd;
         width: 100%;
+    }
+
+    table th {
+        background: #c7c7c7;
     }
 </style>
 <script type="text/javascript">
@@ -58,8 +53,10 @@
     <div class="poolWrapper">
         <div class="poolLabel">
             <span style="float:right; margin-bottom: 8px;">
-                <small>Miner Lookup:
-                    <input type="text" class="form-control input-lg" onkeypress="return searchKeyPress(event);">
+                <small><label>Miner Lookup:
+                        <input type="text" class="form-control input-lg" name="lookup"
+                            onkeypress="return searchKeyPress(event);">
+                    </label>
                     <span class="input-group-btn">
                         <button class="btn btn-default btn-lg" type="button">Lookup</button>
                     </span>

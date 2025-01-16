@@ -12,32 +12,27 @@ var totalShares;
 function getReadableHashRateString(hashrate){
 	hashrate = (hashrate * 1000000);
 	if (hashrate < 1000000) {
-		return '0 hash/s';
+		return '0 H/s';
 	}
-	var byteUnits = [' Hash/s', ' KHash/s', ' MHash/s', ' GHash/s', ' THash/s', ' PHash/s', ' EHash/s', ' ZHash/s', ' YHash/s' ];
+	var byteUnits = [' H/s', ' KH/s', ' MH/s', ' GH/s', ' TH/s', ' PH/s', ' EH/s', ' ZH/s', ' YH/s' ];
 	var i = Math.floor((Math.log(hashrate/1000) / Math.log(1000)) - 1);
 	hashrate = (hashrate/1000) / Math.pow(1000, i + 1);
 	return hashrate.toFixed(2) + byteUnits[i];
 }
 
 function getReadableLuckTime(lucktime){
-	var luck = lucktime;
-	var timeUnits = [' Days', ' Hours', ' Minutes', ' Seconds'];
-	if (luck < 1) {
-		luck = luck * 24;
-		if (luck < 1) {
-			luck = luck * 60;
-			if (luck < 1) {
-				luck = luck * 60;
-				return luck.toFixed(2) + timeUnits[3];
-			} else {
-				return luck.toFixed(2) + timeUnits[2];
-			}
-		} else {
-			return luck.toFixed(2) + timeUnits[1];
-		}
-	}
-	return luck + timeUnits[0];
+        var luck = lucktime;
+        var timeUnits = [ ' Days', ' Hours', ' Minutes' ];
+        if (luck < 1) {
+                luck = luck * 24;
+                if (luck < 1) {
+                        luck = luck * 60;
+                        return luck.toFixed(2) + timeUnits[2];
+                } else {
+                        return luck.toFixed(2) + timeUnits[1];
+                }
+        }
+        return luck.toFixed(3) + timeUnits[0];
 }
 
 function timeOfDayFormat(timestamp){
@@ -169,11 +164,11 @@ function updateStats() {
 	// do some calculations
 	var luckDays = 0;
 	for (var w in statData.workers) { luckDays = luckDays + 1 / statData.workers[w].luckDays; }
-	luckDays = getReadableLuckTime(1 / luckDays);
+	luckDays = (1 / luckDays);
 	// update miner stats
 	$("#statsHashrate").text(getReadableHashRateString(totalHash));
 	$("#statsHashrateAvg").text(getReadableHashRateString(calculateAverageHashrate(null)));
-	$("#statsLuckDays").text(luckDays);
+	$("#statsLuckDays").text(getReadableLuckTime(luckDays));
 	$("#statsTotalImmature").text(totalImmature);
 	$("#statsTotalBal").text(totalBal);
 	$("#statsTotalPaid").text(totalPaid);
@@ -187,7 +182,7 @@ function updateWorkerStats() {
 		var saneWorkerName = getWorkerNameFromAddress(w);
 		$("#statsHashrate"+htmlSafeWorkerName).text(getReadableHashRateString(statData.workers[w].hashrate));
 		$("#statsHashrateAvg"+htmlSafeWorkerName).text(getReadableHashRateString(calculateAverageHashrate(saneWorkerName)));
-		$("#statsLuckDays"+htmlSafeWorkerName).text(statData.workers[w].luckDays);
+		$("#statsLuckDays"+htmlSafeWorkerName).text(getReadableLuckTime(statData.workers[w].luckDays));
 		$("#statsPaid"+htmlSafeWorkerName).text(statData.workers[w].paid);
 		$("#statsBalance"+htmlSafeWorkerName).text(statData.workers[w].balance);
 		$("#statsShares"+htmlSafeWorkerName).text(Math.round(statData.workers[w].currRoundShares * 100) / 100);
@@ -198,13 +193,13 @@ function addWorkerToDisplay(name, htmlSafeName, workerObj) {
 	var htmlToAdd = "";
 	htmlToAdd = '<div class="boxStats" id="boxStatsLeft" style="float:left; margin: 9px; min-width: 260px;"><div class="boxStatsList">';
 	htmlToAdd+='<div class="boxLowerHeader">'+name.replace(/[^\w\s]/gi, '')+'</div><div>';
-	htmlToAdd+='<div><i class="fa fa-tachometer"></i> <span id="statsHashrate'+htmlSafeName+'">'+getReadableHashRateString(workerObj.hashrate)+'</span> (Now)</div>';
-	htmlToAdd+='<div><i class="fa fa-tachometer"></i> <span id="statsHashrateAvg'+htmlSafeName+'">'+getReadableHashRateString(calculateAverageHashrate(name))+'</span> (Avg)</div>';
-	htmlToAdd+='<div><i class="fa fa-shield"></i> <small>Diff:</small> <span id="statsDiff'+htmlSafeName+'">'+workerObj.diff+'</span></div>';
-	htmlToAdd+='<div><i class="fa fa-cog"></i> <small>Shares:</small> <span id="statsShares'+htmlSafeName+'">'+(Math.round(workerObj.currRoundShares * 100) / 100)+'</span></div>';
-	htmlToAdd += '<div><i class="fa fa-gavel"></i> <small>Luck <span id="statsLuckDays' + htmlSafeName + '">' + getReadableLuckTime(workerObj.luckDays) +'</span></small></div>';
-	htmlToAdd+='<div><i class="fa fa-money"></i> <small>Bal: <span id="statsBalance'+htmlSafeName+'">'+workerObj.balance+'</span></small></div>';
-	htmlToAdd+='<div><i class="fa fa-money"></i> <small>Paid: <span id="statsPaid'+htmlSafeName+'">'+workerObj.paid+'</span></small></div>';
+	htmlToAdd+='<div><i class="fas fa-tachometer-alt fa-fw"></i> <span id="statsHashrate'+htmlSafeName+'">'+getReadableHashRateString(workerObj.hashrate)+'</span> (Now)</div>';
+	htmlToAdd+='<div><i class="fas fa-tachometer-alt fa-fw"></i> <span id="statsHashrateAvg'+htmlSafeName+'">'+getReadableHashRateString(calculateAverageHashrate(name))+'</span> (Avg)</div>';
+	htmlToAdd+='<div><i class="fas fa-unlock-alt fa-fw"></i> <small>Diff:</small> <span id="statsDiff'+htmlSafeName+'">'+workerObj.diff+'</span></div>';
+	htmlToAdd+='<div><i class="fas fa-cog fa-fw"></i> <small>Shares:</small> <span id="statsShares'+htmlSafeName+'">'+(Math.round(workerObj.currRoundShares * 100) / 100)+'</span></div>';
+	htmlToAdd+='<div><i class="fas fa-clock fa-fw"></i> <small>Luck:</small> <span id="statsLuckDays'+htmlSafeName+'">'+getReadableLuckTime(workerObj.luckDays)+'</span></div>';
+	htmlToAdd+='<div><i class="fas fa-money-bill-alt fa-fw"></i> <small>Bal:</small> <span id="statsBalance'+htmlSafeName+'">'+workerObj.balance+'</span></div>';
+	htmlToAdd+='<div><i class="fas fa-money-bill-alt fa-fw"></i> <small>Paid:</small> <span id="statsPaid'+htmlSafeName+'">'+workerObj.paid+'</span></div>';
 	htmlToAdd+='</div></div></div>';
 	$("#boxesWorkers").html($("#boxesWorkers").html()+htmlToAdd);
 }
