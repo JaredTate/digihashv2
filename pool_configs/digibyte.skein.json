@@ -1,5 +1,5 @@
 {
-    "enabled": true,
+    "enabled": false,
     "coin": "digibyte.skein.json",
     "blockIdentifier": "DigiHashv2",
     "BTCover17": true,

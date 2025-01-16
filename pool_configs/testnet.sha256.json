@@ -1,5 +1,5 @@
 {
-    "enabled": true,
+    "enabled": false,
     "coin": "testnet.sha256.json",
     "blockIdentifier": "DigiHashv2",
     "BTCover17": true,
