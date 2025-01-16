@@ -11,13 +11,13 @@
     },
 
     "paymentProcessing": {
-        "minConf": 100,
+        "minConf": 10,
         "enabled": true,
         "paymentMode": "prop",
         "_comment_paymentMode": "prop, pplnt",
         "paymentInterval": 120,
         "minimumPayment": 25,
-        "maxBlocksPerPayment": 5,
+        "maxBlocksPerPayment": 10,
         "daemon": {
             "host": "127.0.0.1",
             "port": 14055,
