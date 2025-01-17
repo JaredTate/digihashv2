@@ -16,7 +16,7 @@
         "pubKeyHash": "30",
         "scriptHash": "63"
     },
-    "txfee": 0.1,
+    "txfee": 1.0,
     "blockTime": 75,
     "explorer": {
         "txURL": "https://digiexplorer.info/tx/",
