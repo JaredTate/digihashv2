@@ -38,7 +38,7 @@
         "3011": {
             "diff": 0.001,
             "varDiff": {
-                "minDiff": 0.001,
+                "minDiff": 1e-10,
                 "maxDiff": 1000,
                 "targetTime": 15,
                 "retargetTime": 75,
