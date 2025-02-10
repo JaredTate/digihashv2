@@ -1,7 +1,7 @@
 {
     "name": "DigiByte-Sha256",
     "symbol": "DGB",
-    "version_mask": "1fffe000",
+    //"version_mask": "1fffe000",
     "allowAsicboost": true,
     "algorithm": "sha256d",
     "peerMagic": "fac3b6da",
