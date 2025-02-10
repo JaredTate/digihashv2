@@ -36,17 +36,6 @@
 
     "ports": {
         "3008": {
-            "diff": 8192,
-            "tls": false,
-            "varDiff": {
-                "minDiff": 100,
-                "maxDiff": 10000,
-                "targetTime": 15,
-                "retargetTime": 75,
-                "variancePercent": 30
-            }
-        },
-        "3032": {
             "diff": 16384,
             "tls": false,
             "varDiff": {
@@ -57,12 +46,23 @@
                 "variancePercent": 30
             }
         },
-        "3256": {
+        "3032": {
             "diff": 250000,
             "tls": false,
             "varDiff": {
                 "minDiff": 1000,
                 "maxDiff": 10000000,
+                "targetTime": 15,
+                "retargetTime": 75,
+                "variancePercent": 30
+            }
+        },
+        "3256": {
+            "diff": 2500000,
+            "tls": false,
+            "varDiff": {
+                "minDiff": 1000,
+                "maxDiff": 100000000,
                 "targetTime": 15,
                 "retargetTime": 75,
                 "variancePercent": 30
