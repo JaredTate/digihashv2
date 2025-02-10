@@ -36,7 +36,7 @@
 
     "ports": {
         "3008": {
-            "diff": 16384,
+            "diff": 25000,
             "tls": false,
             "varDiff": {
                 "minDiff": 100,
@@ -61,7 +61,7 @@
             "diff": 2500000,
             "tls": false,
             "varDiff": {
-                "minDiff": 1000,
+                "minDiff": 10000,
                 "maxDiff": 100000000,
                 "targetTime": 15,
                 "retargetTime": 75,
