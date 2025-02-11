@@ -190,6 +190,7 @@ module.exports = function(logger){
                 logger.debug(logSystem, logComponent, logSubCat, 'Share accepted at diff ' + data.difficulty + '/' + data.shareDiff + ' by ' + data.worker + ' [' + data.ip + ']' );
             } else if (!isValidShare) {
                 logger.debug(logSystem, logComponent, logSubCat, 'Share rejected: ' + shareData);
+                logger.debug(logSystem, logComponent, logSubCat, 'Submitted version mask: ' + data.versionMask);
             }
 
             // handle the share
