@@ -1,8 +1,8 @@
 {
     "name": "DigiByte-Sha256",
     "symbol": "DGB",
-    "version_mask": true,
-    "algorithm": "sha256d",
+    "version_mask": "1fffe000",
+    "algorithm": "sha256",
     "peerMagic": "fac3b6da",
     "coinbase": "DigiHashV2",
     "getInfo": false,
