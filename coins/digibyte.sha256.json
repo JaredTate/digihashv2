@@ -2,7 +2,7 @@
     "name": "DigiByte-Sha256",
     "symbol": "DGB",
     "version-rolling": true,
-    "version_mask": "0xfffe0000",
+    "version_mask": "0x20000000",
     //"version-rolling.mask": "0xfffe0000",
     "allowAsicboost": true,
     "algorithm": "sha256d",
