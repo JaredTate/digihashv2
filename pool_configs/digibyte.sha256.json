@@ -62,7 +62,7 @@
             "tls": false,
             "varDiff": {
                 "minDiff": 250000,
-                "maxDiff": 250000,
+                "maxDiff": 25000000000,
                 "targetTime": 15,
                 "retargetTime": 75,
                 "variancePercent": 30
