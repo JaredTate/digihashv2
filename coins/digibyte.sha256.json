@@ -7,8 +7,8 @@
     "allowAsicboost": true,
     "version_mask": "ffffffff",
     "coinbase": "DigiHashV2",
-    "getInfo": true,
-    "noNetworkInfo": true,
+    "getInfo": false,
+    "noNetworkInfo": false,
     "useAddressInfo": true,
     "noGetnetworkhashps": true,
     "mainnet": {
