@@ -58,14 +58,14 @@
             }
         },
         "3256": {
-            "diff": 10000000,
+            "diff": 2500000,
             "tls": false,
             "varDiff": {
-                "minDiff": 10000000,
+                "minDiff": 100000,
                 "maxDiff": 100000000,
                 "targetTime": 15,
                 "retargetTime": 75,
-                "variancePercent": 10
+                "variancePercent": 30
             }
         }
     },
