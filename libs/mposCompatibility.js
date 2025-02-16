@@ -79,6 +79,13 @@ module.exports = function(logger, poolConfig){
 
     this.handleShare = function(isValidShare, isValidBlock, shareData){
 
+        var difficulty = shareData.difficulty * (poolConfig.coin.mposDiffMultiplier || 1);
+
+        // Ensure difficulty is not below a certain threshold
+        if (difficulty < poolConfig.minDiff) {
+            difficulty = poolConfig.minDiff;
+        }
+
         var dbData = [
             shareData.ip,
             shareData.worker,
