@@ -5,7 +5,7 @@
     "peerMagic": "fac3b6da",
     "version-rolling": true,
     "allowAsicboost": true,
-    "version_mask": "1fffe0000",
+    "version_mask": "1ffff000",
     "coinbase": "DigiHashV2",
     "getInfo": false,
     "noNetworkInfo": false,
@@ -20,7 +20,7 @@
         "scriptHash": "63"
     },
     "txfee": 1.0,
-    "blockTime": 75,
+    "blockTime": 70,
     "explorer": {
         "txURL": "https://digiexplorer.info/tx/",
         "blockURL": "https://digiexplorer.info/block/"
