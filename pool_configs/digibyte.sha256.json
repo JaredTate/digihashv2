@@ -58,10 +58,10 @@
             }
         },
         "3256": {
-            "diff": 2500000,
+            "diff": 250000,
             "tls": false,
             "varDiff": {
-                "minDiff": 100000,
+                "minDiff": 10000,
                 "maxDiff": 100000000,
                 "targetTime": 15,
                 "retargetTime": 75,
