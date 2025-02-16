@@ -6,7 +6,7 @@
     "version-rolling": true,
     "allowAsicboost": true,
     "version_mask": "1fffe000",
-    "min-bit-count": 16,
+    "min-bit-count": 2,
     "coinbase": "DigiHashV2",
     "getInfo": false,
     "noNetworkInfo": false,
