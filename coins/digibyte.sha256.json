@@ -4,7 +4,7 @@
     "algorithm": "sha256d",
     "peerMagic": "fac3b6da",
     "version-rolling": true,
-    "allowAsicboost": false,
+    "allowAsicboost": true,
     "version_mask": "ffffffff",
     "coinbase": "DigiHashV2",
     "getInfo": true,
