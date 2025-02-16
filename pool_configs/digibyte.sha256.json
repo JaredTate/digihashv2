@@ -65,7 +65,7 @@
                 "maxDiff": 100000000,
                 "targetTime": 15,
                 "retargetTime": 75,
-                "variancePercent": 30
+                "variancePercent": 10
             }
         }
     },
