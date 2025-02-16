@@ -61,7 +61,7 @@
             "diff": 2500000,
             "tls": false,
             "varDiff": {
-                "minDiff": 10000,
+                "minDiff": 2500000,
                 "maxDiff": 100000000,
                 "targetTime": 15,
                 "retargetTime": 75,
