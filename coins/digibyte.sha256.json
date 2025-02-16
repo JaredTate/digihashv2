@@ -3,7 +3,7 @@
     "symbol": "DGB",
     "algorithm": "sha256d",
     "peerMagic": "fac3b6da",
-    "version-rolling": true,
+    "version-rolling": false,
     "allowAsicboost": true,
     "version_mask": "1fffe000",
     "min-bit-count": 16,
