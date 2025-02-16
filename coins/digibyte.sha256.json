@@ -21,7 +21,7 @@
         "scriptHash": "63"
     },
     "txfee": 1.0,
-    "blockTime": 70,
+    "blockTime": 75,
     "explorer": {
         "txURL": "https://digiexplorer.info/tx/",
         "blockURL": "https://digiexplorer.info/block/"
