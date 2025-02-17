@@ -61,8 +61,8 @@
             "diff": 2500000,
             "tls": false,
             "varDiff": {
-                "minDiff": 10000,
-                "maxDiff": 100000000,
+                "minDiff": 250000,
+                "maxDiff": 25000000,
                 "targetTime": 15,
                 "retargetTime": 75,
                 "variancePercent": 30
