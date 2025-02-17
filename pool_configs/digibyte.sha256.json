@@ -58,7 +58,7 @@
             }
         },
         "3256": {
-            "diff": 25000000,
+            "diff": 2500000,
             "tls": false,
             "varDiff": {
                 "minDiff": 250000,
