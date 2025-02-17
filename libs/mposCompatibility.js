@@ -87,7 +87,7 @@ module.exports = function(logger, poolConfig){
         }
 
         // Log difficulty values for debugging
-        logger.debug(logIdentify, logComponent, `Processing share with difficulty: ${difficulty}`);
+        logger.debug(logIdentify, logComponent, `MPOSCompatibility - Processing share with difficulty: ${difficulty}`);
 
         var dbData = [
             shareData.ip,
