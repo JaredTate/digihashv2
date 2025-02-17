@@ -86,6 +86,9 @@ module.exports = function(logger, poolConfig){
             difficulty = poolConfig.minDiff;
         }
 
+        // Log difficulty values for debugging
+        logger.debug(logIdentify, logComponent, `Processing share with difficulty: ${difficulty}`);
+
         var dbData = [
             shareData.ip,
             shareData.worker,

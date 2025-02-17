@@ -68,6 +68,9 @@ module.exports = function(logger, poolConfig){
     this.handleShare = function(isValidShare, isValidBlock, shareData) {
 
         var redisCommands = [];
+        
+        // Log difficulty values for debugging
+        logger.debug(logSystem, logComponent, `Processing share with difficulty: ${shareData.difficulty}`);
     
         if (isValidShare) {
             redisCommands.push(['hincrbyfloat', coin + ':shares:roundCurrent', shareData.worker, shareData.difficulty]);
