@@ -2,6 +2,7 @@
     "name": "DigiByte-Odo",
     "symbol": "DGB",
     "algorithm": "odo",
+    "passAlgorithm": "odo",
     "peerMagic": "fac3b6da",
     "coinbase": "DigiHashV2",
     "getInfo": false,

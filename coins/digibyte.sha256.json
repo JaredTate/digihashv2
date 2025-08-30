@@ -2,6 +2,7 @@
     "name": "DigiByte-Sha256",
     "symbol": "DGB",
     "algorithm": "sha256d",
+    "passAlgorithm": "sha256d",
     "peerMagic": "fac3b6da",
     "version-rolling": true,
     "allowAsicboost": true,
