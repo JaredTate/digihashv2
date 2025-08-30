@@ -79,12 +79,22 @@ module.exports = function(logger, poolConfig){
 
     this.handleShare = function(isValidShare, isValidBlock, shareData){
 
+        var difficulty = shareData.difficulty;
+
+        // Ensure difficulty is not below a certain threshold
+        if (difficulty < poolConfig.minDiff) {
+            difficulty = poolConfig.minDiff;
+        }
+
+        // Log difficulty values for debugging
+        logger.debug(logIdentify, logComponent, `MPOSCompatibility - Processing share with difficulty: ${difficulty}`);
+
         var dbData = [
             shareData.ip,
             shareData.worker,
             isValidShare ? 'Y' : 'N',
             isValidBlock ? 'Y' : 'N',
-            shareData.difficulty * (poolConfig.coin.mposDiffMultiplier || 1),
+            difficulty, // Use the adjusted difficulty
             typeof(shareData.error) === 'undefined' ? null : shareData.error,
             shareData.blockHash ? shareData.blockHash : (shareData.blockHashInvalid ? shareData.blockHashInvalid : '')
         ];
