@@ -2,7 +2,6 @@
     "name": "DigiByte-Skein",
     "symbol": "DGB",
     "algorithm": "skein",
-    "passAlgorithm": "skein",
     "peerMagic": "fac3b6da",
     "coinbase": "DigiHashV2",
     "getInfo": false,
