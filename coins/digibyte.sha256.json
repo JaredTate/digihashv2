@@ -5,7 +5,7 @@
     "peerMagic": "fac3b6da",
     "version-rolling": true,
     "allowAsicboost": true,
-    "version_mask": "0x1fffe0000",
+    "version_mask": "0x1fffe000",
     "coinbase": "DigiHashV2",
     "getInfo": false,
     "noNetworkInfo": false,
