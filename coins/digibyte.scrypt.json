@@ -1,6 +1,7 @@
 {
     "name": "DigiByte-Scrypt",
     "symbol": "DGB",
+    "digidollar": true,
     "algorithm": "scrypt",
     "peerMagic": "fac3b6da",
     "coinbase": "DigiHashV2",

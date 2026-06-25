@@ -1,6 +1,7 @@
 {
     "name": "DigiByte-Qubit",
     "symbol": "DGB",
+    "digidollar": true,
     "algorithm": "qubit",
     "peerMagic": "fac3b6da",
     "coinbase": "DigiHashV2",

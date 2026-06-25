@@ -1,6 +1,7 @@
 {
     "name": "DigiByte-Sha256",
     "symbol": "DGB",
+    "digidollar": true,
     "algorithm": "sha256d",
     "peerMagic": "fac3b6da",
     "version-rolling": true,

@@ -1,6 +1,7 @@
 {
     "name": "DigiByte-Odo",
     "symbol": "DGB",
+    "digidollar": true,
     "algorithm": "odo",
     "peerMagic": "fac3b6da",
     "coinbase": "DigiHashV2",

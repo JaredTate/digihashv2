@@ -1,6 +1,7 @@
 {
     "name": "DigiByte-Skein",
     "symbol": "DGB",
+    "digidollar": true,
     "algorithm": "skein",
     "peerMagic": "fac3b6da",
     "coinbase": "DigiHashV2",
