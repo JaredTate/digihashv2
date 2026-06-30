@@ -1,0 +1,28 @@
+{
+  "pools": [
+    {
+      "name": "DigiHash-Groestl",
+      "url": "stratum+tcp://digihash.digibyte.io:3038",
+      "user": "YOUR_DGB_ADDRESS.gpu1",
+      "pass": "x",
+      "algorithm": "myriadcoin-groestl"
+    }
+  ],
+
+  "gpu-platform": "0",
+  "device": "0,1",
+  "_comment_intensity": "Per-device, maps to device order in 'device'. Display card kept gentle (start 13, ~17 smooth on a 7900 XTX); free card (no monitor) runs hard at 21. Headless/dedicated rig: use a single value like '21'.",
+  "intensity": "17,21",
+  "worksize": "256",
+  "gpu-threads": "1",
+
+  "expiry": "15",
+  "scan-time": "8",
+  "queue": "0",
+
+  "no-adl": true,
+  "failover-only": true,
+  "text-only": true,
+  "api-listen": true,
+  "api-port": "4028"
+}
