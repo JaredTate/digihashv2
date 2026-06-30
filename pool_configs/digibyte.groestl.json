@@ -1,0 +1,101 @@
+{
+    "enabled": true,
+    "coin": "digibyte.groestl.json",
+    "blockIdentifier": "DigiHashV2",
+    "BTCover17": true,
+    "wallet": "Groestl",
+
+    "_comment_address": "REPLACE with a real DigiByte (dgb1...) address that THIS pool controls. Block rewards for Groestl blocks are paid here before distribution. Do not ship the placeholder.",
+    "address": "REPLACE_WITH_GROESTL_POOL_ADDRESS",
+
+    "rewardRecipients": {
+        "dgb1qmrscvphklukgp9ex2n0wemmhf80dv3cugmq5s8": 0.5,
+        "REPLACE_WITH_GROESTL_POOL_FEE_ADDRESS": 9.5
+    },
+
+    "paymentProcessing": {
+        "minConf": 10,
+        "enabled": true,
+        "paymentMode": "prop",
+        "_comment_paymentMode": "prop, pplnt",
+        "paymentInterval": 120,
+        "minimumPayment": 25,
+        "maxBlocksPerPayment": 10,
+        "daemon": {
+            "host": "127.0.0.1",
+            "port": 14066,
+            "user": "user",
+            "password": "password"
+        }
+    },
+
+    "tlsOptions": {
+        "enabled": false,
+        "serverKey": "",
+        "serverCert": "",
+        "ca": ""
+    },
+
+    "ports": {
+        "3014": {
+            "diff": 0.001,
+            "varDiff": {
+                "minDiff": 0.001,
+                "maxDiff": 1000,
+                "targetTime": 15,
+                "retargetTime": 75,
+                "variancePercent": 30
+            }
+        },
+        "3038": {
+            "diff": 5,
+            "varDiff": {
+                "minDiff": 0.01,
+                "maxDiff": 100,
+                "targetTime": 15,
+                "retargetTime": 75,
+                "variancePercent": 30
+            }
+        },
+        "3262": {
+            "diff": 10,
+            "varDiff": {
+                "minDiff": 1,
+                "maxDiff": 1000,
+                "targetTime": 15,
+                "retargetTime": 75,
+                "variancePercent": 30
+            }
+        }
+    },
+
+    "poolId": "DigiHashV2",
+    "_comment_poolId": "use it for region identification: eu, us, asia or keep default if you have one stratum instance for one coin",
+
+    "daemons": [
+        {
+            "host": "127.0.0.1",
+            "port": 14066,
+            "user": "user",
+            "password": "password"
+        }
+    ],
+
+    "p2p": {
+        "enabled": false,
+        "host": "127.0.0.1",
+        "port": 12024,
+        "disableTransactions": true
+    },
+
+    "mposMode": {
+        "enabled": false,
+        "host": "127.0.0.1",
+        "port": 3306,
+        "user": "me",
+        "password": "mypass",
+        "database": "ltc",
+        "checkPassword": true,
+        "autoCreateWorker": false
+    }
+}

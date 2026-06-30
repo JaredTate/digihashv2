@@ -1,0 +1,28 @@
+{
+    "name": "DigiByte-Groestl",
+    "symbol": "DGB",
+    "digidollar": true,
+    "algorithm": "groestlmyriad",
+    "passAlgorithm": "groestl",
+    "_comment_algorithm": "DigiByte's ALGO_GROESTL is Myriad-Groestl (Groestl-512 -> SHA256). The hashing library exposes this as 'groestlmyriad'. The DigiByte daemon's getblocktemplate expects the algo string 'groestl', so passAlgorithm overrides the GBT positional algo parameter to 'groestl' while shares are still validated with the groestlmyriad hash.",
+    "peerMagic": "fac3b6da",
+    "coinbase": "DigiHashV2",
+    "getInfo": false,
+    "noNetworkInfo": false,
+    "useAddressInfo": true,
+    "noGetnetworkhashps": true,
+    "mainnet": {
+        "bech32": "dgb",
+        "bip32": {
+            "public": "0488B21E"
+        },
+        "pubKeyHash": "30",
+        "scriptHash": "63"
+    },
+    "txfee": 1.0,
+    "blockTime": 75,
+    "explorer": {
+        "txURL": "https://digiexplorer.info/tx/",
+        "blockURL": "https://digiexplorer.info/block/"
+    }
+}
