@@ -38,32 +38,35 @@
 
     "ports": {
         "3014": {
-            "diff": 0.001,
+            "_comment": "single GPU tier",
+            "diff": 0.5,
             "varDiff": {
-                "minDiff": 0.001,
-                "maxDiff": 1000,
-                "targetTime": 15,
-                "retargetTime": 75,
+                "minDiff": 0.1,
+                "maxDiff": 50,
+                "targetTime": 20,
+                "retargetTime": 30,
                 "variancePercent": 30
             }
         },
         "3038": {
-            "diff": 5,
+            "_comment": "multiple GPU tier",
+            "diff": 3,
             "varDiff": {
-                "minDiff": 0.01,
-                "maxDiff": 100,
-                "targetTime": 15,
-                "retargetTime": 75,
+                "minDiff": 1,
+                "maxDiff": 200,
+                "targetTime": 20,
+                "retargetTime": 30,
                 "variancePercent": 30
             }
         },
         "3262": {
-            "diff": 10,
+            "_comment": "farm tier",
+            "diff": 25,
             "varDiff": {
-                "minDiff": 1,
-                "maxDiff": 1000,
-                "targetTime": 15,
-                "retargetTime": 75,
+                "minDiff": 5,
+                "maxDiff": 2000,
+                "targetTime": 20,
+                "retargetTime": 30,
                 "variancePercent": 30
             }
         }
