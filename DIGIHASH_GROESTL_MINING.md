@@ -335,3 +335,4 @@ possible few-percent CUDA gain (not benchmarked here).
   the Groestl port, the faster the attacker's share shrinks and their difficulty climbs.**
 - Watch GPU temps if you raise intensity; these settings were HW-error-free but every
   card/cooling setup differs.
+dgb1qxa5uaqatnh9ca647yernh95tstdeqhztasdg4n
