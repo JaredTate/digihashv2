@@ -116,6 +116,78 @@ the fix is negotiated automatically in `mining.configure` when they connect.
    coin flip means roughly half the blocks this port finds will still carry the
    DigiDollar signal — for free.
 
+## If you own a NerdAxe / NerdQAxe / Bitaxe — what's happening on your device
+
+Your miner was never broken — its firmware just trusted the old job format. Inside the
+firmware, when the chip reports a found share, the code reconstructs "what version did
+the chip actually hash?" like this:
+
+```c
+rolled_version = job->version | (version_bits << 13);   // bitwise OR
+```
+
+OR can only turn bits **on**, never off. The chip, however, *overwrites* bits 13–28 —
+including turning bit 23 **off** about half the time. So when a v9 job arrived with
+bit 23 already on, the firmware reconstructed the wrong version for half its shares,
+computed the wrong hash, decided they were junk, and silently threw them away (or
+submitted mismatched shares the pool rejected as `Difficulty too low`).
+
+**The real firmware fix is one line** — replace the OR with a proper merge:
+
+```c
+rolled_version = (job->version & ~0x1fffe000) | (version_bits << 13);
+```
+
+NerdQAxe firmware needs one more fix: it never programs the pool-granted rolling mask
+into the ASIC at all (tracked upstream as shufps/ESP-Miner-NerdQAxePlus **#640**,
+maintainer-confirmed; related: bitaxeorg/ESP-Miner **#1169**). Until those land in a
+release, **there is no setting on the device that fixes this** — which is exactly why
+pools fix the job format instead. On DigiHash (post-fix) your device mines at full
+speed with stock firmware today; once the firmware fix ships, every pool works, even
+unfixed ones.
+
+## If you run another pool (MiningCore, ckpool, NOMP forks)
+
+Same two rules, applied to your stack: **send SHA256 jobs with the rolling region
+zeroed, and grant/validate with the full `1fffe000` mask.**
+
+**MiningCore:**
+
+1. Where the job takes the template version (`src/Miningcore/Blockchain/Bitcoin/BitcoinJob.cs`,
+   `BlockTemplate.Version`), clear bit 23 for the DigiByte-sha256 pool:
+   ```csharp
+   version = BlockTemplate.Version & ~0x00800000u;
+   ```
+2. Leave `BitcoinConstants.VersionRollingPoolMask` at the full `0x1fffe000`. It is a
+   **global** constant — do *not* narrow it to protect bit 23: that was field-tested and
+   it fixed DGB while breaking every other SHA256 coin on the same instance
+   ("rolling-version mask violation" from mask-ignoring firmware, duplicate-share
+   storms from Bitaxe's contiguous roll counter). If you want per-coin masks, make the
+   constant a per-pool config value first.
+
+**ckpool / yiimp / other NOMP forks:** the same one-liner wherever the GBT `version`
+is read into the job. (This repo's `node-stratum-pool` does it generically: any coin
+with `version_mask` configured gets all masked bits cleared from the job.)
+
+**Four pitfalls that have already burned pools in the field — check all four:**
+
+1. **Never combine the job-strip with a narrowed mask** (e.g. a leftover `1f7fe000`
+   from an experiment). The chips roll bit 23 regardless; with the job bit cleared
+   those rolls are *legitimate* and must be inside the granted mask, or you're back to
+   ~50% loss — just moved from the firmware to the pool.
+2. **Strip in exactly one place** so `mining.notify`, share validation, and block
+   submission all use the same version. Two variants of the same job circulating =
+   duplicate-share storm.
+3. **Include the version bits in your duplicate-share key.** With rolling, two valid
+   shares can differ only in their rolled bits; a version-blind dedupe rejects real
+   work — and the strip roughly doubles small-miner submissions, so you'll hit it.
+4. **Roll out on a fresh job (`clean_jobs = true`)** and have miners reconnect so
+   `mining.configure` renegotiates.
+
+Quick sanity check for any pool, straight from a real NerdQAxe log: job version
+`20000202`, miner submits `version_bits 03fe2000` → your share validator must rebuild
+header version `23fe2202`. If it computes anything else, your merge is wrong.
+
 ## FAQ
 
 **Does stripping bit 23 hurt DigiDollar activation?**
