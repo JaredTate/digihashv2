@@ -5,64 +5,56 @@ how DigiHash fixed it. Written to be understandable with zero prior stratum know
 
 ---
 
-## TL;DR — copy/paste this
+## Quick Summary for Pool Developers
 
-### The problem
+**Problem.** DigiByte v9.26.x signals DigiDollar activation on version **bit 23** —
+inside the region SHA256 ASICs overwrite for version rolling (AsicBoost, bits 13–28).
+Miner firmware assumes that region is empty, so v9 jobs silently break **~half of every
+SHA256 miner's shares** (`Difficulty too low` rejects, or vanishing hashrate).
 
-DigiByte v9.26.x puts the DigiDollar activation signal on version **bit 23**.
-Bit 23 sits inside the scratch space SHA256 ASICs overwrite for version rolling
-(AsicBoost, bits 13–28). Older miner firmware assumes that space is **empty** —
-so v9 jobs silently break **~half of every SHA256 miner's shares**
-(`Difficulty too low` rejects, or hashrate that just vanishes).
+**Fix.** Two settings — they only work together:
 
-### The fix for pools — two settings, they only work TOGETHER
+| # | Setting | Value |
+|---|---------|-------|
+| 1 | Zero the rolling region in every SHA256 job | send version `20000202`, not `20800202` |
+| 2 | Grant and validate the **full** rolling mask | `version-rolling.mask = 1fffe000` |
 
-1. **Zero the rolling region in every SHA256 job.**
-   Send version `20000202` — not `20800202`.
-2. **Grant + validate the FULL rolling mask.**
-   `version-rolling.mask = 1fffe000`
+> ⚠️ Never narrow the mask to "protect" bit 23. The chips roll it regardless — a
+> narrowed mask only turns their legal work into rejects.
 
-> ⚠️ Do **NOT** "protect" bit 23 by narrowing the mask. The chips roll it no
-> matter what — a narrow mask just turns their legal work into rejects.
+**DigiDollar activation is not harmed.** Bit 23 is a vote, never a validity rule;
+the ASIC's rolling still sets it on ~half of all blocks; Scrypt/Skein/Qubit/Odo keep
+signaling on 100% of blocks; and from block **23,788,800** upgraded nodes also signal
+**bit 0**, which rolling cannot touch.
 
-### Why this is safe for DigiDollar activation
+### Per-software fixes
 
-- Bit 23 is a **vote, never a validity rule** — stripped blocks are 100% valid, forever.
-- The ASIC's own rolling still sets bit 23 on **~half your blocks** — free signaling.
-- Scrypt / Skein / Qubit / Odo are untouched — they keep signaling on **100%** of blocks.
-- From block **23,788,800**, every upgraded node also signals **bit 0** — which
-  rolling can't touch.
-
-### The fix, per software
-
-**DigiHash / NOMP-style pools (this repo)**
+**DigiHash / NOMP-style pools (this repo)** — `stratum-pool` v0.3.0 zeroes masked bits
+in every job and makes duplicate detection rolling-aware:
 
 ```bash
-npm update stratum-pool     # v0.3.0 zeroes masked bits in every job + fixes dup detection
-# keep  "version_mask": "1fffe000"  in the sha256 coin config
-# restart the SHA256 port — miners just reconnect
+npm update stratum-pool
+# keep "version_mask": "1fffe000" in the sha256 coin config, restart the SHA256 port
 ```
 
-**MiningCore**
+**MiningCore** — where the job takes the template version (DGB-sha256 pool only):
 
 ```csharp
-// BitcoinJob.cs — where the job takes the template version (DGB-sha256 pool only):
-version = BlockTemplate.Version & ~0x00800000u;
+version = BlockTemplate.Version & ~0x00800000u;   // BitcoinJob.cs
 ```
 
-Leave the global `VersionRollingPoolMask` at `0x1fffe000` — narrowing it breaks
-your other SHA256 coins (field-tested).
+Leave the global `VersionRollingPoolMask` at `0x1fffe000` — narrowing it breaks every
+other SHA256 coin on the instance (field-tested).
 
-**NerdAxe / NerdQAxe / Bitaxe firmware**
+**NerdAxe / NerdQAxe / Bitaxe firmware** — replace the OR reconstruction with a masked
+merge, and program the pool-granted mask into the ASIC (NerdQAxe issue #640):
 
 ```c
-// replace the OR reconstruction with a masked merge:
 rolled_version = (job->version & ~0x1fffe000) | (version_bits << 13);
 ```
 
-…and actually program the pool-granted mask into the ASIC (NerdQAxe issue #640).
-Until that ships: mine on a pool with the fix above — **no device setting works
-around this.**
+Until that ships in a firmware release, mine on a pool with the fix above — no device
+setting works around it.
 
 ---
 
