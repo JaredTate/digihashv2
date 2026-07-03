@@ -5,56 +5,60 @@ how DigiHash fixed it. Written to be understandable with zero prior stratum know
 
 ---
 
-## Quick Summary for Pool Developers
+## Quick Fix for Pool Developers — 3 Steps
 
-**Problem.** DigiByte v9.26.x signals DigiDollar activation on version **bit 23** —
-inside the region SHA256 ASICs overwrite for version rolling (AsicBoost, bits 13–28).
-Miner firmware assumes that region is empty, so v9 jobs silently break **~half of every
-SHA256 miner's shares** (`Difficulty too low` rejects, or vanishing hashrate).
+DigiByte v9.26.x signals DigiDollar on version **bit 23** — inside the region SHA256
+ASICs overwrite for version rolling (AsicBoost, bits 13–28). Miner firmware assumes
+that region is empty, so v9 jobs silently break **~half of every SHA256 miner's
+shares** (`Difficulty too low` rejects, or vanishing hashrate). Fix it in three steps:
 
-**Fix.** Two settings — they only work together:
+### Step 1 — Strip bit 23 from every SHA256 job
 
-| # | Setting | Value |
-|---|---------|-------|
-| 1 | Zero the rolling region in every SHA256 job | send version `20000202`, not `20800202` |
-| 2 | Grant and validate the **full** rolling mask | `version-rolling.mask = 1fffe000` |
+Jobs must go out with version `20000202`, **not** `20800202`.
 
-> ⚠️ Never narrow the mask to "protect" bit 23. The chips roll it regardless — a
-> narrowed mask only turns their legal work into rejects.
+MiningCore (`BitcoinJob.cs`, DGB-sha256 pool only):
+
+```csharp
+version = BlockTemplate.Version & ~0x00800000u;
+```
+
+DigiHash / NOMP-style pools (this repo): `npm update stratum-pool` — v0.3.0 strips it
+automatically for every coin with `version_mask` configured, and makes duplicate
+detection rolling-aware.
+
+### Step 2 — Grant and validate the FULL rolling mask `1fffe000`
+
+Both in the `mining.configure` response **and** in share validation/merge:
+
+```
+"version-rolling.mask": "1fffe000"
+```
+
+> ⚠️ Never narrow the mask to "protect" bit 23. The chips roll that bit regardless —
+> a narrowed mask turns their legal work into rejects, and narrowing a global mask
+> breaks every other SHA256 coin on the instance (field-tested).
+
+### Step 3 — Restart the SHA256 port, miners reconnect
+
+Restart the port and have miners reconnect (power-cycle is the sure way) so
+`mining.configure` renegotiates. Steps 1 and 2 only work **together**: the strip makes
+firmware reconstruction correct; the full mask makes the chip's inevitable bit-23
+rolls legal and merged back faithfully.
 
 **DigiDollar activation is not harmed.** Bit 23 is a vote, never a validity rule;
 the ASIC's rolling still sets it on ~half of all blocks; Scrypt/Skein/Qubit/Odo keep
 signaling on 100% of blocks; and from block **23,788,800** upgraded nodes also signal
 **bit 0**, which rolling cannot touch.
 
-### Per-software fixes
-
-**DigiHash / NOMP-style pools (this repo)** — `stratum-pool` v0.3.0 zeroes masked bits
-in every job and makes duplicate detection rolling-aware:
-
-```bash
-npm update stratum-pool
-# keep "version_mask": "1fffe000" in the sha256 coin config, restart the SHA256 port
-```
-
-**MiningCore** — where the job takes the template version (DGB-sha256 pool only):
-
-```csharp
-version = BlockTemplate.Version & ~0x00800000u;   // BitcoinJob.cs
-```
-
-Leave the global `VersionRollingPoolMask` at `0x1fffe000` — narrowing it breaks every
-other SHA256 coin on the instance (field-tested).
-
-**NerdAxe / NerdQAxe / Bitaxe firmware** — replace the OR reconstruction with a masked
-merge, and program the pool-granted mask into the ASIC (NerdQAxe issue #640):
+**NerdAxe / NerdQAxe / Bitaxe owners:** the root firmware fix is a masked merge —
 
 ```c
 rolled_version = (job->version & ~0x1fffe000) | (version_bits << 13);
 ```
 
-Until that ships in a firmware release, mine on a pool with the fix above — no device
-setting works around it.
+— plus programming the pool-granted mask into the ASIC (NerdQAxe issue #640). Until
+that ships in a firmware release, mine on a pool that did steps 1–3; no device setting
+works around it.
 
 ---
 
