@@ -5,8 +5,6 @@ how DigiHash fixed it. Written to be understandable with zero prior stratum know
 
 ---
 
-## TL;DR — copy/paste this
-
 ### The problem
 
 DigiByte v9.26.x puts the DigiDollar activation signal on version **bit 23**.
