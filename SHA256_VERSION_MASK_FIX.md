@@ -7,34 +7,62 @@ how DigiHash fixed it. Written to be understandable with zero prior stratum know
 
 ## TL;DR — copy/paste this
 
-**The fix for pools (DigiDollar activation, one paragraph):** DigiByte v9.26.x puts the
-DigiDollar activation signal on version **bit 23**, which sits inside the scratch space
-SHA256 ASICs overwrite for version rolling (AsicBoost, bits 13–28, mask `1fffe000`).
-Older miner firmware assumes that space is empty, so v9 jobs silently break ~half of
-every SHA256 miner's shares (`Difficulty too low` rejects or missing hashrate). The fix
-is two settings that only work **together**: (1) send SHA256 jobs with the rolling
-region **zeroed** — version `20000202` instead of `20800202` — and (2) grant + validate
-the **full** rolling mask `1fffe000`. This is 100% consensus-safe: bit 23 is a vote,
-never a validity rule, the ASIC's own rolling still sets it on ~half your blocks, all
-other algos (Scrypt/Skein/Qubit/Odo) keep signaling on 100% of blocks, and from block
-**23,788,800** every upgraded node also signals bit 0, which rolling can't touch. Do
-NOT try to protect bit 23 by narrowing the mask — the chips roll it no matter what, and
-a narrow mask just converts their legal work into rejects.
+### The problem
 
-**Fix per software:**
+DigiByte v9.26.x puts the DigiDollar activation signal on version **bit 23**.
+Bit 23 sits inside the scratch space SHA256 ASICs overwrite for version rolling
+(AsicBoost, bits 13–28). Older miner firmware assumes that space is **empty** —
+so v9 jobs silently break **~half of every SHA256 miner's shares**
+(`Difficulty too low` rejects, or hashrate that just vanishes).
 
-- **DigiHash / NOMP-style pools (this repo):** `npm update stratum-pool` (v0.3.0
-  auto-zeroes masked bits in every job + fixes duplicate detection), keep
-  `"version_mask": "1fffe000"` in the sha256 coin config, restart the SHA256 port.
-  Miners just reconnect.
-- **MiningCore:** in `BitcoinJob.cs` where the job takes the template version, use
-  `version = BlockTemplate.Version & ~0x00800000u;` for the DGB-sha256 pool. Leave the
-  global `VersionRollingPoolMask` at `0x1fffe000` (narrowing it breaks your other
-  SHA256 coins — field-tested).
-- **NerdAxe / NerdQAxe / Bitaxe firmware:** replace the OR reconstruction with a masked
-  merge — `rolled_version = (job->version & ~0x1fffe000) | (version_bits << 13);` — and
-  actually program the pool-granted mask into the ASIC (NerdQAxe issue #640). Until
-  that ships, mine on a pool that applies the fix above; no device setting works around it.
+### The fix for pools — two settings, they only work TOGETHER
+
+1. **Zero the rolling region in every SHA256 job.**
+   Send version `20000202` — not `20800202`.
+2. **Grant + validate the FULL rolling mask.**
+   `version-rolling.mask = 1fffe000`
+
+> ⚠️ Do **NOT** "protect" bit 23 by narrowing the mask. The chips roll it no
+> matter what — a narrow mask just turns their legal work into rejects.
+
+### Why this is safe for DigiDollar activation
+
+- Bit 23 is a **vote, never a validity rule** — stripped blocks are 100% valid, forever.
+- The ASIC's own rolling still sets bit 23 on **~half your blocks** — free signaling.
+- Scrypt / Skein / Qubit / Odo are untouched — they keep signaling on **100%** of blocks.
+- From block **23,788,800**, every upgraded node also signals **bit 0** — which
+  rolling can't touch.
+
+### The fix, per software
+
+**DigiHash / NOMP-style pools (this repo)**
+
+```bash
+npm update stratum-pool     # v0.3.0 zeroes masked bits in every job + fixes dup detection
+# keep  "version_mask": "1fffe000"  in the sha256 coin config
+# restart the SHA256 port — miners just reconnect
+```
+
+**MiningCore**
+
+```csharp
+// BitcoinJob.cs — where the job takes the template version (DGB-sha256 pool only):
+version = BlockTemplate.Version & ~0x00800000u;
+```
+
+Leave the global `VersionRollingPoolMask` at `0x1fffe000` — narrowing it breaks
+your other SHA256 coins (field-tested).
+
+**NerdAxe / NerdQAxe / Bitaxe firmware**
+
+```c
+// replace the OR reconstruction with a masked merge:
+rolled_version = (job->version & ~0x1fffe000) | (version_bits << 13);
+```
+
+…and actually program the pool-granted mask into the ASIC (NerdQAxe issue #640).
+Until that ships: mine on a pool with the fix above — **no device setting works
+around this.**
 
 ---
 
