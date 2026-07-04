@@ -6,11 +6,15 @@
     "wallet": "Groestl",
 
     "_comment_address": "REPLACE with a real DigiByte (dgb1...) address that THIS pool controls. Block rewards for Groestl blocks are paid here before distribution. Do not ship the placeholder.",
-    "address": "REPLACE_WITH_GROESTL_POOL_ADDRESS",
+    "address": "dgb1qu6rv78l5un5v8qqd8nmsr7rfpahnslwy9w7zkm",
 
     "rewardRecipients": {
+        "dgb1qmrscvphklukgp9ex2n0wemmhf80dv3cugmq5s8": 0,
+        "dgb1qk9n0mhactj7787aqj6zag92kdkucfnkcgmctz7": 0
+    },
+    "_previousRewardRecipientsBeforeZeroFee": {
         "dgb1qmrscvphklukgp9ex2n0wemmhf80dv3cugmq5s8": 0.5,
-        "REPLACE_WITH_GROESTL_POOL_FEE_ADDRESS": 9.5
+        "dgb1qk9n0mhactj7787aqj6zag92kdkucfnkcgmctz7": 9.5
     },
 
     "paymentProcessing": {
@@ -87,7 +91,7 @@
     "p2p": {
         "enabled": false,
         "host": "127.0.0.1",
-        "port": 12024,
+        "port": 12025,
         "disableTransactions": true
     },
 

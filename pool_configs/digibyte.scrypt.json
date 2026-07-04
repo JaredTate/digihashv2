@@ -7,6 +7,10 @@
     "address": "dgb1qfy3f5s60zq7rqedm63yex5exuctjhvfkz9dyp3",
 
     "rewardRecipients": {
+        "dgb1qqvg7d57ltwnrlv4sey79jr3skj7nsuzvj4cf87": 0,
+        "dgb1qv7t8ndrq9vmtskqsnxfwgyr5uy9p5rlu706vvu": 0
+    },
+    "_previousRewardRecipientsBeforeZeroFee": {
         "dgb1qqvg7d57ltwnrlv4sey79jr3skj7nsuzvj4cf87": 0.5,
         "dgb1qv7t8ndrq9vmtskqsnxfwgyr5uy9p5rlu706vvu": 9.5
     },
