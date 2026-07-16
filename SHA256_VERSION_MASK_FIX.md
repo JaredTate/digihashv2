@@ -41,7 +41,10 @@ share gets discarded or rejected. Coin flip per share: ~50% loss.
 ## 3. The fix — 3 steps, same on every pool
 
 **Step 1 — Strip the rolling region from every SHA256 job.**
-Jobs must go out with version `20000202`, **not** `20800202`.
+Jobs must go out with version `20000202`, **not** `20800202`. (From block **23,788,800**
+the clean job version is `20000203` — bit 0 is the algolock vote, outside the rolling
+window, and harmless. The point is that bit 23 must be absent:
+`version & 00800000 == 0`.)
 
 **Step 2 — Grant and validate the FULL rolling mask `1fffe000`.**
 In the `mining.configure` response *and* in share validation. Never narrow it to
@@ -56,6 +59,11 @@ the full mask makes the chip's inevitable bit-23 flips legal and merged back
 faithfully.
 
 ## 4. Applying it on your software
+
+Node-side alternative: DigiByte Core **v9.26.5** ships this fix in the node itself —
+`getblocktemplate` strips bit 23 from SHA256D templates by default (pools can opt back in
+via GBT `rules: ["digidollar"]`) — so a stock pool needs no stratum patch once its node is
+upgraded.
 
 ### DigiHash / NOMP-style pools (this repo)
 
@@ -108,11 +116,14 @@ this.**
 
 Check these four things, in order:
 
-1. **Job version is clean.** `mining.notify` for SHA256 shows version `20000202`.
+1. **Job version is clean.** `mining.notify` for SHA256 shows version `20000202`
+   (`20000203` from block **23,788,800** — the extra bit 0 is the algolock vote, outside
+   the rolling window; clean means bit 23 absent, `version & 00800000 == 0`).
 2. **Full mask granted.** The `mining.configure` response contains
    `"version-rolling.mask": "1fffe000"`.
 3. **Math check.** A share with `version_bits = 03fe2000` on job `20000202` must
-   validate against header version `23fe2202`. (Real values from a NerdQAxe++ log.)
+   validate against header version `23fe2202`. (Real values from a NerdQAxe++ log.
+   From block 23,788,800: job `20000203` → header `23fe2203`.)
 4. **Results.** `Difficulty too low` rejects go to zero and credited hashrate returns
    to chip spec (a NerdQAxe++ reads ~11.3 TH/s again). Accepted shares show a mix of
    `version_bits` with bit 23 on (`03fe2000`) and off (`00034000`) — both are normal.
@@ -121,7 +132,7 @@ If something still fails:
 
 | Still seeing | It means | Do this |
 |---|---|---|
-| notify shows `20800202` | strip not active | update stratum-pool / apply the one-liner; check `version_mask` is set for the coin |
+| notify shows `20800202` / `20800203` (bit 23 set) | strip not active | update stratum-pool / apply the one-liner; check `version_mask` is set for the coin |
 | rejects continue, and **rejected** shares have bit 23 set in `version_bits` | a narrowed mask somewhere (grant or validation) | set BOTH to full `1fffe000` |
 | `duplicate share` storm | dup key ignores version bits | include `version_bits` in the key (stratum-pool v0.3.0 does) |
 | one miner still at ~55%, no rejects | it connected before the restart | power-cycle that miner |
@@ -131,8 +142,10 @@ If something still fails:
 **Does stripping bit 23 hurt DigiDollar activation?**
 No. Bit 23 is a vote, never a validity rule — a block is equally valid with or without
 it. The chip's own rolling still sets it on ~half this port's blocks (free signaling),
-the other four algos signal on 100% of theirs, and from block **23,788,800** every
-upgraded node also signals **bit 0**, which rolling cannot touch.
+the other four algos signal on 100% of blocks mined by upgraded nodes, and from block
+**23,788,800** every upgraded node also signals **bit 0**, which rolling cannot touch.
+DigiByte Core v9.26.5 makes this strip the node's own default for SHA256D templates
+(opt back in via GBT `rules: ["digidollar"]`), so node and pool agree.
 
 **Why can't the pool just keep bit 23 fixed and forbid rolling it?**
 The hardware can't comply. BM13xx chips roll bits 13–28 as one contiguous counter —
