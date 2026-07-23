@@ -1,5 +1,5 @@
 {
-    "enabled": true,
+    "enabled": false,
     "coin": "digibyte.groestl.json",
     "blockIdentifier": "DigiHashV2",
     "BTCover17": true,
@@ -9,8 +9,8 @@
     "address": "dgb1qu6rv78l5un5v8qqd8nmsr7rfpahnslwy9w7zkm",
 
     "rewardRecipients": {
-        "dgb1qmrscvphklukgp9ex2n0wemmhf80dv3cugmq5s8": 0,
-        "dgb1qk9n0mhactj7787aqj6zag92kdkucfnkcgmctz7": 0
+        "dgb1qmrscvphklukgp9ex2n0wemmhf80dv3cugmq5s8": 0.5,
+        "dgb1qk9n0mhactj7787aqj6zag92kdkucfnkcgmctz7": 9.5
     },
     "_previousRewardRecipientsBeforeZeroFee": {
         "dgb1qmrscvphklukgp9ex2n0wemmhf80dv3cugmq5s8": 0.5,

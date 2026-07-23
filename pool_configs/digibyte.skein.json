@@ -8,8 +8,8 @@
     "address": "dgb1qmqpsph9phppvn0zvgsqwazvzkm8us9u9sz4s9c",
 
     "rewardRecipients": {
-        "dgb1q63wwrsxhhzr9aa9dlj84uusp3w6y8srt2jhatc": 0,
-        "dgb1qln5qghny7mzt2nu9a9xfyqnne7sad87ru2vqsp": 0
+        "dgb1q63wwrsxhhzr9aa9dlj84uusp3w6y8srt2jhatc": 0.5,
+        "dgb1qln5qghny7mzt2nu9a9xfyqnne7sad87ru2vqsp": 9.5
     },
     "_previousRewardRecipientsBeforeZeroFee": {
         "dgb1q63wwrsxhhzr9aa9dlj84uusp3w6y8srt2jhatc": 0.5,
