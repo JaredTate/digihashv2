@@ -1,11 +1,103 @@
 <!doctype html>
-<html lang="${language}">
+<html lang="en">
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-    <meta name="keywords" content="DigiHash, DigiByte, mining, pool, cryptocurrenc, DGB">
-    <meta name="description" content="DigiHash DigiByte node mining pool">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+{{
+    /* ===== Per-page SEO text. Edit it here, in this one object. =====
+       Key = page name from libs/website.js ('' is the home page).
+       title: 60 characters or less. description: 70 to 160 characters.
+       noindex: true keeps a page out of search results (it then gets no canonical).
+       Only use block comments in this block: dot joins the lines into one. */
+    var SEO_SITE = 'https://digihash.digibyte.io';
+    var SEO_NAME = 'DigiHash';
+    var SEO_IMAGE = SEO_SITE + '/static/og-image.png';
+    var SEO_PAGES = {
+        '': { crumb: 'Home',
+            title: 'DigiHash – DigiByte (DGB) Community Mining Pool',
+            description: 'Open-source DigiByte community mining pool. Mine DGB with SHA256, Scrypt, Skein, Qubit or Odocrypt. No sign-up needed. 25 DGB minimum payout.' },
+        getting_started: { crumb: 'Getting Started',
+            title: 'Getting Started – How to Mine DigiByte – DigiHash',
+            description: 'How to mine DigiByte on DigiHash: choose an algorithm and port, point your miner at digihash.digibyte.io, and use your DGB address as the username.' },
+        stats: { crumb: 'Pool Stats',
+            title: 'Pool Stats – DigiByte Hashrate and Blocks – DigiHash',
+            description: 'Live DigiHash pool stats for each DigiByte algorithm: pool and network hashrate, miners, workers, luck, and pending and confirmed blocks.' },
+        workers: { crumb: 'Worker Stats',
+            title: 'Worker Stats – DigiByte Miners – DigiHash',
+            description: 'Miners and workers on the DigiHash DigiByte pool, with hashrate and shares for each algorithm. Look up a DGB address to see its own stats.' },
+        payments: { crumb: 'Payments',
+            title: 'Payments – DigiByte Pool Payouts – DigiHash',
+            description: 'Payment history of the DigiHash DigiByte mining pool: blocks found, DGB paid to miners and transaction links. The minimum payout is 25 DGB.' },
+        tbs: { crumb: 'Tab Stats',
+            title: 'Tab Stats – All DigiByte Pools in One Table – DigiHash',
+            description: 'All DigiHash DigiByte pools in one table: algorithm, workers, valid and invalid shares, pending, confirmed and orphaned blocks, and hashrate.' },
+        api: { crumb: 'API',
+            title: 'Pool API – DigiByte Mining Pool JSON API – DigiHash',
+            description: 'Endpoints of the DigiHash pool JSON API: pool stats, blocks, historical stats, payments, worker stats and live stats. The API can still change.' },
+        admin: { noindex: true,
+            title: 'Admin – DigiHash DigiByte Pool',
+            description: 'Admin page of the DigiHash DigiByte community mining pool. It is for pool operators only and is not meant for search results.' },
+        mining_key: { noindex: true,
+            title: 'Mining Key – DigiHash DigiByte Pool',
+            description: 'Mining key tool of the DigiHash DigiByte community mining pool. The script runs in your browser; download it to run it offline.' },
+        miner_stats: { noindex: true,
+            title: 'Miner Stats – DigiHash DigiByte Pool',
+            description: 'Stats for one miner address on the DigiHash DigiByte pool: hashrate, luck, shares, and immature, balance and paid DGB.' }
+    };
+    /* /workers/<address> renders the miner_stats page. The template does not get the request URL,
+       and it.stats.address is shared by all requests, so worker pages get noindex and no canonical. */
+    var seoSel = (it && typeof it.selected === 'string') ? it.selected : null;
+    var seo = (seoSel !== null && Object.prototype.hasOwnProperty.call(SEO_PAGES, seoSel)) ? SEO_PAGES[seoSel] : null;
+    var seoIndex = !!(seo && !seo.noindex);
+    if (!seo) seo = { title: 'DigiHash – DigiByte Mining Pool', description: SEO_PAGES[''].description };
+    var seoUrl = seoIndex ? SEO_SITE + '/' + seoSel : '';
+    function seoEsc(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    function seoJson(o) {
+        return JSON.stringify(o).replace(/</g, '\\u003c');
+    }
+    var seoLd = null;
+    if (seoIndex && seoSel === '') {
+        seoLd = { '@context': 'https://schema.org', '@type': 'WebSite', name: SEO_NAME, alternateName: 'DigiHash V2',
+            url: seoUrl, description: seo.description, inLanguage: 'en',
+            creator: { '@type': 'Person', name: 'Jared Tate' } };
+    } else if (seoIndex) {
+        seoLd = { '@context': 'https://schema.org', '@graph': [
+            { '@type': 'WebPage', '@id': seoUrl, url: seoUrl, name: seo.title, description: seo.description, inLanguage: 'en',
+                isPartOf: { '@type': 'WebSite', name: SEO_NAME, url: SEO_SITE + '/' } },
+            { '@type': 'BreadcrumbList', itemListElement: [
+                { '@type': 'ListItem', position: 1, name: SEO_PAGES[''].crumb, item: SEO_SITE + '/' },
+                { '@type': 'ListItem', position: 2, name: seo.crumb, item: seoUrl } ] } ] };
+    }
+}}
+    <title>{{=seoEsc(seo.title)}}</title>
+    <meta name="description" content="{{=seoEsc(seo.description)}}">
+    <meta name="keywords" content="DigiHash, DigiByte, mining, pool, cryptocurrency, DGB">
+{{? seoIndex }}
+    <meta name="robots" content="index,follow,max-image-preview:large">
+    <link rel="canonical" href="{{=seoEsc(seoUrl)}}">
+    <meta property="og:url" content="{{=seoEsc(seoUrl)}}">
+{{??}}
+    <meta name="robots" content="noindex,follow">
+{{?}}
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{=SEO_NAME}}">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content="{{=seoEsc(seo.title)}}">
+    <meta property="og:description" content="{{=seoEsc(seo.description)}}">
+    <meta property="og:image" content="{{=SEO_IMAGE}}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="DigiHash – DigiByte Community Mining Pool">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{=seoEsc(seo.title)}}">
+    <meta name="twitter:description" content="{{=seoEsc(seo.description)}}">
+    <meta name="twitter:image" content="{{=SEO_IMAGE}}">
+{{? seoLd }}
+    <script type="application/ld+json">{{=seoJson(seoLd)}}</script>
+{{?}}
     <link rel="icon" type="image/png" href="/static/favicon.png"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +113,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
     <script src="/static/main.js"></script>
     <link rel="stylesheet" href="/static/style.css">
-    <title>DigiHash V2 - DigiByte Community Mining Pool</title>
 </head>
 
 <body>
@@ -85,7 +176,7 @@
     </div>
 </header>
     <main>
-        {{=it.page}}
+        {{=(it && it.page != null) ? it.page : ''}}
     </main>
     <footer>
         <div id="communityFooter">

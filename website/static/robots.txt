@@ -1,5 +1,167 @@
+# robots.txt for https://digihash.digibyte.io (DigiHash DigiByte community mining pool)
+# Public pages are open to all crawlers. /admin and the JSON API (/api/...) are not for crawling.
+# /get_page serves page fragments for the in-page menu. The API docs page /api stays open. A named group replaces '*' for that bot, so every group repeats the rules.
+
 User-agent: *
+Allow: /
 Disallow: /admin
 Disallow: /api/
+Disallow: /get_page
+
+User-agent: Googlebot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: GoogleOther
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: Applebot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: DuckAssistBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: YandexBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: Baiduspider
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: GPTBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: Claude-User
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: CCBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: meta-externalagent
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: FacebookBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: Amazonbot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: MistralAI-User
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: cohere-ai
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
+
+User-agent: YouBot
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /get_page
 
 Sitemap: https://digihash.digibyte.io/sitemap.xml

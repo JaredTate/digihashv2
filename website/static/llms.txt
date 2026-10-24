@@ -1,0 +1,43 @@
+# DigiHash – DigiByte Community Mining Pool
+
+> DigiHash (https://digihash.digibyte.io) is an open-source community mining pool for DigiByte (DGB). It supports all 5 DigiByte mining algorithms: SHA256, Scrypt, Skein, Qubit and Odocrypt. Miners connect over stratum with a DigiByte address as the username. No account or sign-up is needed. The pool fee is 10% on SHA256, Scrypt, Skein and Qubit, and 9.5% on Odocrypt. The home page says the fee goes to a community fund to support DigiByte development. The minimum payout is 25 DGB.
+
+## Pages
+
+- [Home](https://digihash.digibyte.io/): Pool overview, fee, minimum payout, and live miners and hashrate for each algorithm.
+- [Getting Started](https://digihash.digibyte.io/getting_started): Connection details for each algorithm: stratum URL, ports and starting difficulty.
+- [Pool Stats](https://digihash.digibyte.io/stats): Live pool and network hashrate, miners, workers, luck and blocks for each algorithm.
+- [Worker Stats](https://digihash.digibyte.io/workers): Miners and workers on each pool, with a lookup by DigiByte address.
+- [Payments](https://digihash.digibyte.io/payments): Payment history: blocks found, DGB paid to miners, and transaction links.
+- [Tab Stats](https://digihash.digibyte.io/tbs): All pools in one table: workers, valid and invalid shares, blocks and hashrate.
+- [API](https://digihash.digibyte.io/api): List of the pool's JSON API endpoints (stats, blocks, payments, worker stats, live stats).
+
+## How to connect
+
+- Stratum URL: `stratum+tcp://digihash.digibyte.io:<port>`
+- Username: your DigiByte (DGB) wallet address. To name a worker, add a dot and a name: `<address>.rig1`.
+- Password: anything.
+- Each algorithm has 3 ports. The pool adjusts difficulty for each miner (variable difficulty). The number in brackets is the starting difficulty.
+- SHA256: 3008 (25000), 3032 (250000), 3256 (2500000)
+- Scrypt: 3009 (8192), 3033 (32768), 3257 (131072)
+- Skein: 3011 (0.001), 3035 (5), 3259 (10)
+- Qubit: 3012 (0.01), 3036 (1), 3260 (5)
+- Odocrypt: 3013 (0.01), 3037 (1), 3261 (16)
+- Payouts go to the mining address after its balance reaches 25 DGB. Block rewards are paid after the block is confirmed on the DigiByte blockchain.
+
+## Data notes
+
+- Stats, blocks and payments come live from the pool and its DigiByte nodes. The numbers change all the time.
+- Pool hashrate is an estimate made from the shares that miners submit.
+- The JSON API is under `https://digihash.digibyte.io/api/` (for example `/api/stats`). The site says the API is work in progress and can change.
+- Transaction and block links point to the DigiExplorer block explorer.
+
+## About
+
+- DigiHash V2 is free, open-source software under the MIT License. It was forked from NOMP by ROZ, created by Jared Tate, and is supported by the DigiByte developers.
+- DigiByte is an open-source blockchain. No company is behind it.
+- [Source code](https://github.com/JaredTate/digihashv2): DigiHash V2 pool software on GitHub.
+- [DigiByte.org](https://digibyte.org): The DigiByte project website.
+- [DigiByte.io](https://digibyte.io): DigiByte blockchain stats.
+- [DigiExplorer](https://digiexplorer.info): DigiByte block explorer.
+- [Sitemap](https://digihash.digibyte.io/sitemap.xml): All public pages of this site.

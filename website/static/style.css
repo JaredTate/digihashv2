@@ -253,3 +253,11 @@ option:checked {
         clear: both;
     }
 }
+h1.page-title {
+    margin: 0;
+    padding: 18px 18px 0 18px;
+    font-family: "Noto Sans", sans-serif;
+    font-size: 1.6em;
+    font-weight: normal;
+    color: #2d2d2d;
+}

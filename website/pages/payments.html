@@ -37,6 +37,7 @@ var d = new Date(parseInt(a));
 if (isNaN(d.getTime())) return '';
 return d.toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
 } }}
+<h1 class="page-title">DigiHash Pool Payments</h1>
 {{ for(var pool in it.stats.pools) { }}
 <div id="topPool">
     <div class="poolWrapper">
