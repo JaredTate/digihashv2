@@ -30,39 +30,78 @@
     table th {
         background: #c7c7c7;
     }
+
+    .miner-lookup {
+        float: right;
+        margin: 0 0 8px 0;
+    }
+
+    .miner-lookup input {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .lookup-msg {
+        display: block;
+        color: #b00020;
+    }
+
+    .lookup-msg:empty {
+        display: none;
+    }
+
+    @media (max-width: 47.999em) {
+        .miner-lookup {
+            float: none;
+            margin-bottom: 8px;
+        }
+    }
 </style>
 <script type="text/javascript">
-    function searchKeyPress(e) {
-        // look for window.event in case event isn't passed in
-        e = e || window.event;
-        if (e.keyCode == 13) {
-            document.getElementById('btnSearch').click();
+    // Miner Lookup: each pool section has its own small form.
+    // A form submit covers the button, the Enter key and the phone "Go" key.
+    function minerLookupUrl(value) {
+        var address = String(value == null ? '' : value).trim();
+        if (!address) return null;
+        // dgb1... addresses are not case sensitive, and the pool stores them in lower case.
+        if (/^dgb1/i.test(address)) address = address.toLowerCase();
+        try {
+            return '/workers/' + encodeURIComponent(address);
+        } catch (e) {
+            return null; // broken text (a lone surrogate) cannot be put in a URL
+        }
+    }
+    function minerLookupSubmit(form) {
+        var input = form.querySelector('input[name="lookup"]');
+        var msg = form.querySelector('.lookup-msg');
+        var url = minerLookupUrl(input ? input.value : '');
+        if (!url) {
+            if (msg) msg.textContent = 'Type your DigiByte (DGB) address first.';
+            if (input) input.focus();
             return false;
         }
-        return true;
+        if (msg) msg.textContent = '';
+        window.location.href = url;
+        return false;
     }
-    $(document).ready(function () {
-        $('.btn-lg').click(function () {
-            window.location = "workers/" + $('.input-lg').val();
-        });
-    });
 </script>
 {{ function capitalizeFirstLetter(t){return t.charAt(0).toUpperCase()+t.slice(1)} }}
+{{ function safeUri(t){ try { return encodeURIComponent(String(t)); } catch (e) { return ''; } } }}
 <h1 class="page-title">DigiHash Worker Stats</h1>
 {{ var i=0; for(var pool in it.stats.pools) { }}
 <div id="topPool">
     <div class="poolWrapper">
         <div class="poolLabel">
-            <span style="float:right; margin-bottom: 8px;">
+            <form class="miner-lookup" action="/workers" method="get" onsubmit="return minerLookupSubmit(this);">
                 <small><label>Miner Lookup:
-                        <input type="text" class="form-control input-lg" name="lookup"
-                            onkeypress="return searchKeyPress(event);">
+                        <input type="text" class="form-control input-lg" name="lookup" enterkeyhint="go"
+                            autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+                            placeholder="Your DGB address">
                     </label>
-                    <span class="input-group-btn">
-                        <button class="btn btn-default btn-lg" type="button">Lookup</button>
-                    </span>
+                    <button class="btn btn-default btn-lg" type="submit">Lookup</button>
+                    <span class="lookup-msg" role="status" aria-live="polite"></span>
                 </small>
-            </span>
+            </form>
             {{=capitalizeFirstLetter(it.stats.pools[pool].name)}} Top Miners &nbsp;&nbsp;
             <small><i class="fas fa-users fa-fw"></i> <span
                     id="statsMiners{{=pool}}">{{=it.stats.pools[pool].minerCount}}</span> Miners &nbsp;&nbsp;
@@ -84,8 +123,8 @@
                 {{ for(var worker in it.stats.pools[pool].miners) { }}
                 {{var workerstat = it.stats.pools[pool].miners[worker];}}
                 <tr class="pure-table-odd">
-                    <td><a href="/workers/{{=worker.split('.')[0]}}">{{=worker}}</a></td>
-                    <td>{{=Math.round(workerstat.currRoundShares * 100) / 100}}</td>
+                    <td class="addr-cell"><a href="/workers/{{!safeUri(worker.split('.')[0])}}" title="{{!worker}}">{{!worker}}</a></td>
+                    <td>{{=Math.round((+workerstat.currRoundShares || 0) * 100) / 100}}</td>
                     <td>{{? workerstat.shares > 0}} {{=Math.floor(10000 * workerstat.shares / (workerstat.shares +
                         workerstat.invalidshares)) / 100}}% {{??}} 0% {{?}}</td>
                     <td>{{=workerstat.hashrateString}}</td>

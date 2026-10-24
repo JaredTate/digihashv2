@@ -418,7 +418,7 @@ d.toString().match(/GMT([+-]\d{4})/)[0].replace('GMT', 'UTC') + ' ' +
     document.querySelector('main').appendChild(document.createElement('script')).src = '/static/stats.js';
 </script>
 <script>
-    window.statsSource = new EventSource("/api/live_stats");
+    // The live-stats stream (statsSource) is opened once per page by /static/main.js.
     $(function () {
         statsSource.addEventListener('message', function (e) {
             if (document.hidden) return;

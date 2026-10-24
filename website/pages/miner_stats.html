@@ -80,22 +80,38 @@
     .boxStatsList>div>div {
         padding: 3px;
     }
+
+    .miner-not-found {
+        clear: both;
+        padding: 24px 18px;
+        font-size: 1.1em;
+        text-align: center;
+    }
 </style>
 
+{{ var minerAddress = String((it.stats && it.stats.address) || '').split('.')[0]; }}
+{{ function jsString(v) {
+    var bs = String.fromCharCode(92);
+    return JSON.stringify(String(v)).split('<').join(bs + 'u003c')
+        .split(String.fromCharCode(8232)).join(bs + 'u2028').split(String.fromCharCode(8233)).join(bs + 'u2029');
+} }}
 <div id="topCharts">
     <div class="chartWrapper">
         <div class="chartLabel">
             <!--<div style="float:left; padding-right: 18px;"><i class="fa fa-users"></i><span id="statsWorkers">...</span></div>-->
-            <div style="float:left; margin-right: 9px;">{{!String(it.stats.address).split(".")[0]}}</div>
-            <div style="float:right; padding-left: 18px;"><small><i class="fas fa-tachometer fa-fw"></i> <span
+            <div style="float:left; margin-right: 9px;">{{!minerAddress}}</div>
+            <div class="minerData" style="float:right; padding-left: 18px;"><small><i class="fas fa-tachometer fa-fw"></i> <span
                         id="statsHashrateAvg">...</span> (Avg)</small></div>
-            <div style="float:right; padding-left: 18px;"><small><i class="fas fa-tachometer fa-fw"></i> <span
+            <div class="minerData" style="float:right; padding-left: 18px;"><small><i class="fas fa-tachometer fa-fw"></i> <span
                         id="statsHashrate">...</span> (Now)</small></div>
-            <div style="float:right; padding-left: 18px;"><small><i class="fas fa-gavel fa-fw"></i> Luck <span
+            <div class="minerData" style="float:right; padding-left: 18px;"><small><i class="fas fa-gavel fa-fw"></i> Luck <span
                         id="statsLuckDays">...</span></small></div>
         </div>
-        <div class="chartHolder"><svg id="workerHashrate"></svg></div>
-        <div>
+        <div id="minerNotFound" class="miner-not-found" role="status" style="display: none;">
+            No miner found for this address yet. Check the address, or wait a few minutes after you start mining.
+        </div>
+        <div class="chartHolder minerData"><svg id="workerHashrate"></svg></div>
+        <div class="minerData">
             <div style="float:right; padding-top: 9px; padding-right: 18px;"><i class="fas fa-chart-bar fa-fw"></i>
                 Shares: <span id="statsTotalShares">...</span></div>
             <div style="float:left; padding-top: 9px; padding-left: 18px; padding-right: 18px;"><i
@@ -111,8 +127,7 @@
 <div id="boxesWorkers"> </div>
 
 <script>
-    var _miner = "{{!String(it.stats.address).split('.')[0]}}";
+    var _miner = {{=jsString(minerAddress)}};
     var _workerCount = 0;
-    window.statsSource = new EventSource("/api/live_stats");
     document.querySelector('main').appendChild(document.createElement('script')).src = '/static/miner_stats.js';
 </script>

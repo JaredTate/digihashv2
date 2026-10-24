@@ -4,10 +4,6 @@
         flex-direction: row;
     }
 
-    .glow{
-        box-shadow: inset 0 0 12px 4px #ff6c00;
-    }
-
     .hidden{
         display: none !important;
     }
@@ -67,11 +63,51 @@
         color: #ebf4fa;
     }
 
-    .miningOption:first-child{
+    #nompAppDownload{
         background-color: #0066CC;
     }
-    .miningOption:last-child{
+    #coinPicker{
         background-color: #003366;
+    }
+    #coinPicker label{
+        display: block;
+    }
+    .select-caret{
+        position: relative;
+        display: inline-block;
+        max-width: 100%;
+        margin-top: 8px;
+    }
+    .select-caret select{
+        font-size: 16px;
+        padding: 10px 40px 10px 12px;
+        border: 1px solid #7f878b;
+        border-radius: 4px;
+        max-width: 100%;
+    }
+    .select-caret::after{
+        content: '\25BE';
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #ffffff;
+        pointer-events: none;
+    }
+    #gsBasics{
+        margin-top: 18px;
+        padding: 4px 18px 8px 18px;
+        background-color: #ffffff;
+        border: 1px solid #c2cacf;
+        overflow-wrap: anywhere;
+    }
+    #gsBasics h2{
+        font-size: 1.3em;
+        font-weight: normal;
+        margin: 12px 0 4px 0;
+    }
+    #gsBasics li{
+        margin: 6px 0;
     }
     .miningOptionNum{
         font-size: 6em;
@@ -110,65 +146,70 @@
 
     #coinInfoBackground{
         transition-duration: 400ms;
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
+        z-index: 1000;
         background-color: black;
         opacity: 0.0;
     }
+    /* Miner settings pop-up: never wider or taller than the screen; scrolls inside */
     #coinInfo{
         display: flex;
         flex-direction: column;
         color: white;
         width: 750px;
-        min-height: 400px;
-        top: 50px;
+        max-width: calc(100vw - 24px);
+        max-height: calc(100vh - 24px);
+        overflow-y: auto;
+        box-sizing: border-box;
+        padding: 0 16px 24px 16px;
+        top: 50%;
         left: 50%;
-        margin-left: -375px;
-        position: absolute;
+        transform: translate(-50%, -50%);
+        position: fixed;
+        z-index: 1001;
         background-color: #0066CC;
     }
     #coinInfo .coinInfoName{
         text-transform: capitalize;
     }
-    #coinInfo > div:first-of-type{
+    #coinInfoTitle{
         font-size: 1.8em;
         text-align: center;
-        margin-top: 40px;
-        margin-bottom: 35px;
+        margin-top: 20px;
+        margin-bottom: 24px;
+        padding: 0 44px;
     }
     #coinInfoRows{
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        flex: 1 1 auto;
-        margin-bottom: 70px;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 6px 24px;
+        margin: 0 auto 20px auto;
+        max-width: 100%;
     }
-    #coinInfoRows > div{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-    #coinInfoRows > div > div{
-        padding: 3px;
-    }
-    #coinInfoRowKeys{
+    .coinInfoKey{
         font-weight: bold;
-        padding-right: 30px;
     }
-    #coinInfoRowKeys .coinInfoSubtle{
-        font-weight: normal;
+    .coinInfoValue{
+        overflow-wrap: anywhere;
     }
-    #coinInfoRowValues{
-
+    .coinInfoHelp{
+        max-width: 560px;
+        margin: 0 auto;
     }
+    /* Sticky: stays in the top-right corner while the pop-up scrolls */
     #coinInfoClose{
-        position: absolute;
-        font-size: 3em;
+        position: sticky;
         top: 0;
-        right: 0;
+        align-self: flex-end;
+        flex: none;
+        z-index: 1;
+        margin: 0 -16px -60px 0;
+        font-size: 3em;
+        line-height: 60px;
         width: 60px;
         height: 60px;
         text-align: center;
@@ -178,8 +219,71 @@
     #coinInfoClose:hover{
         color: #50f0e3;
     }
+
+    @media (max-width: 47.999em) {
+        #holder { flex-direction: column; }
+        #menu { order: 2; }
+        #main { margin: 12px; }
+        .miningOptionNum{
+            font-size: 3em;
+            width: 60px;
+            padding-right: 10px;
+        }
+        .miningOptionInstructions > div:first-child{
+            font-size: 1.6em;
+        }
+        .miningOptionInstructions > div:last-child{
+            font-size: 1.1em;
+        }
+        #coinInfoTitle{
+            font-size: 1.4em;
+        }
+        #coinInfoRows{
+            grid-template-columns: minmax(0, 1fr);
+            gap: 2px;
+        }
+        .coinInfoKey{
+            margin-top: 8px;
+        }
+    }
 </style>
 
+{{
+    /* Fee, payout and algorithm names come from pool_configs, so this page cannot drift from the pool. */
+    var ALGO_NAMES = { sha256d: 'SHA256', scrypt: 'Scrypt', skein: 'Skein', qubit: 'Qubit', odo: 'Odocrypt', groestlmyriad: 'Groestl' };
+    var ALGO_ORDER = ['sha256d', 'scrypt', 'skein', 'qubit', 'odo', 'groestlmyriad'];
+    function poolFee(cfg) {
+        var fee = 0;
+        var r = (cfg && cfg.rewardRecipients) || {};
+        for (var a in r) fee += Number(r[a]) || 0;
+        return Math.round(fee * 100) / 100;
+    }
+    function joinNames(a) {
+        return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+    }
+    var gsHost = (it.portalConfig && it.portalConfig.website && it.portalConfig.website.stratumHost) || 'digihash.digibyte.io';
+    var feeGroups = [], feeIndex = {}, minPayouts = [], payIntervals = [];
+    var poolAlgos = {};
+    for (var gp in it.poolsConfigs) {
+        var gcfg = it.poolsConfigs[gp] || {};
+        var galgo = (gcfg.coin && gcfg.coin.algorithm) || gp;
+        poolAlgos[gp] = ALGO_NAMES[galgo] || galgo;
+        var gfee = poolFee(gcfg);
+        if (!(gfee in feeIndex)) { feeIndex[gfee] = feeGroups.length; feeGroups.push({ fee: gfee, algos: [] }); }
+        feeGroups[feeIndex[gfee]].algos.push(galgo);
+        var gpp = gcfg.paymentProcessing || {};
+        if (gpp.minimumPayment != null && minPayouts.indexOf(gpp.minimumPayment) < 0) minPayouts.push(gpp.minimumPayment);
+        if (gpp.paymentInterval && payIntervals.indexOf(gpp.paymentInterval) < 0) payIntervals.push(gpp.paymentInterval);
+    }
+    feeGroups.sort(function (a, b) { return b.fee - a.fee; });
+    var feeText = feeGroups.map(function (g) {
+        g.algos.sort(function (a, b) {
+            var ia = ALGO_ORDER.indexOf(a), ib = ALGO_ORDER.indexOf(b);
+            return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+        });
+        return g.fee + '% on ' + joinNames(g.algos.map(function (x) { return ALGO_NAMES[x] || x; }));
+    }).join('; ');
+}}
 <h1 class="page-title">Getting Started: How to Mine DigiByte on DigiHash</h1>
 <div id="holder">
 
@@ -219,10 +323,12 @@
                     coin: it.poolsConfigs[pool].coin,
                     algo: it.poolsConfigs[pool].coin.algorithm,
                     ports: it.poolsConfigs[pool].ports,
-                    host: it.portalConfig.website.stratumHost
+                    host: it.portalConfig.website.stratumHost,
+                    fee: poolFee(it.poolsConfigs[pool]),
+                    minPayment: (it.poolsConfigs[pool].paymentProcessing || {}).minimumPayment
                 }).replace(/"/g, '&quot;');
             }}
-            <a href="#" class="poolOption" data-info="{{=info}}">{{=pool}}</a>
+            <a href="#" class="poolOption" data-pool="{{!pool}}" data-info="{{=info}}">{{=pool}}</a>
             {{ } }}
         </div>
     </div>
@@ -239,68 +345,98 @@
             <div id="orLine"></div>
             <div id="orText">or</div>
         </div>
-        <a href="#" class="miningOption" id="coinGlowTrigger">
+        <div class="miningOption" id="coinPicker">
             <div class="miningOptionNum">2.</div>
             <div class="miningOptionInstructions">
-                <div>Select a coin for connection details</div>
-                <div>Configurations for each coin are available for advanced miners</div>
+                <div>Connect your own miner</div>
+                <div>
+                    <label for="coinSelect">Choose your algorithm to see the server address and ports:</label>
+                    <span class="select-caret"><select id="coinSelect">
+                        <option value="">Select an algorithm</option>
+                        {{ for (var sp in it.poolsConfigs) { }}
+                        <option value="{{!sp}}">{{!poolAlgos[sp]}} ({{!sp}})</option>
+                        {{ } }}
+                    </select></span>
+                </div>
             </div>
-        </a>
+        </div>
+
+        <div id="gsBasics">
+            <h2>Before you start</h2>
+            <ul>
+                <li><b>Username:</b> any normal DigiByte (DGB) address you own. You do not need a separate
+                    wallet for each algorithm. To name a miner, add a dot and a name, for example
+                    <code>YOUR-ADDRESS.rig1</code>.</li>
+                <li><b>Password:</b> anything, for example <code>x</code>.</li>
+                <li><b>Server:</b> <code>stratum+tcp://{{!gsHost}}:PORT</code>. Pick the algorithm your miner
+                    supports in step 2 to see its ports. Each algorithm has a few ports with different starting
+                    difficulty: use the lowest for one small miner and the highest for a large farm. The pool then
+                    adjusts the difficulty for you.</li>
+                {{? feeText }}<li><b>Pool fee:</b> {{!feeText}}.</li>{{?}}
+                {{? minPayouts.length === 1 }}<li><b>Minimum payout: {{!minPayouts[0]}} DGB.</b> Payouts go to your
+                    address automatically when your balance reaches this amount.{{? payIntervals.length === 1 }} The
+                    pool checks every {{!Math.max(1, Math.round(payIntervals[0] / 60))}} minutes.{{?}} New rewards show
+                    as "Immature" until the block is confirmed.</li>{{?}}
+                <li><b>Your stats:</b> open <code>{{!gsHost}}/workers/YOUR-ADDRESS</code>, or use Miner Lookup on
+                    the <a href="/workers">Workers Stats</a> page. Stats appear a few minutes after you start
+                    mining.</li>
+            </ul>
+        </div>
     </div>
 </div>
 
 <a href="#" id="coinInfoBackground" class="hidden"></a>
 
-<div id="coinInfo" class="hidden">
-    <a href="#" id="coinInfoClose">×</a>
-    <div><span class="coinInfoName"></span> Configuration:</div>
-    <div id="coinInfoRows">
-        <div id="coinInfoRowKeys">
-            <div>Username:</div>
-            <div>Password:</div>
-        </div>
-        <div id="coinInfoRowValues">
-            <div id="coinInfoUsername"></div>
-            <div>anything</div>
-        </div>
-    </div>
+<div id="coinInfo" class="hidden" role="dialog" aria-modal="true" aria-labelledby="coinInfoTitle">
+    <a href="#" id="coinInfoClose" aria-label="Close">×</a>
+    <div id="coinInfoTitle"><span class="coinInfoName"></span> Configuration:</div>
+    <div id="coinInfoRows"></div>
+    <div class="coinInfoHelp">Pick the port that fits your miner: the lowest difficulty for one small miner,
+        the highest for a large farm. The pool then adjusts the difficulty for you.</div>
 </div>
 
 <script>
 
-    function showCoinConfig(info){
-
-        var htmlKeys = '<div class="coinInfoData">Algorithm:</div>';
-        var htmlValues = '<div class="coinInfoData">' + info.algo + '</div>';
-
-        for (var port in info.ports){
-            htmlKeys += '<div class="coinInfoData">URL <span class="coinInfoSubtle">(difficulty ' + info.ports[port].diff + ')</span>:</div>';
-            htmlValues += '<div class="coinInfoData">stratum+tcp://' + info.host + ':' + port + '</div>';
-        }
-
-        if (info.coin)
-            $('#coinInfoUsername').text('your ' + info.coin.name + ' wallet address');
-        else
-            $('#coinInfoUsername').text('your public key');
-        $('.coinInfoData').remove();
-        $('#coinInfoRowKeys').append(htmlKeys);
-        $('#coinInfoRowValues').append(htmlValues);
+    function coinInfoRow(key, value) {
+        $('#coinInfoRows')
+            .append($('<div class="coinInfoKey"></div>').text(key))
+            .append($('<div class="coinInfoValue"></div>').text(value));
     }
 
-    $('#coinGlowTrigger').click(function(event){
-        event.preventDefault();
-        $('.menuList').addClass('glow');
-        setTimeout(function(){
-            $('.menuList').removeClass('glow');
-        }, 200);
-        return false;
+    function showCoinConfig(info){
+        $('#coinInfoRows').empty();
+        $('.coinInfoName').text(info.coin ? info.coin.name : info.algo);
+        coinInfoRow('Algorithm:', info.algo);
+        for (var port in info.ports){
+            coinInfoRow('URL (difficulty ' + info.ports[port].diff + '):', 'stratum+tcp://' + info.host + ':' + port);
+        }
+        if (info.coin)
+            coinInfoRow('Username:', 'any DigiByte (DGB) address you own. Optional: add .rig1 to name a miner.');
+        else
+            coinInfoRow('Username:', 'your public key');
+        coinInfoRow('Password:', 'anything, for example x');
+        if (typeof info.fee === 'number') coinInfoRow('Pool fee:', info.fee + '%');
+        if (info.minPayment != null) coinInfoRow('Minimum payout:', info.minPayment + ' DGB');
+        coinInfoRow('Your stats:', info.host + '/workers/YOUR-ADDRESS');
+    }
+
+    function openCoinInfo(info) {
+        showCoinConfig(info);
+        $('#coinInfoBackground,#coinInfo').removeClass('hidden');
+        $('#coinInfoBackground').css('opacity', 0.7);
+        $('#coinInfo').scrollTop(0);
+    }
+
+    $('#coinSelect').on('change', function () {
+        var value = this.value;
+        if (!value) return;
+        var link = $('#coinList .poolOption').filter(function () { return $(this).attr('data-pool') === value; });
+        if (link.length) openCoinInfo(link.data('info'));
     });
 
     $('.poolOption').click(function(event){
         event.preventDefault();
-        showCoinConfig($(this).data('info'));
-        $('#coinInfoBackground,#coinInfo').removeClass('hidden');
-        $('#coinInfoBackground').css('opacity', 0.7);
+        openCoinInfo($(this).data('info'));
         return false;
     });
 
@@ -308,12 +444,7 @@
         event.preventDefault();
         $('#coinInfoBackground,#coinInfo').addClass('hidden');
         $('#coinInfoBackground').css('opacity', 0.0);
-        return false;
-    });
-
-    $('#nompAppDownload').click(function(event){
-        event.preventDefault();
-        alert('NOMP App development still in progress...');
+        $('#coinSelect').val('');
         return false;
     });
 </script>

@@ -25,6 +25,7 @@ main {
 }
 
 footer {
+    overflow-wrap: anywhere; /* the long donate address must not widen a 320 px phone */
     text-align: center;
     color: #b3b3b3;
     text-decoration: none;
@@ -182,7 +183,18 @@ option:checked {
 /* Wide tables scroll inside their own box instead of widening the page */
 .poolMinerTable {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     clear: both;
+}
+
+/* Long miner addresses: cut with "..." (full address in the title and the link) */
+.poolMinerTable .addr-cell a {
+    display: inline-block;
+    max-width: 32em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: bottom;
 }
 
 @media (max-width: 47.999em) {
@@ -251,6 +263,20 @@ option:checked {
     .chartHolder {
         overflow-x: auto;
         clear: both;
+    }
+
+    /* Tables: smaller text and padding so more columns fit; the rest scrolls sideways */
+    .poolMinerTable table {
+        font-size: 0.85em;
+    }
+
+    .poolMinerTable th,
+    .poolMinerTable td {
+        padding: 0.5em 0.4em;
+    }
+
+    .poolMinerTable .addr-cell a {
+        max-width: 7.5em;
     }
 }
 h1.page-title {
