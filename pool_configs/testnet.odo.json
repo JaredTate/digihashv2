@@ -21,8 +21,8 @@
         "daemon": {
             "host": "127.0.0.1",
             "port": 14090,
-            "user": "user",
-            "password": "password"
+            "user": "SET_IN_SECRETS_JSON",
+            "password": "SET_IN_SECRETS_JSON"
         }
     },
 
@@ -77,8 +77,8 @@
         {
             "host": "127.0.0.1",
             "port": 14090,
-            "user": "user",
-            "password": "password"
+            "user": "SET_IN_SECRETS_JSON",
+            "password": "SET_IN_SECRETS_JSON"
         }
     ],
 

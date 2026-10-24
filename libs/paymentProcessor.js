@@ -33,7 +33,7 @@ module.exports = function (logger) {
             var logComponent = coin;
 
             logger.debug(logSystem, logComponent, 'Payment processing setup with daemon ('
-                + processingConfig.daemon.user + '@' + processingConfig.daemon.host + ':' + processingConfig.daemon.port
+                + processingConfig.daemon.host + ':' + processingConfig.daemon.port
                 + ') and redis (' + poolOptions.redis.host + ':' + poolOptions.redis.port + ')');
         });
     });

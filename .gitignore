@@ -400,3 +400,6 @@ FodyWeavers.xsd
 # zny-nomp
 config.json
 package-lock.json
+
+# DigiHash: daemon RPC credentials (see SECRETS.md)
+pool_configs/secrets.json

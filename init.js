@@ -13,6 +13,7 @@ var PoolWorker = require('./libs/poolWorker.js');
 var PaymentProcessor = require('./libs/paymentProcessor.js');
 var Website = require('./libs/website.js');
 var ProfitSwitch = require('./libs/profitSwitch.js');
+var poolSecrets = require('./libs/poolSecrets.js');
 
 var algos = require('stratum-pool/lib/algoProperties.js');
 
@@ -92,12 +93,29 @@ var buildPoolConfigs = function () {
 
     var poolConfigFiles = [];
 
+    /* Daemon RPC credentials live outside the tracked configs. See SECRETS.md. */
+    var rpcSecrets;
+    try {
+        rpcSecrets = poolSecrets.loadSecretsFile(poolSecrets.SECRETS_FILE);
+    } catch (e) {
+        logger.error('Master', 'Secrets', e.message);
+        process.exit(1);
+        return;
+    }
 
     /* Get filenames of pool config json files that are enabled */
     fs.readdirSync(configDir).forEach(function (file) {
         if (!fs.existsSync(configDir + file) || path.extname(configDir + file) !== '.json') return;
+        if (configDir + file === poolSecrets.SECRETS_FILE) return;
         var poolOptions = JSON.parse(JSON.minify(fs.readFileSync(configDir + file, { encoding: 'utf8' })));
         if (!poolOptions.enabled) return;
+        try {
+            poolSecrets.applyRpcSecrets(poolOptions, file, rpcSecrets, process.env);
+        } catch (e) {
+            logger.error('Master', file, e.message);
+            process.exit(1);
+            return;
+        }
         poolOptions.fileName = file;
         poolConfigFiles.push(poolOptions);
     });

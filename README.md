@@ -54,11 +54,15 @@ cd .digibyte-odo
 nano digibyte.conf 
 
 ```
+Use a unique, long random `rpcpassword` for each node. The pool reads the matching
+user and password from `pool_configs/secrets.json` or env vars, never from the tracked
+pool configs. See [SECRETS.md](SECRETS.md).
+
 Scrypt Conf:
 ```
 algo=scrypt
-rpcuser=user
-rpcpassword=password
+rpcuser=<rpc-user>
+rpcpassword=<long-random-password>
 rpcport=14022
 port=12024
 server=1
@@ -70,8 +74,8 @@ maxconnections=128
 Sha256 Conf:
 ```
 algo=sha256d
-rpcuser=user
-rpcpassword=password
+rpcuser=<rpc-user>
+rpcpassword=<long-random-password>
 rpcport=14011
 port=12021
 server=1
@@ -83,8 +87,8 @@ maxconnections=128
 Skein Conf:
 ```
 algo=skein
-rpcuser=user
-rpcpassword=password
+rpcuser=<rpc-user>
+rpcpassword=<long-random-password>
 rpcport=14033
 port=12022
 server=1
@@ -96,8 +100,8 @@ maxconnections=128
 Qubit Conf:
 ```
 algo=qubit
-rpcuser=user
-rpcpassword=password
+rpcuser=<rpc-user>
+rpcpassword=<long-random-password>
 rpcport=14044
 port=12020
 server=1
@@ -109,8 +113,8 @@ maxconnections=128
 Odo Conf:
 ```
 algo=odo
-rpcuser=user
-rpcpassword=password
+rpcuser=<rpc-user>
+rpcpassword=<long-random-password>
 rpcport=14055
 port=12023
 server=1
@@ -183,7 +187,7 @@ Follow the build/install instructions for your coin daemon. Your coin.conf file 
 ```
 daemon=1
 rpcuser=username
-rpcpassword=password
+rpcpassword=<long-random-password>
 rpcport=9252
 ```
 For redundancy, its recommended to have at least two daemon instances running in case one drops out-of-sync or offline,

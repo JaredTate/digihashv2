@@ -34,7 +34,7 @@
     },
     "scripts": {
         "start": "node init.js",
-        "test": "npm start"
+        "test": "node --test \"test/*.test.js\""
     },
     "repository": {
         "type": "git",
