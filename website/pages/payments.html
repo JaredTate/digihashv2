@@ -34,6 +34,8 @@
 {{ function capitalizeFirstLetter(t){return t.charAt(0).toUpperCase()+t.slice(1)} }}
 {{ function readableDate(a) {
 var d = new Date(parseInt(a));
+if (isNaN(d.getTime())) return '';
+return d.toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
 } }}
 {{ for(var pool in it.stats.pools) { }}
 <div id="topPool">

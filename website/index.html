@@ -92,7 +92,7 @@
             This site is powered by <a target="_blank" href="https://github.com/JaredTate/digihashv2">DigiHashv2</a>
             project forked from <a target="_blank" href="https://github.com/ROZ-MOFUMOFU-ME/">ROZ</a>, 
             created by Jared Tate and is
-            licensed under the <a href="https://en.wikipedia.org/wiki/MIT_License">MIT License</a>. Project supported by the  <a target="_blank" href="https://digibyte.org">DigiByte Developers</a> © 2025<br>
+            licensed under the <a href="https://en.wikipedia.org/wiki/MIT_License">MIT License</a>. Project supported by the  <a target="_blank" href="https://digibyte.org">DigiByte Developers</a> © {{=new Date().getFullYear()}}<br>
             <i class="fas fa-heart fa-fw"></i>&nbsp;Donate&nbsp;
             <i class="fas fa-digibyte-sign fa-fw"></i>&nbsp;DGB:&nbsp;dgb1qf6rxawqk6chveffxqstdpvr428yekf73hz4sjt <br>
             <iframe src="https://ghbtns.com/github-btn.html?user=JaredTate&repo=digihashv2&type=star&count=true"
@@ -167,10 +167,11 @@
                 const translations = await loadTranslations();
                 document.querySelectorAll('[data-lang-key]').forEach(element => {
                     const key = element.getAttribute('data-lang-key');
-                    element.textContent = translations[lang][key] || translations['en'][key];
+                    element.textContent = (translations[lang] || {})[key] || (translations['en'] || {})[key] || element.textContent;
                 });
                 document.documentElement.lang = lang;
-                document.getElementById('language-select').value = lang;
+                var select = document.getElementById('language-select');
+                if (select) select.value = lang;
             }
 
             function getServerLanguage() {
@@ -178,9 +179,12 @@
             }
 
             setLanguage(getServerLanguage());
-            document.getElementById('language-select').addEventListener('change', function () {
-                setLanguage(this.value);
-            });
+            var select = document.getElementById('language-select');
+            if (select) {
+                select.addEventListener('change', function () {
+                    setLanguage(this.value);
+                });
+            }
         });
     </script>
 </body>

@@ -21,7 +21,7 @@ function getReadableHashRateString(hashrate){
 }
 
 function getReadableLuckTime(lucktime){
-        var luck = lucktime;
+        var luck = parseFloat(lucktime); // the API sends luckDays as a string
         var timeUnits = [ ' Days', ' Hours', ' Minutes' ];
         if (luck < 1) {
                 luck = luck * 24;
