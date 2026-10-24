@@ -203,7 +203,24 @@ option:checked {
     }
 
     .custom-wrapper.open {
-        height: 20em;
+        height: 22.5em;
+    }
+
+    /* Phone menu: the DigiByte.org and DGBAT links have no pure-menu-link
+       class, so give them the same look as the other menu items */
+    .custom-menu li > a:not(.pure-menu-link) {
+        display: block;
+        padding: 0.5em 1em;
+        color: #b3b3b3;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .custom-menu li > a:not(.pure-menu-link):hover,
+    .custom-menu li > a:not(.pure-menu-link):focus,
+    .custom-menu li > a:not(.pure-menu-link):active {
+        background: #444444;
+        color: #ffffff;
     }
 
     /* Worker page: the long miner address may wrap */
