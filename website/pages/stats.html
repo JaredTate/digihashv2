@@ -239,7 +239,7 @@ d.toString().match(/GMT([+-]\d{4})/)[0].replace('GMT', 'UTC') + ' ' +
                 <!--<div id="{{=it.stats.pools[pool].name}}NewBlocks"></div>-->
                 {{ for(var b in it.stats.pools[pool].pending.blocks) { }}
                 {{ var block = it.stats.pools[pool].pending.blocks[b].split(":"); }}
-                <div style="margin-bottom: 9px; background-color: #eee; min-width:600px;">
+                <div style="margin-bottom: 9px; background-color: #eee; min-width:min(600px, 100%);">
                     <i class="fas fa-bars fa-fw"></i>
                     <small>Block:</small>
                     {{ if (it.poolsConfigs[pool].coin.explorer && it.poolsConfigs[pool].coin.explorer.blockURL) { }}
@@ -268,7 +268,7 @@ d.toString().match(/GMT([+-]\d{4})/)[0].replace('GMT', 'UTC') + ' ' +
                 {{ } }}
                 {{ var i=0; for(var b in it.stats.pools[pool].confirmed.blocks) { }}
                 {{ if (i < 8) { i++; }} {{ var block=it.stats.pools[pool].confirmed.blocks[b].split(":"); }} <div
-                    style="margin-bottom: 9px; background-color: #eeeeee; min-width:600px;">
+                    style="margin-bottom: 9px; background-color: #eeeeee; min-width:min(600px, 100%);">
                     <i class="fas fa-bars fa-fw"></i>
                     <small>Block:</small>
                     {{ if (it.poolsConfigs[pool].coin.explorer && it.poolsConfigs[pool].coin.explorer.blockURL) { }}

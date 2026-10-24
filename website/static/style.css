@@ -179,6 +179,12 @@ option:checked {
     color: #ffffff;
 }
 
+/* Wide tables scroll inside their own box instead of widening the page */
+.poolMinerTable {
+    overflow-x: auto;
+    clear: both;
+}
+
 @media (max-width: 47.999em) {
 
     .custom-menu {
@@ -187,5 +193,46 @@ option:checked {
 
     .custom-toggle {
         display: block;
+        height: 48px;
+    }
+
+    /* Phone menu: only the header row shows until the toggle is tapped */
+    .custom-wrapper {
+        height: 3.75em;
+        overflow: hidden;
+    }
+
+    .custom-wrapper.open {
+        height: 20em;
+    }
+
+    /* Worker page: the long miner address may wrap */
+    .chartLabel {
+        overflow-wrap: anywhere;
+    }
+
+    /* Home page: stack the logo above the welcome text */
+    #boxWelcome > .pure-u-1-3,
+    #boxWelcome > .pure-u-2-3 {
+        width: 100%;
+    }
+
+    /* Stats page: stack the three boxes, and let wide charts scroll in place */
+    #boxesLower > .pure-u-1-3 {
+        width: 100%;
+    }
+
+    #boxesLower > div > div {
+        min-width: 0;
+        overflow-wrap: break-word;
+    }
+
+    #boxesLower .boxStatsList > div {
+        box-sizing: border-box;
+    }
+
+    .chartHolder {
+        overflow-x: auto;
+        clear: both;
     }
 }
