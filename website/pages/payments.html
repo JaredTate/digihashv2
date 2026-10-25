@@ -31,7 +31,7 @@
         text-overflow: ellipsis;
     }
 </style>
-{{ function capitalizeFirstLetter(t){return t.charAt(0).toUpperCase()+t.slice(1)} }}
+{{ function capitalizeFirstLetter(t){return (t.charAt(0).toUpperCase()+t.slice(1)).replace(/^Digibyte/,'DigiByte')} }}
 {{ function readableDate(a) {
 var d = new Date(parseInt(a));
 if (isNaN(d.getTime())) return '';
@@ -46,7 +46,7 @@ return d.toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
             <span style="float:right;">
                 <small>
                     <i class="fas fa-cubes fa-fw"></i> <span
-                        id="statsValidBlocks{{=pool}}">{{=it.stats.pools[pool].poolStats.validBlocks}}</span> Blocks
+                        id="statsValidBlocks{{=pool}}">{{=(+it.stats.pools[pool].blocks.pending||0)+(+it.stats.pools[pool].blocks.confirmed||0)+(+it.stats.pools[pool].blocks.orphaned||0)}}</span> Blocks
                     &nbsp;&nbsp;
                     <i class="fas fa-money-bill fa-fw"></i> Paid: <span
                         id="statsTotalPaid{{=pool}}">{{=(parseFloat(it.stats.pools[pool].poolStats.totalPaid)).toFixed(8)}}</span>

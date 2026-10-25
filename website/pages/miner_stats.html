@@ -61,7 +61,6 @@
         display: flex;
         flex-flow: row wrap;
         justify-content: space-around;
-        opacity: 0.77;
         margin-bottom: 5px;
         flex: 1 1 auto;
         align-content: center;
@@ -104,7 +103,7 @@
                         id="statsHashrateAvg">...</span> (Avg)</small></div>
             <div class="minerData" style="float:right; padding-left: 18px;"><small><i class="fas fa-tachometer fa-fw"></i> <span
                         id="statsHashrate">...</span> (Now)</small></div>
-            <div class="minerData" style="float:right; padding-left: 18px;"><small><i class="fas fa-gavel fa-fw"></i> Luck <span
+            <div class="minerData" style="float:right; padding-left: 18px;"><small><i class="fas fa-gavel fa-fw"></i> <span class="hint" title="About how long this miner needs, on average, to find one block alone at its hashrate now" style="border-bottom: 1px dotted currentColor;">Luck</span> <span
                         id="statsLuckDays">...</span></small></div>
         </div>
         <div id="minerNotFound" class="miner-not-found" role="status" style="display: none;">
@@ -113,7 +112,7 @@
         <div class="chartHolder minerData"><svg id="workerHashrate"></svg></div>
         <div class="minerData">
             <div style="float:right; padding-top: 9px; padding-right: 18px;"><i class="fas fa-chart-bar fa-fw"></i>
-                Shares: <span id="statsTotalShares">...</span></div>
+                <span title="Work sent since the pool last found a block on this algorithm">Round shares:</span> <span id="statsTotalShares">...</span></div>
             <div style="float:left; padding-top: 9px; padding-left: 18px; padding-right: 18px;"><i
                     class="fas fa-money-bill-alt fa-fw"></i> Immature: <span id="statsTotalImmature">...</span> </div>
             <div style="float:left; padding-top: 9px; padding-left: 18px; padding-right: 18px;"><i

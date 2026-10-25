@@ -203,7 +203,7 @@ test('worker page: real data shows units and hides the message', () => {
     assert.equal(out.text['#statsTotalPaid'], '216,072.19822761 DGB');
     assert.equal(out.text['#statsTotalBal'], '0.12345678 DGB');
     assert.equal(out.text['#statsTotalImmature'], '1.5 DGB');
-    assert.equal(out.text['#statsTotalShares'], '9563.95');
+    assert.equal(out.text['#statsTotalShares'], '8799.76'); // sum of the worker cards (FIRST-TIMER-18)
     assert.match(out.text['#statsHashrate'], / [KMGTPEZY]?H\/s$/);
     assert.equal(out.text['#statsLuckDays'], '64.561 Days');
     const box = out.html['#boxesWorkers'];

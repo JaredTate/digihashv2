@@ -328,7 +328,7 @@
                     minPayment: (it.poolsConfigs[pool].paymentProcessing || {}).minimumPayment
                 }).replace(/"/g, '&quot;');
             }}
-            <a href="#" class="poolOption" data-pool="{{!pool}}" data-info="{{=info}}">{{=pool}}</a>
+            <a href="#" class="poolOption" data-pool="{{!pool}}" data-info="{{=info}}">{{=String(pool).replace(/^digibyte/,'DigiByte')}}</a>
             {{ } }}
         </div>
     </div>
@@ -405,7 +405,7 @@
 
     function showCoinConfig(info){
         $('#coinInfoRows').empty();
-        $('.coinInfoName').text(info.coin ? info.coin.name : info.algo);
+        $('.coinInfoName').text(String(info.coin ? info.coin.name : info.algo).replace(/^digibyte/i, 'DigiByte'));
         coinInfoRow('Algorithm:', info.algo);
         for (var port in info.ports){
             coinInfoRow('URL (difficulty ' + info.ports[port].diff + '):', 'stratum+tcp://' + info.host + ':' + port);

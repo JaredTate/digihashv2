@@ -182,7 +182,9 @@ function updateStats() {
 	totalPaid = statData.paid;
 	totalBal = statData.balance;
 	totalImmature = statData.immature;
-	totalShares = statData.totalShares;
+	// Same number and age as the worker cards: the sum of their round shares (FIRST-TIMER-18)
+	totalShares = 0;
+	for (var s in statData.workers) totalShares += toNumber(statData.workers[s] && statData.workers[s].currRoundShares);
 	// do some calculations: luck of all workers together
 	var luckRate = 0;
 	for (var w in statData.workers) {
@@ -222,7 +224,7 @@ function addWorkerToDisplay(name, htmlSafeName, workerObj) {
 	htmlToAdd+='<div><i class="fas fa-tachometer-alt fa-fw"></i> <span id="statsHashrate'+htmlSafeName+'">'+getReadableHashRateString(workerObj.hashrate)+'</span> (Now)</div>';
 	htmlToAdd+='<div><i class="fas fa-tachometer-alt fa-fw"></i> <span id="statsHashrateAvg'+htmlSafeName+'">'+getReadableHashRateString(calculateAverageHashrate(name))+'</span> (Avg)</div>';
 	htmlToAdd+='<div><i class="fas fa-unlock-alt fa-fw"></i> <small>Diff:</small> <span id="statsDiff'+htmlSafeName+'">'+formatDiff(workerObj.diff)+'</span></div>';
-	htmlToAdd+='<div><i class="fas fa-cog fa-fw"></i> <small>Shares:</small> <span id="statsShares'+htmlSafeName+'">'+(Math.round(toNumber(workerObj.currRoundShares) * 100) / 100)+'</span></div>';
+	htmlToAdd+='<div><i class="fas fa-cog fa-fw"></i> <small>Round shares:</small> <span id="statsShares'+htmlSafeName+'">'+(Math.round(toNumber(workerObj.currRoundShares) * 100) / 100)+'</span></div>';
 	htmlToAdd+='<div><i class="fas fa-clock fa-fw"></i> <small>Luck:</small> <span id="statsLuckDays'+htmlSafeName+'">'+getReadableLuckTime(workerObj.luckDays)+'</span></div>';
 	htmlToAdd+='<div><i class="fas fa-money-bill-alt fa-fw"></i> <small>Bal:</small> <span id="statsBalance'+htmlSafeName+'">'+formatDGB(workerObj.balance)+'</span></div>';
 	htmlToAdd+='<div><i class="fas fa-money-bill-alt fa-fw"></i> <small>Paid:</small> <span id="statsPaid'+htmlSafeName+'">'+formatDGB(workerObj.paid)+'</span></div>';

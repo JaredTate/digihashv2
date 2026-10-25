@@ -61,7 +61,6 @@
         display: flex;
         flex-flow: row wrap;
         justify-content: space-around;
-        opacity: 0.77;
         margin-bottom: 5px;
         flex: 1 1 auto;
         align-content: center;
@@ -101,9 +100,58 @@
     #bottomCharts {
         padding: 0px 18px 0px 18px;
     }
+
+    .hint {
+        border-bottom: 1px dotted currentColor;
+        cursor: help;
+    }
+
+    .glossary {
+        margin: 12px 18px 0 18px;
+        padding: 8px 12px;
+        background: #fff;
+        border: solid 1px #c7c7c7;
+        border-radius: 5px;
+    }
+
+    .glossary summary {
+        cursor: pointer;
+        min-height: 44px;
+        line-height: 44px;
+    }
+
+    .glossary dt {
+        font-weight: bold;
+        margin-top: 6px;
+    }
+
+    .glossary dd {
+        margin: 0 0 0 1em;
+    }
 </style>
 
 <h1 class="page-title">DigiHash Pool Stats</h1>
+<details class="glossary">
+    <summary>What do these words mean?</summary>
+    <dl>
+        <dt>Luck</dt>
+        <dd>About how long the pool (or your miner) needs, on average, to find one block at the hashrate it has now. Shorter is better.</dd>
+        <dt>Share %</dt>
+        <dd>The pool's part of the whole network hashrate for this algorithm.</dd>
+        <dt>Round shares</dt>
+        <dd>Work sent since the pool last found a block on this algorithm. Your part of the next block reward follows your part of these.</dd>
+        <dt>Efficiency</dt>
+        <dd>Valid shares as a percent of all shares a worker sent. Low efficiency means many rejected shares.</dd>
+        <dt>Valid / Invalid shares</dt>
+        <dd>Shares the pool accepted or rejected (for example stale or too easy).</dd>
+        <dt>Orphaned</dt>
+        <dd>A block the network did not keep. It pays no reward. Pending blocks wait for 100 confirmations, then they are confirmed and paid.</dd>
+        <dt>Difficulty</dt>
+        <dd>How hard it is to find a block on the network now. It goes up when more miners join.</dd>
+        <dt>Tab Stats</dt>
+        <dd>All pools in one table.</dd>
+    </dl>
+</details>
 <div id="topCharts">
     <div class="chartWrapper">
         <div class="chartLabel">Pool Historical Hashrate</div>
@@ -114,7 +162,9 @@
         <div class="chartHolder"><svg id="poolPending"></svg></div>
     </div>
 </div>
-{{ function capitalizeFirstLetter(t){return t.charAt(0).toUpperCase()+t.slice(1)} }}
+{{ function capitalizeFirstLetter(t){return (t.charAt(0).toUpperCase()+t.slice(1)).replace(/^Digibyte/,'DigiByte')} }}
+{{ function plural(n,w){return n+' '+w+(Number(n)===1?'':'s')} }}
+{{ function blocksTotal(b){b=b||{};return (+b.pending||0)+(+b.confirmed||0)+(+b.orphaned||0)} }}
 {{ function readableDate(a) {
 var d = new Date(parseInt(a));
 return d.getFullYear() + '/' +
@@ -134,14 +184,14 @@ d.toString().match(/GMT([+-]\d{4})/)[0].replace('GMT', 'UTC') + ' ' +
             <div class="boxStatsList">
                 <div>
                     <div><i class="fas fa-users fa-fw"></i> <span
-                            id="statsMiners{{=pool}}">{{=it.stats.pools[pool].minerCount}}</span> Miners</div>
+                            id="statsMiners{{=pool}}">{{=plural(it.stats.pools[pool].minerCount,'Miner')}}</span></div>
                     <div><i class="fas fa-gears fa-fw"></i> <span
-                            id="statsWorkers{{=pool}}">{{=it.stats.pools[pool].workerCount}}</span> Workers</div>
+                            id="statsWorkers{{=pool}}">{{=plural(it.stats.pools[pool].workerCount,'Worker')}}</span></div>
                     <div><i class="fas fa-gauge-simple-high fa-fw"></i> <span
                             id="statsHashrate{{=pool}}">{{=it.stats.pools[pool].hashrateString}}</span> (Now)</div>
                     <div><i class="fas fa-gauge-simple-high fa-fw"></i> <span id="statsHashrateAvg{{=pool}}">...</span>
                         (Avg)</div>
-                    <div><i class="fas fa-clock fa-fw"></i>&nbsp;Luck: <span id="statsLuckDays{=pool}}">
+                    <div><i class="fas fa-clock fa-fw"></i>&nbsp;<span class="hint" title="About how long the pool needs, on average, to find one block at its hashrate now">Luck</span>: <span id="statsLuckDays{{=pool}}">
                             {{
                             function getReadableLuckTime(lucktime){
                             var luck = lucktime;
@@ -152,7 +202,7 @@ d.toString().match(/GMT([+-]\d{4})/)[0].replace('GMT', 'UTC') + ' ' +
                                 {{=_luckTime}}</span>
                     </div>
                     <div>
-                        <i class="fas fa-chart-bar fa-fw"></i> Share: <span id="statsHashPercent{{=pool}}">
+                        <i class="fas fa-chart-bar fa-fw"></i> <span class="hint" title="The pool's part of the whole network hashrate for this algorithm">Share</span>: <span id="statsHashPercent{{=pool}}">
                             {{
                             var percent=0.0;
                             if(it.stats.pools[pool].hashrate == 0 ) {
@@ -179,7 +229,7 @@ d.toString().match(/GMT([+-]\d{4})/)[0].replace('GMT', 'UTC') + ' ' +
                     <div><i class="fas fa-gauge-simple-high fa-fw"></i> <small>Network H/s:</small> <span
                             id="statsnetworkHash{{=pool}}">{{=it.stats.pools[pool].poolStats.networkHashString}}</span>
                     </div>
-                    <div><i class="fas fa-unlock fa-fw"></i> <small>Difficulty:</small> <span
+                    <div><i class="fas fa-unlock fa-fw"></i> <small><span class="hint" title="How hard it is to find a block on the network now">Difficulty</span>:</small> <span
                             id="statsNetworkDiff{{=pool}}">{{=(parseFloat(it.stats.pools[pool].poolStats.networkDiff)).toFixed(8)}}</span>
                     </div>
                     <div><i class="fas fa-signal fa-fw"></i> <small>Node Connections:</small> <span
@@ -201,12 +251,12 @@ d.toString().match(/GMT([+-]\d{4})/)[0].replace('GMT', 'UTC') + ' ' +
             <div class="boxStatsList">
                 <div>
                     <div><i class="fas fa-cubes fa-fw"></i> Total Blocks
-                        {{=it.stats.pools[pool].poolStats.validBlocks}}</div>
+                        {{=blocksTotal(it.stats.pools[pool].blocks)}}</div>
                     <div><i class="fas fa-hourglass-half fa-fw"></i> Pending
                         {{=it.stats.pools[pool].blocks.pending}}</div>
                     <div><i class="fas fa-gavel fa-fw"></i> Confirmed {{=it.stats.pools[pool].blocks.confirmed}}
                     </div>
-                    <div><i class="fas fa-square-xmark fa-fw"></i> Orphaned
+                    <div><i class="fas fa-square-xmark fa-fw"></i> <span class="hint" title="Blocks the network did not keep. They pay no reward">Orphaned</span>
                         {{=it.stats.pools[pool].blocks.orphaned}}</div>
                     <div><i class="fas fa-square-check fa-fw"></i> Valid Shares
                         {{=it.stats.pools[pool].poolStats.validShares}}</div>
@@ -228,7 +278,7 @@ d.toString().match(/GMT([+-]\d{4})/)[0].replace('GMT', 'UTC') + ' ' +
                 <span style="float:right;">
                     <small>
                         <i class="fas fa-bars fa-fw"></i> <span
-                            id="statsValidBlocks{{=pool}}">{{=it.stats.pools[pool].poolStats.validBlocks}}</span> Blocks
+                            id="statsValidBlocks{{=pool}}">{{=blocksTotal(it.stats.pools[pool].blocks)}}</span> Blocks
                         &nbsp;&nbsp;
                         <i class="fas fa-money-bill fa-fw"></i> Paid: <span
                             id="statsTotalPaid{{=pool}}">{{=(parseFloat(it.stats.pools[pool].poolStats.totalPaid)).toFixed(8)}}</span>
@@ -254,13 +304,13 @@ d.toString().match(/GMT([+-]\d{4})/)[0].replace('GMT', 'UTC') + ' ' +
                     {{ } }}
                     {{if (it.stats.pools[pool].pending.confirms) { }}
                     {{if (it.stats.pools[pool].pending.confirms[block[0]]) { }}
-                    <span style="float:right; color: red;"><small>{{=it.stats.pools[pool].pending.confirms[block[0]]}}
+                    <span style="float:right; color: #b00000;"><small>{{=it.stats.pools[pool].pending.confirms[block[0]]}}
                             of 100</small></span>
                     {{ } else { }}
-                    <span style="float:right; color: red;"><small>*PENDING*</small></span>
+                    <span style="float:right; color: #b00000;"><small>*PENDING*</small></span>
                     {{ } }}
                     {{ } else { }}
-                    <span style="float:right; color: red;"><small>*PENDING*</small></span>
+                    <span style="float:right; color: #b00000;"><small>*PENDING*</small></span>
                     {{ } }}
                     <div><i class="fas fa-gavel fa-fw"></i> <small>Mined By:</small> <a
                             href="/workers/{{=block[3].split('.')[0]}}">{{=block[3]}}</a></div>
@@ -281,7 +331,7 @@ d.toString().match(/GMT([+-]\d{4})/)[0].replace('GMT', 'UTC') + ' ' +
                     {{if (block[4] != null) { }}
                     <span style="padding-left: 18px;"><small>{{=readableDate(block[4])}}</small></span>
                     {{ } }}
-                    <span style="float:right; padding-left: 18px; color: green;"><small>*PAID*</small></span>
+                    <span style="float:right; padding-left: 18px; color: #1e6b1e;"><small>*PAID*</small></span>
                     <div><i class="fas fa-gavel fa-fw"></i> <small>Mined By:</small> <a
                             href="/workers/{{=block[3].split('.')[0]}}">{{=block[3]}}</a></div>
             </div>
@@ -304,7 +354,7 @@ d.toString().match(/GMT([+-]\d{4})/)[0].replace('GMT', 'UTC') + ' ' +
             <div class="hidden" id="tooltip{{=pool}}">
                 <p><span id="value{{=pool}}"></span> blocks found by <span id="finderr{{=pool}}"></span></p>
             </div>
-            <div class="chartHolder" id="pie{{=pool}}"><svg id="blocksPie{{=pool}}"
+            <div class="chartHolder" id="pie{{=pool}}" tabindex="0" role="region" aria-label="{{=capitalizeFirstLetter(pool)}}: finders of the last {{=blockscomb.length}} blocks"><svg id="blocksPie{{=pool}}"
                     style="display: block; margin: auto; text-align:center;"></svg></div>
         </div>
     </div>
@@ -425,12 +475,12 @@ d.toString().match(/GMT([+-]\d{4})/)[0].replace('GMT', 'UTC') + ' ' +
 
             var stats = JSON.parse(e.data);
             for (var pool in stats.pools) {
-                $('#statsMiners' + pool).text(stats.pools[pool].minerCount);
-                $('#statsWorkers' + pool).text(stats.pools[pool].workerCount);
+                $('#statsMiners' + pool).text(plural(stats.pools[pool].minerCount, 'Miner'));
+                $('#statsWorkers' + pool).text(plural(stats.pools[pool].workerCount, 'Worker'));
                 $('#statsHashrate' + pool).text(stats.pools[pool].hashrateString);
                 $('#statsHashrateAvg' + pool).text(getReadableHashRateString(calculateAverageHashrate(pool)));
                 $('#statsLuckDays' + pool).text(getReadableLuckTime(stats.pools[pool].luckDays));
-                $('#statsValidBlocks' + pool).text(stats.pools[pool].poolStats.validBlocks);
+                $('#statsValidBlocks' + pool).text(blocksTotal(stats.pools[pool].blocks));
                 $('#statsTotalPaid' + pool).text((parseFloat(stats.pools[pool].poolStats.totalPaid)).toFixed(8));
                 $('#statsNetworkBlocks' + pool).text(stats.pools[pool].poolStats.networkBlocks);
                 $('#statsNetworkDiff' + pool).text(stats.pools[pool].poolStats.networkDiff);
@@ -440,6 +490,9 @@ d.toString().match(/GMT([+-]\d{4})/)[0].replace('GMT', 'UTC') + ' ' +
             }
         });
     });
+    function plural(n, w) { return n + ' ' + w + (Number(n) === 1 ? '' : 's'); }
+    // Total = Pending + Confirmed + Orphaned (the validBlocks counter also counts rejected duplicate blocks)
+    function blocksTotal(b) { b = b || {}; return (+b.pending || 0) + (+b.confirmed || 0) + (+b.orphaned || 0); }
     function getReadableNetworkHashRateString(hashrate) {
         hashrate = (hashrate * 1000000);
         if (hashrate < 1000000)

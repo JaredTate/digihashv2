@@ -220,7 +220,7 @@ module.exports = function (logger) {
     };
 
     var getPage = function (pageId) {
-        if (pageId in pageProcessed) {
+        if (typeof pageId === 'string' && pageId !== 'miner_stats' && Object.prototype.hasOwnProperty.call(pageProcessed, pageId)) {
             var requestedPage = pageProcessed[pageId];
             return requestedPage;
         }
@@ -230,6 +230,10 @@ module.exports = function (logger) {
         var address = req.params.address || null;
         if (address != null) {
             address = address.split(".")[0];
+            if (!/^[A-Za-z0-9]{26,90}$/.test(address)) {
+                // Not an address: friendly 404, never echo the input, never run a wildcard lookup.
+                return res.status(404).type('html').send('<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>No miner found – DigiHash</title><link rel="stylesheet" href="/static/style.css"></head><body><main style="max-width:40rem;margin:3rem auto;padding:0 1rem"><h1>No miner found for this address</h1><p>Check the address and try again. DigiByte addresses start with D, S or dgb1.</p><p><a href="/workers">Back to Miner Lookup</a></p></main></body></html>');
+            }
             portalStats.getBalanceByAddress(address, function () {
                 processTemplates();
                 res.header('Content-Type', 'text/html');
@@ -292,7 +296,7 @@ module.exports = function (logger) {
             }
         }
 
-        if (pageId in indexesProcessed) {
+        if (pageId !== 'miner_stats' && Object.prototype.hasOwnProperty.call(indexesProcessed, pageId)) {
             res.header('Content-Type', 'text/html');
 
             let pageContent = indexesProcessed[pageId].replace(/<html lang=".*?">/, `<html lang="${language}">`);

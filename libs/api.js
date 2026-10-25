@@ -46,6 +46,7 @@ module.exports = function(logger, portalConfig, poolConfigs){
 					if (address != null && address.length > 0) {
 						// make sure it is just the miners address
 						address = address.split(".")[0];
+						if (!/^[A-Za-z0-9]{26,90}$/.test(address)) { res.end(JSON.stringify({result: "error"})); return; }
 						// get miners balance along with worker balances
 						portalStats.getBalanceByAddress(address, function(balances) {
 							// get current round share total
@@ -56,7 +57,7 @@ module.exports = function(logger, portalConfig, poolConfigs){
 								for (var h in portalStats.statHistory) {
 									for(var pool in portalStats.statHistory[h].pools) {
 										for(var w in portalStats.statHistory[h].pools[pool].workers){
-											if (w.startsWith(address)) {
+											if (w === address || w.startsWith(address + '.')) {
 												if (history[w] == null) {
 													history[w] = [];
 												}
@@ -71,7 +72,7 @@ module.exports = function(logger, portalConfig, poolConfigs){
 								}
 								for(var pool in portalStats.stats.pools) {
 								  for(var w in portalStats.stats.pools[pool].workers){
-									  if (w.startsWith(address)) {
+									  if (w === address || w.startsWith(address + '.')) {
 										workers[w] = portalStats.stats.pools[pool].workers[w];
 										for (var b in balances.balances) {
 											if (w == balances.balances[b].worker) {

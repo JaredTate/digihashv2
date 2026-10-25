@@ -34,7 +34,7 @@
 <div id="topPool">
     <div class="poolWrapper">
         <div class="poolLabel">
-            Pool Tab Stats
+            Pool Tab Stats: all pools in one table
         </div>
         <div class="poolMinerTable">
             <table class="pure-table">
@@ -48,7 +48,7 @@
                         <th>Total Blocks</th>
                         <th>Pending</th>
                         <th>Confirmed</th>
-                        <th>Orphaned</th>
+                        <th title="Blocks the network did not keep. They pay no reward">Orphaned</th>
                         <th>Hashrate</th>
                     </tr>
                 </thead>
@@ -59,7 +59,7 @@
                     <td>{{=Object.keys(it.stats.pools[pool].workers).length}}</td>
                     <td>{{=it.stats.pools[pool].poolStats.validShares}}</td>
                     <td>{{=it.stats.pools[pool].poolStats.invalidShares}}</td>
-                    <td>{{=it.stats.pools[pool].poolStats.validBlocks}}</td>
+                    <td>{{=(+it.stats.pools[pool].blocks.pending||0)+(+it.stats.pools[pool].blocks.confirmed||0)+(+it.stats.pools[pool].blocks.orphaned||0)}}</td>
                     <td>{{=it.stats.pools[pool].blocks.pending}}</td>
                     <td>{{=it.stats.pools[pool].blocks.confirmed}}</td>
                     <td>{{=it.stats.pools[pool].blocks.orphaned}}</td>

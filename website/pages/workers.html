@@ -85,7 +85,8 @@
         return false;
     }
 </script>
-{{ function capitalizeFirstLetter(t){return t.charAt(0).toUpperCase()+t.slice(1)} }}
+{{ function capitalizeFirstLetter(t){return (t.charAt(0).toUpperCase()+t.slice(1)).replace(/^Digibyte/,'DigiByte')} }}
+{{ function plural(n,w){return n+' '+w+(Number(n)===1?'':'s')} }}
 {{ function safeUri(t){ try { return encodeURIComponent(String(t)); } catch (e) { return ''; } } }}
 <h1 class="page-title">DigiHash Worker Stats</h1>
 {{ var i=0; for(var pool in it.stats.pools) { }}
@@ -104,19 +105,19 @@
             </form>
             {{=capitalizeFirstLetter(it.stats.pools[pool].name)}} Top Miners &nbsp;&nbsp;
             <small><i class="fas fa-users fa-fw"></i> <span
-                    id="statsMiners{{=pool}}">{{=it.stats.pools[pool].minerCount}}</span> Miners &nbsp;&nbsp;
+                    id="statsMiners{{=pool}}">{{=plural(it.stats.pools[pool].minerCount,'Miner')}}</span> &nbsp;&nbsp;
                 <i class="fas fa-gears fa-fw"></i> <span
-                    id="statsWorkers{{=pool}}">{{=it.stats.pools[pool].workerCount}}</span> Workers &nbsp;&nbsp;
+                    id="statsWorkers{{=pool}}">{{=plural(it.stats.pools[pool].workerCount,'Worker')}}</span> &nbsp;&nbsp;
                 <i class="fas fa-chart-bar fa-fw"></i> <span
-                    id="statsWorkers{{=pool}}">{{=it.stats.pools[pool].shareCount}}</span> Shares </small>
+                    id="statsShares{{=pool}}">{{=it.stats.pools[pool].shareCount}}</span> Round shares </small>
         </div>
         <div class="poolMinerTable">
             <table class="pure-table">
                 <thead>
                     <tr>
                         <th>Address</th>
-                        <th>Shares</th>
-                        <th>Efficiency</th>
+                        <th title="Work sent since the pool last found a block on this algorithm">Round shares</th>
+                        <th title="Valid shares as a percent of all shares sent. Low means many rejected shares">Efficiency</th>
                         <th>Hashrate</th>
                     </tr>
                 </thead>

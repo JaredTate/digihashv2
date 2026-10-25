@@ -163,3 +163,90 @@ test('browser: lookup, pop-up, tables, not-found and one stream on a phone', { s
         server.close();
     }
 });
+
+// 2026-10-25 validation round: FIRST-TIMER-21 (menu links visible), SLOW-8 (44 px taps), FIRST-TIMER-19 (axe).
+// The axe part runs only when AXE_CORE points at axe.min.js (axe-core is not a dependency of this repo).
+test('browser: every menu link is visible, /stats taps are 44 px on a phone, axe finds nothing', { skip: pw ? false : 'Playwright not available (set PLAYWRIGHT_MODULE)' }, async (t) => {
+    const server = await startServer();
+    const base = 'http://127.0.0.1:' + server.address().port;
+    const launch = process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {};
+    let browser;
+    try {
+        browser = await pw.chromium.launch(launch);
+    } catch (e) {
+        server.close();
+        t.skip('no Chromium for Playwright: ' + e.message.split('\n')[0]);
+        return;
+    }
+    let axeSrc = null;
+    try { axeSrc = process.env.AXE_CORE ? fs.readFileSync(process.env.AXE_CORE, 'utf8') : null; } catch (e) { axeSrc = null; }
+    // A link counts as visible when it is the top element at its own center.
+    const hidden = (page) => page.evaluate(() => [...document.querySelectorAll('.custom-menu a')].filter((a) => {
+        const r = a.getBoundingClientRect();
+        const top = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2);
+        return !(top && (top === a || a.contains(top)));
+    }).map((a) => a.innerText.trim()));
+    try {
+        await t.test('desktop: all 10 menu links are visible at 1366, 1000 and 800 px', async () => {
+            for (const width of [1366, 1000, 800]) {
+                const page = await browser.newPage({ viewport: { width, height: 700 } });
+                await page.goto(base + '/stats', { waitUntil: 'load' });
+                assert.equal(await page.locator('.custom-menu a').count(), 10);
+                assert.deepEqual(await hidden(page), [], 'hidden menu links at ' + width + ' px');
+                await page.close();
+            }
+        });
+
+        const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+        const page = await ctx.newPage();
+        await page.goto(base + '/stats', { waitUntil: 'load' });
+        if (!(await page.evaluate(() => typeof window.jQuery === 'function'))) {
+            t.skip('jQuery did not load from the CDN (offline?)');
+            return;
+        }
+
+        await t.test('phone: the open menu shows all 10 links, each at least 44 px tall', async () => {
+            await page.click('#toggle');
+            await page.waitForTimeout(700);
+            const r = await page.evaluate(() => {
+                const menu = document.getElementById('menu').getBoundingClientRect();
+                return [...document.querySelectorAll('.custom-menu a')].map((a) => {
+                    const b = a.getBoundingClientRect();
+                    return { t: a.innerText.trim(), h: b.height, bottom: b.bottom, menu: menu.bottom };
+                });
+            });
+            assert.equal(r.length, 10);
+            for (const x of r) {
+                assert.ok(x.h >= 44, x.t + ' is ' + x.h + ' px tall');
+                assert.ok(x.bottom <= x.menu, x.t + ' is cut off by the menu box');
+            }
+            assert.deepEqual(await hidden(page), []);
+        });
+
+        await t.test('phone: links, buttons and the glossary on /stats are at least 44 px', async () => {
+            await page.goto(base + '/stats', { waitUntil: 'load' });
+            const small = await page.evaluate(() => [...document.querySelectorAll('main a[href], main button, main summary, #toggle')].map((e) => {
+                const r = e.getBoundingClientRect();
+                return r.width && r.height && (r.width < 44 || r.height < 44) ? (e.innerText || e.id).trim() + ' ' + Math.round(r.width) + 'x' + Math.round(r.height) : null;
+            }).filter(Boolean));
+            assert.deepEqual(small, []);
+        });
+
+        await t.test('axe-core: no violations on four pages (phone and desktop)', { skip: axeSrc ? false : 'set AXE_CORE=/path/to/axe-core/axe.min.js' }, async () => {
+            const desk = await browser.newPage({ viewport: { width: 1366, height: 900 } });
+            for (const p of [page, desk]) {
+                for (const path of ['/', '/getting_started', '/stats', '/workers']) {
+                    await p.goto(base + path, { waitUntil: 'load' });
+                    await p.waitForTimeout(300);
+                    await p.addScriptTag({ content: axeSrc });
+                    const v = await p.evaluate(async () => (await window.axe.run(document, { resultTypes: ['violations'] })).violations.map((x) => x.id + '(' + x.nodes.length + ')'));
+                    assert.deepEqual(v, [], path + ' at ' + p.viewportSize().width + ' px');
+                }
+            }
+            await desk.close();
+        });
+    } finally {
+        await browser.close();
+        server.close();
+    }
+});

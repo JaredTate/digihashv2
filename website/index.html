@@ -116,13 +116,13 @@
 </head>
 
 <body>
-{{ function capitalizeFirstLetter(t){return t.charAt(0).toUpperCase()+t.slice(1)} }}
+{{ function capitalizeFirstLetter(t){return (t.charAt(0).toUpperCase()+t.slice(1)).replace(/^Digibyte/,'DigiByte')} }}
 <header>
     <div class="custom-wrapper pure-g" id="menu">
         <div class="pure-u-1 pure-u-md-1-8">
             <div class="home-menu pure-menu">
                 <a href="/" class="pure-menu-heading"><i class="fa fa-home"></i>&nbsp;DigiHash</a>
-                <a href="#" class="custom-toggle" id="toggle"><s class="bar"></s><s class="bar"></s></a>
+                <a href="#" class="custom-toggle" id="toggle" role="button" aria-label="Menu"><s class="bar"></s><s class="bar"></s></a>
             </div>
         </div>
         <div class="pure-u-1 pure-u-md-1-8">
@@ -147,7 +147,7 @@
                         </a>
                     </li>
                     <li class="pure-menu-item">
-                        <a class="pure-menu-link" href="/tbs">
+                        <a class="pure-menu-link" href="/tbs" title="Tab Stats: all pools in one table">
                             <i class="fas fa-table fa-fw"></i>
                             <span id="tbs">Tab Stats</span>
                         </a>
@@ -164,11 +164,17 @@
                             <span id="api">API</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="https://digibyte.org" target="_blank">DigiByte.org</a>
+                    <li class="pure-menu-item">
+                        <a class="pure-menu-link" href="https://digibyte.org" target="_blank">DigiByte.org</a>
                     </li>
-                    <li>
-                        <a href="https://www.dgbat.org/" target="_blank">DGBAT</a>
+                    <li class="pure-menu-item">
+                        <a class="pure-menu-link" href="https://www.dgbat.org/" target="_blank" title="DGBAT: DigiByte Awareness Team">DGBAT</a>
+                    </li>
+                    <li class="pure-menu-item">
+                        <a class="pure-menu-link" href="https://digibyte.io/" target="_blank" title="DigiByte blockchain stats">DigiByte Stats</a>
+                    </li>
+                    <li class="pure-menu-item">
+                        <a class="pure-menu-link" href="https://digiexplorer.info/" target="_blank" title="DigiByte block explorer">DigiExplorer</a>
                     </li>
                 </ul>
             </div>
@@ -180,13 +186,13 @@
     </main>
     <footer>
         <div id="communityFooter">
-            This site is powered by <a target="_blank" href="https://github.com/JaredTate/digihashv2">DigiHashv2</a>
+            This site is powered by <a target="_blank" href="https://github.com/JaredTate/digihashv2">DigiHash</a>
             project forked from <a target="_blank" href="https://github.com/ROZ-MOFUMOFU-ME/">ROZ</a>, 
             created by Jared Tate and is
             licensed under the <a href="https://en.wikipedia.org/wiki/MIT_License">MIT License</a>. Project supported by the  <a target="_blank" href="https://digibyte.org">DigiByte Developers</a> © {{=new Date().getFullYear()}}<br>
             <i class="fas fa-heart fa-fw"></i>&nbsp;Donate&nbsp;
             <i class="fas fa-digibyte-sign fa-fw"></i>&nbsp;DGB:&nbsp;dgb1qf6rxawqk6chveffxqstdpvr428yekf73hz4sjt <br>
-            <iframe src="https://ghbtns.com/github-btn.html?user=JaredTate&repo=digihashv2&type=star&count=true"
+            <iframe title="Star DigiHash on GitHub" src="https://ghbtns.com/github-btn.html?user=JaredTate&repo=digihashv2&type=star&count=true"
                 frameborder="0" scrolling="0" width="150" height="20"></iframe>
         </div>
     </footer>

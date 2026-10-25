@@ -36,7 +36,7 @@ footer {
 
 footer a {
     color: #fff;
-    text-decoration: none;
+    text-decoration: underline; /* links must not differ from the text by color only (axe link-in-text-block) */
 }
 
 footer iframe {
@@ -51,6 +51,7 @@ footer iframe {
     line-height: normal !important;
     color: #fff;
     font-size: 1.5em;
+    text-transform: none; /* Pure CSS upper-cases menu headings; the name is "DigiHash" */
 }
 
 .custom-wrapper {
@@ -205,6 +206,7 @@ option:checked {
 
     .custom-toggle {
         display: block;
+        width: 48px;
         height: 48px;
     }
 
@@ -215,13 +217,47 @@ option:checked {
     }
 
     .custom-wrapper.open {
-        height: 22.5em;
+        height: 33em; /* 10 menu items of 44 px */
+    }
+
+    /* Tap targets: at least 44 px tall on phones (SLOW-8) */
+    a.pure-menu-link {
+        min-height: 44px;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+    }
+
+    #boxesLower .boxStatsList a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+    }
+
+    .miner-lookup input,
+    .miner-lookup button {
+        min-height: 44px;
+    }
+
+    .poolMinerTable a {
+        min-height: 44px;
+        line-height: 44px;
+    }
+
+    .menuList > a {
+        min-height: 44px;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
     }
 
     /* Phone menu: the DigiByte.org and DGBAT links have no pure-menu-link
        class, so give them the same look as the other menu items */
     .custom-menu li > a:not(.pure-menu-link) {
-        display: block;
+        display: flex;
+        align-items: center;
+        min-height: 44px;
+        box-sizing: border-box;
         padding: 0.5em 1em;
         color: #b3b3b3;
         text-decoration: none;
@@ -279,6 +315,22 @@ option:checked {
         max-width: 7.5em;
     }
 }
+/* Desktop: the menu row may wrap, and the header grows, so no menu link hides behind the page */
+@media (min-width: 48em) {
+    .custom-wrapper {
+        height: auto;
+    }
+
+    #menu > div:last-child {
+        flex: 1;
+        width: auto;
+    }
+
+    .custom-menu.pure-menu-horizontal {
+        white-space: normal;
+    }
+}
+
 h1.page-title {
     margin: 0;
     padding: 18px 18px 0 18px;
